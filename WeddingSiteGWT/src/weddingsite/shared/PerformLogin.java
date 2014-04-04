@@ -27,13 +27,12 @@ public class PerformLogin {
 	
 	public void perform(LoginResult result) {
 		
-		String resultValue = "Failed to retrieve user";
+		String resultValue = "Failed to login!";
 		
 		switch (model.getType()) {
 		
 		case LOGIN:
-			System.out.println(DatabaseProvider.getInstance().getUser(model.getWeddingName(), model.getUsername()).getPassword());
-			if(model.getPassword() == DatabaseProvider.getInstance().getUser(model.getWeddingName(), model.getUsername()).getPassword()) {
+			if(model.getPassword().equals(DatabaseProvider.getInstance().getUser(model.getWeddingName(), model.getUsername()).getPassword())) {
 				resultValue = "Login succeeded!";
 			}
 			break;
