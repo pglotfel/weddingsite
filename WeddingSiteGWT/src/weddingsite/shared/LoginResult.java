@@ -1,6 +1,8 @@
 package weddingsite.shared;
 
-public class LoginResult extends Publisher {
+import java.io.Serializable;
+
+public class LoginResult extends Publisher implements Serializable {
 	
 	public enum Events {
 		VALUE_CHANGED

@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import weddingsite.persist.FakeDatabase;
+import weddingsite.server.FakeDatabase;
 
 
 public class FakeDatabaseTest {

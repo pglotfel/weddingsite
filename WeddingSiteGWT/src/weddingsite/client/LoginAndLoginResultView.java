@@ -5,11 +5,11 @@ import weddingsite.shared.IPublisher;
 import weddingsite.shared.ISubscriber;
 import weddingsite.shared.Login;
 import weddingsite.shared.LoginResult;
-import weddingsite.shared.PerformLogin;
 
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
@@ -18,23 +18,22 @@ import com.google.gwt.user.client.ui.TextBox;
 
 public class LoginAndLoginResultView extends Composite implements ISubscriber {
 	
-	private LoginResult result;
+	private LoginResult loginResult;
 	private Login model;
-	private PerformLogin controller;
 	private LoginResultView resultView;
 	private TextBox accountNameTextBox;
 	private TextBox usernameTextBox;
 	private TextBox passwordTextBox;
 	
 	public LoginAndLoginResultView() {
-		this.result = new LoginResult();
+		this.loginResult = new LoginResult();
 		
 		LayoutPanel panel = new LayoutPanel();
 		initWidget(panel);
 		panel.setHeight("428px");
 		
 		this.resultView = new LoginResultView();
-		resultView.setModel(result);
+		resultView.setModel(loginResult);
 		panel.add(resultView);
 		panel.setWidgetLeftWidth(resultView, 25.0, Unit.PX, 200.0, Unit.PX);
 		panel.setWidgetTopHeight(resultView, 298.0, Unit.PX, 31.0, Unit.PX);
@@ -72,7 +71,6 @@ public class LoginAndLoginResultView extends Composite implements ISubscriber {
 		Button loginButton = new Button("New button");
 		loginButton.setText("Login");
 		loginButton.addClickHandler(new ClickHandler() {
-			@Override
 			public void onClick(ClickEvent event) {
 				handleLogin();
 				
@@ -94,18 +92,29 @@ public class LoginAndLoginResultView extends Composite implements ISubscriber {
 		this.model.subscribe(Login.Events.VALUE_OR_ACTION_TYPE_CHANGED, this);
 	}
 	
-	public void setController(PerformLogin controller) {
-		this.controller = controller;
+	private void updateModel(ActionType actionType) {
+		model.setWeddingName(accountNameTextBox.getText());
+		model.setUsername(usernameTextBox.getText());
+		model.setPassword(passwordTextBox.getText());
+		model.setType(actionType);
 	}
-
+	
 	protected void handleLogin() {
-		String accountName = accountNameTextBox.getText();
-		String username = usernameTextBox.getText();
-		String password = passwordTextBox.getText();
-		controller.setWeddingName(accountName);
-		controller.setUsername(username);
-		controller.setPassword(password);
-		controller.setActionType(ActionType.LOGIN);
-		controller.perform(result);
+		
+		updateModel(ActionType.LOGIN);
+		
+		RPC.performLoginService.performLogin(model, new AsyncCallback<LoginResult>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				System.err.println("Something went wrong with login...");				
+			}
+
+			@Override
+			public void onSuccess(LoginResult result) {
+				loginResult.setMessage(result.getMessage());				
+			}
+			
+		});
 	}
 }

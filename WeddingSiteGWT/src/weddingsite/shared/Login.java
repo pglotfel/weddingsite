@@ -1,6 +1,8 @@
 package weddingsite.shared;
 
-public class Login extends Publisher{
+import java.io.Serializable;
+
+public class Login extends Publisher implements Serializable {
 	
 	public enum Events {
 		VALUE_OR_ACTION_TYPE_CHANGED,

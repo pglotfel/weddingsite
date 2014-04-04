@@ -1,0 +1,2 @@
+serviceClass: weddingsite.client.PerformLoginService
+path: FB37D29597EED32134A89095B4C89429.gwt.rpc

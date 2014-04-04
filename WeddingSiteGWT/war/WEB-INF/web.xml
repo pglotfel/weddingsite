@@ -7,6 +7,21 @@
 
   <!-- Servlets -->
   
+  <servlet>
+  	<servlet-name>PerformLoginServiceImpl</servlet-name>
+ 	<servlet-class>weddingsite.server.PerformLoginServiceImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>PerformLoginServiceImpl</servlet-name>
+  	<url-pattern>/weddingsite/performLogin/*</url-pattern>
+  </servlet-mapping>
+  
+  <!-- Servlet context listeners -->
+  <listener>
+    <listener-class>weddingsite.server.DatabaseInitListener</listener-class>
+  </listener>
+  
   <!-- Default page to serve -->
   <welcome-file-list>
     <welcome-file>WeddingSiteGWT.html</welcome-file>
