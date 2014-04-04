@@ -25,14 +25,13 @@ public class LoginAndLoginResultView extends Composite implements ISubscriber {
 	private TextBox accountNameTextBox;
 	private TextBox usernameTextBox;
 	private TextBox passwordTextBox;
-	private Button loginButton;
 	
 	public LoginAndLoginResultView() {
 		this.result = new LoginResult();
 		
 		LayoutPanel panel = new LayoutPanel();
 		initWidget(panel);
-		panel.setHeight("413px");
+		panel.setHeight("428px");
 		
 		this.resultView = new LoginResultView();
 		resultView.setModel(result);
@@ -70,7 +69,7 @@ public class LoginAndLoginResultView extends Composite implements ISubscriber {
 		panel.setWidgetLeftWidth(passwordLabel, 25.0, Unit.PX, 56.0, Unit.PX);
 		panel.setWidgetTopHeight(passwordLabel, 152.0, Unit.PX, 18.0, Unit.PX);
 		
-		loginButton = new Button("New button");
+		Button loginButton = new Button("New button");
 		loginButton.setText("Login");
 		loginButton.addClickHandler(new ClickHandler() {
 			@Override
