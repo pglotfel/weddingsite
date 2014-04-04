@@ -32,8 +32,12 @@ public class PerformLogin {
 		switch (model.getType()) {
 		
 		case LOGIN:
-			if(model.getPassword().equals(DatabaseProvider.getInstance().getUser(model.getWeddingName(), model.getUsername()).getPassword())) {
-				resultValue = "Login succeeded!";
+			
+			User u = DatabaseProvider.getInstance().getUser(model.getWeddingName(), model.getUsername());
+			if(u != null) {
+				if(model.getPassword().equals(u.getPassword())) {
+					resultValue = "Login succeeded!";
+				}
 			}
 			break;
 			

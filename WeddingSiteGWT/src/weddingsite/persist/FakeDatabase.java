@@ -42,7 +42,13 @@ public class FakeDatabase implements IDatabase  {
 	@Override
 	public User getUser(String accountName, String userName) {		
 		
-		return findUserByUserNameAndAccountID(findAccountByAccountName(accountName).getID(), userName);
+		Account a = findAccountByAccountName(accountName);
+		
+		if(a != null) {
+			return findUserByUserNameAndAccountID(a.getID(), userName);
+		}
+		
+		return null;
 	}
 	
 	private User findUserByUserNameAndAccountID(int accountID, String userName) {
