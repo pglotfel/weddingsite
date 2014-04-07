@@ -101,20 +101,25 @@ public class LoginAndLoginResultView extends Composite implements ISubscriber {
 	
 	protected void handleLogin() {
 		
-		updateModel(ActionType.LOGIN);
-		
-		RPC.performLoginService.performLogin(model, new AsyncCallback<LoginResult>() {
-
-			@Override
-			public void onFailure(Throwable caught) {
-				System.err.println("Something went wrong with login...");				
-			}
-
-			@Override
-			public void onSuccess(LoginResult result) {
-				loginResult.setMessage(result.getMessage());				
-			}
+		if(accountNameTextBox.getText().equals("") || usernameTextBox.getText().equals("")|| passwordTextBox.getText().equals("")) {
+			loginResult.setMessage("Please enter the required fields");
+		} else {
 			
-		});
+			updateModel(ActionType.LOGIN);
+		
+			RPC.performLoginService.performLogin(model, new AsyncCallback<LoginResult>() {
+
+				@Override
+				public void onFailure(Throwable caught) {
+					System.err.println("Something went wrong with login...");				
+				}
+	
+				@Override
+				public void onSuccess(LoginResult result) {
+					loginResult.setMessage(result.getMessage());				
+				}
+			
+			});
+		}
 	}
 }

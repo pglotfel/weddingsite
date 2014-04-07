@@ -36,9 +36,14 @@ public class PerformLogin {
 		
 		case LOGIN:
 			
-			User u = DatabaseProvider.getInstance().getUser(model.getWeddingName(), model.getUsername());
+			String wn = model.getWeddingName();
+			String un = model.getUsername();
+			String pw = model.getPassword();
+			
+			
+			User u = DatabaseProvider.getInstance().getUser(wn, un);
 			if(u != null) {
-				if(model.getPassword().equals(u.getPassword())) {
+				if(pw.equals(u.getPassword())) {
 					resultValue = "Login succeeded!";
 				}
 			}

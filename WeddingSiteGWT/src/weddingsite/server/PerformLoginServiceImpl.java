@@ -11,6 +11,7 @@ public class PerformLoginServiceImpl extends RemoteServiceServlet implements Per
 	public LoginResult performLogin(Login login) {
 		
 		PerformLogin controller = new PerformLogin();
+		controller.setModel(login);
 		
 		controller.setWeddingName(login.getWeddingName());
 		controller.setUsername(login.getUsername());

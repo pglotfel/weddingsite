@@ -14,7 +14,7 @@
   
   <servlet-mapping>
   	<servlet-name>PerformLoginServiceImpl</servlet-name>
-  	<url-pattern>/weddingsite/performLogin/*</url-pattern>
+  	<url-pattern>/weddingsitegwt/performLogin/*</url-pattern>
   </servlet-mapping>
   
   <!-- Servlet context listeners -->
