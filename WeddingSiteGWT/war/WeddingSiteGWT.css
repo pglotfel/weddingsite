@@ -32,3 +32,28 @@ h1 {
 #closeButton {
   margin: 15px 6px 6px;
 }
+
+.menuBar .gwt-MenuBar
+{
+	top							: 50%;
+}
+
+.menuBar .gwt-MenuItem
+{
+    cursor                      :   hand;
+    cursor                      :   pointer;
+
+    border                      :   2px solid #0099CC;
+    background-color            :   #00CCFF;
+    padding                     :   2px 10px;
+    height						: 	40px;
+    width						: 	180px;
+    text-align					: 	center;
+    font-size					:	15px;
+    font-family					: 	"Lucida Sans Unicode", "Lucida Grande", sans-serif;
+}
+
+.menuBar .gwt-MenuItem-selected
+{
+    background-color            :   #0099CC;
+}

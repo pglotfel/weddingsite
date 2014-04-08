@@ -44,7 +44,7 @@ public class PerformLogin {
 			User u = DatabaseProvider.getInstance().getUser(wn, un);
 			if(u != null) {
 				if(pw.equals(u.getPassword())) {
-					resultValue = "Login succeeded!";
+					resultValue = "";
 				}
 			}
 			break;

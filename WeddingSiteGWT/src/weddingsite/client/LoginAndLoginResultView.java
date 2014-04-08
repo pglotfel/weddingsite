@@ -1,5 +1,6 @@
 package weddingsite.client;
 
+import weddingsite.client.Site.Pages;
 import weddingsite.shared.ActionType;
 import weddingsite.shared.IPublisher;
 import weddingsite.shared.ISubscriber;
@@ -14,6 +15,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
+import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
 
 public class LoginAndLoginResultView extends Composite implements ISubscriber {
@@ -23,7 +25,7 @@ public class LoginAndLoginResultView extends Composite implements ISubscriber {
 	private LoginResultView resultView;
 	private TextBox accountNameTextBox;
 	private TextBox usernameTextBox;
-	private TextBox passwordTextBox;
+	private PasswordTextBox passwordTextBox;
 	
 	public LoginAndLoginResultView() {
 		this.loginResult = new LoginResult();
@@ -48,7 +50,7 @@ public class LoginAndLoginResultView extends Composite implements ISubscriber {
 		panel.setWidgetLeftWidth(usernameTextBox, 25.0, Unit.PX, 173.0, Unit.PX);
 		panel.setWidgetTopHeight(usernameTextBox, 112.0, Unit.PX, 34.0, Unit.PX);
 		
-		passwordTextBox = new TextBox();
+		passwordTextBox = new PasswordTextBox();
 		panel.add(passwordTextBox);
 		panel.setWidgetLeftWidth(passwordTextBox, 25.0, Unit.PX, 173.0, Unit.PX);
 		panel.setWidgetTopHeight(passwordTextBox, 176.0, Unit.PX, 34.0, Unit.PX);
@@ -116,7 +118,11 @@ public class LoginAndLoginResultView extends Composite implements ISubscriber {
 	
 				@Override
 				public void onSuccess(LoginResult result) {
-					loginResult.setMessage(result.getMessage());				
+					if (result.getMessage().equals("")) {
+						Site.search(Pages.HOMEPAGE);
+					} else {
+						loginResult.setMessage(result.getMessage());	
+					}				
 				}
 			
 			});
