@@ -1,6 +1,7 @@
 package weddingsite.client;
 
 import weddingsite.shared.Login;
+import weddingsite.shared.User;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.dom.client.Style.Unit;
@@ -14,6 +15,7 @@ import com.google.gwt.user.client.ui.RootLayoutPanel;
 public class Site implements EntryPoint {	
 	
 	private static Composite currentView;
+	public static User currentUser;
 	
 	public enum Pages {
 		LOGINPAGE,
