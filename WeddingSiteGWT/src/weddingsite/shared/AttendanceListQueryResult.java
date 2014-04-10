@@ -7,26 +7,25 @@ import weddingsite.shared.LoginResult.Events;
 
 public class AttendanceListQueryResult extends Publisher implements Serializable{
 	
+	
 	public enum Events {
 		VALUE_CHANGED
 	}
 	
-	private ArrayList<Attendee> attendees;
+	private ArrayList<AttendanceList> attendanceLists;
 	
 	public AttendanceListQueryResult() {
 		
-		this.attendees = null;
+		this.attendanceLists = null;
 	}
 	
-	
-
-	public ArrayList<Attendee> getAttendees() {
-		return attendees;
+	public ArrayList<AttendanceList> getAttendanceLists() {
+		return attendanceLists;
 	}
 
-	public void setAttendees(ArrayList<Attendee> attendees) {
-		this.attendees = attendees;
-		notifySubscribers(Events.VALUE_CHANGED, attendees);
+	public void setAttendanceLists(ArrayList<AttendanceList> attendanceLists) {
+		this.attendanceLists = attendanceLists;
+		notifySubscribers(Events.VALUE_CHANGED, attendanceLists);
 	}
 	
 	

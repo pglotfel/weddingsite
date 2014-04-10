@@ -3,9 +3,11 @@ package weddingsite.server;
 import java.util.ArrayList;
 
 import weddingsite.shared.ActionType;
+import weddingsite.shared.AttendanceList;
 import weddingsite.shared.AttendanceListQueryModel;
 import weddingsite.shared.AttendanceListQueryResult;
 import weddingsite.shared.Attendee;
+import weddingsite.shared.User;
 
 public class PerformAttendanceListQuery {
 	
@@ -23,20 +25,24 @@ public class PerformAttendanceListQuery {
 		model.setWeddingName(weddingName);
 	}
 	
-	public void setUsername(String username) {
-		model.setUsername(username);
-	}
-	
-	public void setName(String name) {
-		model.setName(name);
-	}
-	
-	
 	public void perform(AttendanceListQueryResult result) {
 		
-		ArrayList<Attendee> resultValue = null;
+		ArrayList<AttendanceList> resultValue = null;
+		
+		switch (model.getType()) {
+		
+		case GETATTENDANCELISTS:
+			
+			
+			resultValue = DatabaseProvider.getInstance().getAttendanceLists(model.getWeddingName());
+			break;
+			
+		default:
+			throw new UnsupportedOperationException("Unknown operation type: " + model.getType());
+		}
 		
 		
+		result.setAttendanceLists(resultValue);
 		
 		
 	}

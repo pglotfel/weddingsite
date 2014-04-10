@@ -22,6 +22,8 @@ public class FakeDatabase implements IDatabase  {
 		accounts = new ArrayList<Account>();
 		users = new ArrayList<User>();
 		attendees = new ArrayList<Attendee>();
+		attendanceLists = new ArrayList<AttendanceList>();
+		
 		
 		String [] accountNames = {"Smith", "Doe", "Harrison"};
 		String [] userNames = {"John", "Paul", "Jones", "Misty", "Harry", "Sally", "Molly", "Steven", "Christopher"};
@@ -102,6 +104,25 @@ public class FakeDatabase implements IDatabase  {
 		}
 		
 		return null;
+	}
+	
+	
+	public ArrayList<AttendanceList> getAttendanceLists(String accountName) {
+		
+		Account account = findAccountByAccountName(accountName);
+		int accountID = account.getID();
+		
+		ArrayList<AttendanceList> list = new ArrayList<AttendanceList>();
+		
+		
+		for(AttendanceList a : attendanceLists) {
+			
+			if(a.getAccountID() == accountID) {
+				list.add(a);
+			}
+		}
+		
+		return list;
 	}
 	
 	@Override
