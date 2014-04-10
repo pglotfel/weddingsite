@@ -20,7 +20,8 @@ public class Site implements EntryPoint {
 	public enum Pages {
 		LOGINPAGE,
 		HOMEPAGE,
-		USERPAGE,	
+		USERPAGE,
+		ATTENDANCELISTPAGE,
 	}
 	
 	/**

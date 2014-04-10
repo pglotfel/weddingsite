@@ -4,6 +4,7 @@ public class AttendanceList {
 	
 	private int id;
 	private int accountID;
+	private String name;
 	
 	public AttendanceList() {
 		
@@ -23,5 +24,13 @@ public class AttendanceList {
 	
 	public void setAccountID(int accountID) {
 		this.accountID = accountID;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
 	}
 }

@@ -1,13 +1,19 @@
 package weddingsite.server;
 
 import java.util.ArrayList;
+
 import weddingsite.shared.Account;
+import weddingsite.shared.AttendanceList;
+import weddingsite.shared.Attendee;
 import weddingsite.shared.User;
 
 public class FakeDatabase implements IDatabase  {
 	
 	private ArrayList<Account> accounts;
 	private ArrayList<User> users;
+	private ArrayList<AttendanceList> attendanceLists;
+	private ArrayList<Attendee>  attendees;
+	
 	
 	public FakeDatabase() {
 		
@@ -15,15 +21,35 @@ public class FakeDatabase implements IDatabase  {
 		
 		accounts = new ArrayList<Account>();
 		users = new ArrayList<User>();
+		attendees = new ArrayList<Attendee>();
 		
 		String [] accountNames = {"Smith", "Doe", "Harrison"};
 		String [] userNames = {"John", "Paul", "Jones", "Misty", "Harry", "Sally", "Molly", "Steven", "Christopher"};
+		String [] attendeeNames = {"Bob", "Sally", "Me", "You", "Harry", "John", "Paul", "Jones", "Billy"};
+		String [] attendanceListNames = {"Wedding", "Rehearsal Dinner", "Bridal Shower"};
+		
+		for(int i = 0; i < 9; i++){
+			Attendee att = new Attendee();
+			att.setName(attendeeNames[i]);
+			att.setAttending(true);
+			att.setNumAttending(2);
+			attendees.add(att);
+			
+		}
 		
 		for (int i = 0; i < 3; i++) {
 			Account a = new Account();
 			a.setAccountName(accountNames[i]);
 			a.setID(i);
+			
+			AttendanceList attend = new AttendanceList();
+			attend.setName(attendanceListNames[i]);
+			attend.setAccountID(i);
+			attend.setID(i);
+
 			accounts.add(a);
+			attendanceLists.add(attend);	
+			
 		}
 		
 		for (int i = 0; i < 3; i++) {
@@ -34,8 +60,13 @@ public class FakeDatabase implements IDatabase  {
 				u.setPassword("abdeFG");
 				u.setUsername(userNames[(i * 3) + j]);
 				users.add(u);
+				
+				attendees.get((i*3 + j)).setAttendanceListID(i);
 			}
 		}
+		
+		
+		
 		
 	}
 
@@ -71,6 +102,32 @@ public class FakeDatabase implements IDatabase  {
 		}
 		
 		return null;
+	}
+	
+	@Override
+	public ArrayList<Attendee> getAttendanceListAttendees(String name, String accountName) {
+		
+		Account account = findAccountByAccountName(accountName);
+		
+		int AccountID = account.getID();
+		
+		ArrayList<Attendee> list = new ArrayList<Attendee>();
+		int listID = 0;
+		
+		for(int i = 0; i < attendanceLists.size(); i++) {
+			if( attendanceLists.get(i).getName().equals(name) && attendanceLists.get(i).getAccountID() == AccountID) {
+				listID = attendanceLists.get(i).getID();
+			}
+		}
+		
+		for(Attendee a : attendees) {
+			
+			if(a.getAttendanceListID() == listID) {
+				list.add(a);
+			}
+		}
+		
+		return list;
 	}
 	
 	@Override

@@ -1,7 +1,11 @@
 package weddingsite.client;
 
+import weddingsite.client.Site.Pages;
 import weddingsite.shared.IPublisher;
 import weddingsite.shared.ISubscriber;
+import weddingsite.shared.LoginResult;
+
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
@@ -108,6 +112,27 @@ public class HomePageView  extends Composite implements ISubscriber {
 	
 	private void handleAttendanceListClick() {
 		// TODO Auto-generated method stub
+		
+//		RPC.performLoginService.performLogin(model, new AsyncCallback<LoginResult>() {
+//
+//			@Override
+//			public void onFailure(Throwable caught) {
+//				System.err.println("Something went wrong with login...");				
+//			}
+//
+//			@Override
+//			public void onSuccess(LoginResult result) {
+//				if (result.getMessage().equals("")) {
+//					Site.search(Pages.HOMEPAGE);
+//					
+//					
+//					
+//				} else {
+//					loginResult.setMessage(result.getMessage());	
+//				}				
+//			}
+//		
+//		});
 		
 	}
 	

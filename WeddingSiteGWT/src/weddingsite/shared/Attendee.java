@@ -4,11 +4,14 @@ public class Attendee {
 	
 	private int id;
 	private int attendanceListID;
+	private boolean attending;
+	private int numAttending;
 	
 	private String name;
 	
-	public Attendee(String name) {
-		this.name = name;
+	
+	public Attendee() {
+		
 	}
 	
 	public void setName(String name) {
@@ -33,5 +36,29 @@ public class Attendee {
 	
 	public void setAttendanceListID(int attendanceListID) {
 		this.attendanceListID = attendanceListID;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public boolean isAttending() {
+		return attending;
+	}
+
+	public void setAttending(boolean attending) {
+		this.attending = attending;
+	}
+
+	public int getNumAttending() {
+		return numAttending;
+	}
+
+	public void setNumAttending(int numAttending) {
+		this.numAttending = numAttending;
 	}
 }

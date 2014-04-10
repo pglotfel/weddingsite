@@ -12,7 +12,8 @@ public class AttendeeTest {
 	
 	@Before
 	public void setUp() {
-		attendee = new Attendee("Billy Bob");
+		attendee = new Attendee();
+		attendee.setName("Billy Bob");
 		attendee.setID(42);
 		attendee.setAttendanceListID(42);
 	}
