@@ -16,4 +16,10 @@ public interface IDatabase {
 	public ArrayList<Attendee> getAttendanceListAttendees(String name, String accountName);
 	
 	public ArrayList<AttendanceList> getAttendanceLists(String accountName);
+	
+	public boolean addAttendee(String accountName, String attendanceListName, String attendeeName, int numAttending);
+	
+	public boolean modifyAttendee(String accountName, String attendanceListName, String attendeeName, int numAttending);
+	
+	public boolean deleteAttendee(String accountName, String attendanceListName, String attendeeName);
 }

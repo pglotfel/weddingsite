@@ -70,6 +70,83 @@ public class FakeDatabase implements IDatabase  {
 		
 		
 	}
+	
+	
+	@Override
+	public boolean addAttendee(String accountName, String attendanceListName, String attendeeName, int numAttending) {
+		
+		
+		
+		Attendee a = new Attendee();
+		attendees.add(a);
+		
+		int accID = findAccountByAccountName(accountName).getID();
+		
+		for(int i = 0; i < attendanceLists.size(); i++) {
+			
+			if(attendanceLists.get(i).getAccountID() == accID && attendanceLists.get(i).getName().equals(attendanceListName)) {
+				a.setAttendanceListID(attendanceLists.get(i).getID());
+				return true;	
+				
+			}
+		}
+	
+		
+		return false;
+		
+		
+	}
+	
+	@Override
+	public boolean modifyAttendee(String accountName, String attendanceListName, String attendeeName, int numAttending) {
+		
+		int accID = findAccountByAccountName(accountName).getID();
+		int attID = -1;
+		
+		for(int i = 0; i < attendanceLists.size(); i++) {
+			
+			if(attendanceLists.get(i).getAccountID() == accID && attendanceLists.get(i).getName().equals(attendanceListName)) {
+				attID = attendanceLists.get(i).getID();
+			}
+		}
+		
+		for(int i = 0; i < attendees.size(); i++) {
+			
+			if(attendees.get(i).getAttendanceListID() == attID && attendees.get(i).getName().equals(attendeeName)) {
+				attendees.get(i).setNumAttending(numAttending);
+				return true;
+			}
+			
+		}
+		
+		return false;
+		
+	}
+	
+	public boolean deleteAttendee(String accountName, String attendanceListName, String attendeeName) {
+		
+		int accID = findAccountByAccountName(accountName).getID();
+		int attID = -1;
+		
+		for(int i = 0; i < attendanceLists.size(); i++) {
+			
+			if(attendanceLists.get(i).getAccountID() == accID && attendanceLists.get(i).getName().equals(attendanceListName)) {
+				attID = attendanceLists.get(i).getID();
+			}
+		}
+		
+		for(int i = 0; i < attendees.size(); i++) {
+			
+			if(attendees.get(i).getAttendanceListID() == attID && attendees.get(i).getName().equals(attendeeName)) {
+				attendees.remove(i);
+				return true;
+			}
+			
+		}
+		
+		return false;
+		
+	}
 
 	@Override
 	public User getUser(String accountName, String userName) {		
