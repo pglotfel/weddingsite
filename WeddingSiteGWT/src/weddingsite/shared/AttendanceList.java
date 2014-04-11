@@ -1,6 +1,8 @@
 package weddingsite.shared;
 
-public class AttendanceList {
+import java.io.Serializable;
+
+public class AttendanceList implements Serializable{
 	
 	private int id;
 	private int accountID;

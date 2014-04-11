@@ -1,8 +1,7 @@
 package weddingsite.client;
 
+import weddingsite.shared.CurrentUser;
 import weddingsite.shared.Login;
-import weddingsite.shared.User;
-
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.Composite;
@@ -15,7 +14,7 @@ import com.google.gwt.user.client.ui.RootLayoutPanel;
 public class Site implements EntryPoint {	
 	
 	private static Composite currentView;
-	public static User currentUser;
+	public static CurrentUser currentUser = new CurrentUser();
 	
 	public enum Pages {
 		LOGINPAGE,
@@ -53,6 +52,15 @@ public class Site implements EntryPoint {
 			currentView = v2;
 			RootLayoutPanel.get().setWidgetLeftWidth(v2, 10.0, Unit.PX, 500.0, Unit.PX);
 			RootLayoutPanel.get().setWidgetTopHeight(v2, 10.0, Unit.PX, 400.0, Unit.PX);			
+		break;
+		
+		case ATTENDANCELISTPAGE:
+			RootLayoutPanel.get().remove(currentView);
+			AttendanceListView v3 = new AttendanceListView();
+			RootLayoutPanel.get().add(v3);
+			currentView = v3;
+			RootLayoutPanel.get().setWidgetLeftWidth(v3, 10.0, Unit.PX, 500.0, Unit.PX);
+			RootLayoutPanel.get().setWidgetTopHeight(v3, 10.0, Unit.PX, 400.0, Unit.PX);
 		break;
 		
 		default:

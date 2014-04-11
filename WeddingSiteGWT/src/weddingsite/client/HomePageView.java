@@ -111,29 +111,7 @@ public class HomePageView  extends Composite implements ISubscriber {
 	}
 	
 	private void handleAttendanceListClick() {
-		// TODO Auto-generated method stub
-		
-//		RPC.performLoginService.performLogin(model, new AsyncCallback<LoginResult>() {
-//
-//			@Override
-//			public void onFailure(Throwable caught) {
-//				System.err.println("Something went wrong with login...");				
-//			}
-//
-//			@Override
-//			public void onSuccess(LoginResult result) {
-//				if (result.getMessage().equals("")) {
-//					Site.search(Pages.HOMEPAGE);
-//					
-//					
-//					
-//				} else {
-//					loginResult.setMessage(result.getMessage());	
-//				}				
-//			}
-//		
-//		});
-		
+		Site.search(Site.Pages.ATTENDANCELISTPAGE);	
 	}
 	
 	private void handleEventsClick() {

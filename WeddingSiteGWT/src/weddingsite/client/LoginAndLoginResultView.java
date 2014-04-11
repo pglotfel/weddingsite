@@ -120,6 +120,8 @@ public class LoginAndLoginResultView extends Composite implements ISubscriber {
 				@Override
 				public void onSuccess(LoginResult result) {
 					if (result.getMessage().equals("")) {
+						Site.currentUser.setAccountName(accountNameTextBox.getText());
+						Site.currentUser.setUsername(usernameTextBox.getText());
 						Site.search(Pages.HOMEPAGE);
 						
 						

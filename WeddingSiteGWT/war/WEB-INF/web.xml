@@ -17,6 +17,27 @@
   	<url-pattern>/weddingsitegwt/performLogin/*</url-pattern>
   </servlet-mapping>
   
+  <servlet>
+	<servlet-name>PerformAttendanceListQueryImpl</servlet-name>
+	<servlet-class>weddingsite.server.PerformAttendanceListQueryImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>PerformAttendanceListQueryImpl</servlet-name>
+ 	<url-pattern>/weddingsitegwt/performAttendanceListQuery/*</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+	<servlet-name>PerformAttendeeQueryImpl</servlet-name>
+	<servlet-class>weddingsite.server.PerformAttendeeQueryImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>PerformAttendeeQueryImpl</servlet-name>
+ 	<url-pattern>/weddingsitegwt/performAttendeeQuery/*</url-pattern>
+  </servlet-mapping>
+
+  
   <!-- Servlet context listeners -->
   <listener>
     <listener-class>weddingsite.server.DatabaseInitListener</listener-class>

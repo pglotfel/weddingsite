@@ -32,8 +32,7 @@ public class PerformAttendanceListQuery {
 		switch (model.getType()) {
 		
 		case GETATTENDANCELISTS:
-			
-			
+				
 			resultValue = DatabaseProvider.getInstance().getAttendanceLists(model.getWeddingName());
 			break;
 			
