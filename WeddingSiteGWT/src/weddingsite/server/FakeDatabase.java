@@ -27,16 +27,17 @@ public class FakeDatabase implements IDatabase  {
 		
 		String [] accountNames = {"Smith", "Doe", "Harrison"};
 		String [] userNames = {"John", "Paul", "Jones", "Misty", "Harry", "Sally", "Molly", "Steven", "Christopher"};
-		String [] attendeeNames = {"Bob", "Sally", "Me", "You", "Harry", "John", "Paul", "Jones", "Billy"};
+		String [] attendeeNames = {"Bob", "Sally", "Me", "You", "Harry", "John", "Paul", "Jones", "Billy", "hey", "hello", "test", "Fourth",
+				"fifth", "sixth", "ugh", "too many", "so many names", "just want", "to see", "if the", "scroll works", "bobby bob"};
 		String [] attendanceListNames = {"Wedding", "Rehearsal Dinner", "Bridal Shower"};
 		
-		for(int i = 0; i < 9; i++){
+		for(int i = 0; i < attendeeNames.length; i++){
 			Attendee att = new Attendee();
 			att.setName(attendeeNames[i]);
 			att.setAttending(true);
 			att.setNumAttending(2);
-			attendees.add(att);
-			
+			att.setAttendanceListID(0);
+			attendees.add(att);	
 		}
 		
 		for (int i = 0; i < 3; i++) {
@@ -46,7 +47,7 @@ public class FakeDatabase implements IDatabase  {
 			
 			AttendanceList attend = new AttendanceList();
 			attend.setName(attendanceListNames[i]);
-			attend.setAccountID(i);
+			attend.setAccountID(0);
 			attend.setID(i);
 
 			accounts.add(a);
@@ -62,8 +63,6 @@ public class FakeDatabase implements IDatabase  {
 				u.setPassword("abdeFG");
 				u.setUsername(userNames[(i * 3) + j]);
 				users.add(u);
-				
-				attendees.get((i*3 + j)).setAttendanceListID(i);
 			}
 		}
 		

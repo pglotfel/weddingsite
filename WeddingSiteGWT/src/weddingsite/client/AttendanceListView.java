@@ -24,7 +24,7 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 
 public class AttendanceListView  extends Composite implements ISubscriber {
 	
-	private ScrollPanel attandanceListPanel;
+	private ScrollPanel attendanceListPanel;
 	private ScrollPanel attendeePanel;
 	private MenuBar attendanceListMenu;
 	private AttendanceListQueryModel attendanceListModel;
@@ -42,22 +42,25 @@ public class AttendanceListView  extends Composite implements ISubscriber {
 		Label lblAttendanceLists = new Label("Attendance Lists");
 		lblAttendanceLists.setStyleName("attendaceList");
 		layoutPanel.add(lblAttendanceLists);
-		layoutPanel.setWidgetLeftWidth(lblAttendanceLists, 30.0, Unit.PX, 206.0, Unit.PX);
-		layoutPanel.setWidgetTopHeight(lblAttendanceLists, 10.0, Unit.PX, 36.0, Unit.PX);
+		layoutPanel.setWidgetLeftWidth(lblAttendanceLists, 316.0, Unit.PX, 206.0, Unit.PX);
+		layoutPanel.setWidgetTopHeight(lblAttendanceLists, 308.0, Unit.PX, 36.0, Unit.PX);
 		
-		attandanceListPanel = new ScrollPanel();
-		layoutPanel.add(attandanceListPanel);
-		layoutPanel.setWidgetLeftWidth(attandanceListPanel, 30.0, Unit.PX, 231.0, Unit.PX);
-		layoutPanel.setWidgetTopHeight(attandanceListPanel, 52.0, Unit.PX, 506.0, Unit.PX);
+		attendanceListPanel = new ScrollPanel();
+		attendanceListPanel.setAlwaysShowScrollBars(true);
+
+		layoutPanel.add(attendanceListPanel);
+		layoutPanel.setWidgetLeftWidth(attendanceListPanel, 30.0, Unit.PX, 231.0, Unit.PX);
+		layoutPanel.setWidgetTopHeight(attendanceListPanel, 52.0, Unit.PX, 506.0, Unit.PX);
 		
 		attendanceListMenu = new MenuBar(true);
-		attandanceListPanel.setWidget(attendanceListMenu);
+		attendanceListPanel.setWidget(attendanceListMenu);
 		attendanceListMenu.setSize("100%", "100%");
 		
 		attendeePanel = new ScrollPanel();
+		attendeePanel.setAlwaysShowScrollBars(true);
 		layoutPanel.add(attendeePanel);
-		layoutPanel.setWidgetLeftWidth(attendeePanel, 316.0, Unit.PX, 306.0, Unit.PX);
-		layoutPanel.setWidgetTopHeight(attendeePanel, 52.0, Unit.PX, 506.0, Unit.PX);
+		layoutPanel.setWidgetLeftWidth(attendeePanel, 316.0, Unit.PX, 249.0, Unit.PX);
+		layoutPanel.setWidgetTopHeight(attendeePanel, 52.0, Unit.PX, 195.0, Unit.PX);
 		
 		attendeeMenu = new MenuBar(true);
 		attendeePanel.setWidget(attendeeMenu);
