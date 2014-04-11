@@ -33,11 +33,7 @@ public class AttendanceListView  extends Composite implements ISubscriber {
 	
 	public AttendanceListView() {
 		
-		this.setAttendanceListQueryModel(new AttendanceListQueryModel());
-		attendanceListModel.setWeddingName(Site.currentUser.getAccountName());
-		attendanceListModel.setType(ActionType.GETATTENDANCELISTS);
 		
-		this.setAttendeeQueryModel(new AttendeeQueryModel());
 		
 		LayoutPanel layoutPanel = new LayoutPanel();
 		initWidget(layoutPanel);
@@ -58,9 +54,20 @@ public class AttendanceListView  extends Composite implements ISubscriber {
 		attandanceListPanel.setWidget(attendanceListMenu);
 		attendanceListMenu.setSize("100%", "100%");
 		
+		attendeePanel = new ScrollPanel();
+		layoutPanel.add(attendeePanel);
+		layoutPanel.setWidgetLeftWidth(attendeePanel, 316.0, Unit.PX, 306.0, Unit.PX);
+		layoutPanel.setWidgetTopHeight(attendeePanel, 52.0, Unit.PX, 506.0, Unit.PX);
+		
 		attendeeMenu = new MenuBar(true);
 		attendeePanel.setWidget(attendeeMenu);
 		attendeeMenu.setSize("100%", "100%");
+		
+		this.setAttendanceListQueryModel(new AttendanceListQueryModel());
+		attendanceListModel.setWeddingName(Site.currentUser.getAccountName());
+		attendanceListModel.setType(ActionType.GETATTENDANCELISTS);
+		
+		this.setAttendeeQueryModel(new AttendeeQueryModel());
 		
 		RPC.performAttendanceListQueryService.performAttendanceListQuery(attendanceListModel, new AsyncCallback<AttendanceListQueryResult>() {
 
@@ -82,11 +89,6 @@ public class AttendanceListView  extends Composite implements ISubscriber {
 			}
 		
 		});
-
-		attendeePanel = new ScrollPanel();
-		layoutPanel.add(attendeePanel);
-		layoutPanel.setWidgetLeftWidth(attendeePanel, 326.0, Unit.PX, 315.0, Unit.PX);
-		layoutPanel.setWidgetTopHeight(attendeePanel, 52.0, Unit.PX, 506.0, Unit.PX);	
 	}
 
 	public void setAttendanceListQueryModel(AttendanceListQueryModel model) {
