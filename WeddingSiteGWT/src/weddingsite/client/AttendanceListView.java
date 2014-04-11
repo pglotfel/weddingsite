@@ -22,54 +22,54 @@ import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Grid;
 
 public class AttendanceListView  extends Composite implements ISubscriber {
 	
 	private ScrollPanel attendanceListPanel;
-	private ScrollPanel attendeePanel;
 	private MenuBar attendanceListMenu;
 	private AttendanceListQueryModel attendanceListModel;
 	private AttendeeQueryModel attendeeModel;
-	private MenuBar attendeeMenu;
 	private LayoutPanel layoutPanel;
 	private Label attendanceListLabel;
+	private MenuBar attendeeMenu;
 	
 	public AttendanceListView() {
-		
-		
-		
+			
 		layoutPanel = new LayoutPanel();
 		initWidget(layoutPanel);
-		layoutPanel.setSize("641px", "659px");
+		layoutPanel.setSize("558px", "490px");
+		//layoutPanel.setSize("641px", "659px");
 		
 		attendanceListLabel = new Label("Attendance Lists");
 		attendanceListLabel.setStyleName("attendanceList");
 		layoutPanel.add(attendanceListLabel);
 		layoutPanel.setWidgetLeftWidth(attendanceListLabel, 41.0, Unit.PX, 206.0, Unit.PX);
-		layoutPanel.setWidgetTopHeight(attendanceListLabel, 43.0, Unit.PX, 27.0, Unit.PX);
+		layoutPanel.setWidgetTopHeight(attendanceListLabel, 26.0, Unit.PX, 27.0, Unit.PX);
 		
 		attendanceListPanel = new ScrollPanel();
 		attendanceListPanel.setStyleName("attendanceList");
 
 		layoutPanel.add(attendanceListPanel);
-		layoutPanel.setWidgetLeftWidth(attendanceListPanel, 30.0, Unit.PX, 231.0, Unit.PX);
-		layoutPanel.setWidgetTopHeight(attendanceListPanel, 91.0, Unit.PX, 504.0, Unit.PX);
+		layoutPanel.setWidgetLeftWidth(attendanceListPanel, 28.0, Unit.PX, 231.0, Unit.PX);
+		layoutPanel.setWidgetTopHeight(attendanceListPanel, 59.0, Unit.PX, 504.0, Unit.PX);
 		
 		attendanceListPanel.setSize("100", "300");
 		
 		attendanceListMenu = new MenuBar(true);
 		attendanceListPanel.setWidget(attendanceListMenu);
 		attendanceListMenu.setSize("100%", "100%");
+		attendanceListPanel.setSize("100", "300");
 		
-		attendeePanel = new ScrollPanel();
-		layoutPanel.add(attendeePanel);
-		layoutPanel.setWidgetLeftWidth(attendeePanel, 315.0, Unit.PX, 249.0, Unit.PX);
-		layoutPanel.setWidgetTopHeight(attendeePanel, 91.0, Unit.PX, 196.0, Unit.PX);
+		ScrollPanel scrollPanel = new ScrollPanel();
+		layoutPanel.add(scrollPanel);
+		layoutPanel.setWidgetLeftWidth(scrollPanel, 330.0, Unit.PX, 198.0, Unit.PX);
+		layoutPanel.setWidgetTopHeight(scrollPanel, 60.0, Unit.PX, 199.0, Unit.PX);
 		
 		attendeeMenu = new MenuBar(true);
-		attendeePanel.setWidget(attendeeMenu);
-		attendeeMenu.setSize("100%", "100%");
-		attendanceListPanel.setSize("100", "300");
+		scrollPanel.setWidget(attendeeMenu);
+		attendeeMenu.setSize("90%", "90%");
 		
 		this.setAttendanceListQueryModel(new AttendanceListQueryModel());
 		attendanceListModel.setWeddingName(Site.currentUser.getAccountName());
@@ -130,8 +130,7 @@ public class AttendanceListView  extends Composite implements ISubscriber {
 				}
 			}
 		
-		});	
-		
+		});		
 	}
 	
 	
