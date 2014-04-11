@@ -28,9 +28,7 @@ public class AttendanceListView  extends Composite implements ISubscriber {
 	private ScrollPanel attendeePanel;
 	private MenuBar attendanceListMenu;
 	private AttendanceListQueryModel attendanceListModel;
-	private AttendanceListQueryResult attendanceListResult;
 	private AttendeeQueryModel attendeeModel;
-	private AttendeeQueryResult atendeeResult;
 	private MenuBar attendeeMenu;
 	
 	public AttendanceListView() {
