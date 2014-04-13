@@ -20,14 +20,14 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.DockPanel;
 
 public class AttendanceListView  extends Composite implements ISubscriber {
-	
-	private ScrollPanel attendanceListPanel;
 	private MenuBar attendanceListMenu;
 	private AttendanceListQueryModel attendanceListModel;
 	private AttendeeQueryModel attendeeModel;
@@ -39,37 +39,36 @@ public class AttendanceListView  extends Composite implements ISubscriber {
 			
 		layoutPanel = new LayoutPanel();
 		initWidget(layoutPanel);
-		layoutPanel.setSize("558px", "490px");
-		//layoutPanel.setSize("641px", "659px");
+		layoutPanel.setSize("100%", "100%");
+		
+		PageView pageView = new PageView();
+		layoutPanel.add(pageView);
+		layoutPanel.setWidgetTopBottom(pageView, 94.3,  Unit.PCT, 0.0, Unit.PCT);
+		layoutPanel.setWidgetLeftRight(pageView, 0.0, Unit.PCT, 79.4, Unit.PCT);
 		
 		attendanceListLabel = new Label("Attendance Lists");
-		attendanceListLabel.setStyleName("attendanceList");
 		layoutPanel.add(attendanceListLabel);
-		layoutPanel.setWidgetLeftWidth(attendanceListLabel, 41.0, Unit.PX, 206.0, Unit.PX);
-		layoutPanel.setWidgetTopHeight(attendanceListLabel, 26.0, Unit.PX, 27.0, Unit.PX);
+		layoutPanel.setWidgetLeftWidth(attendanceListLabel, 25, Unit.PCT, 50, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(attendanceListLabel, 5, Unit.PCT, 10, Unit.PCT);
+		attendanceListLabel.setStyleName("attendanceList");
 		
-		attendanceListPanel = new ScrollPanel();
-		attendanceListPanel.setStyleName("attendanceList");
-
-		layoutPanel.add(attendanceListPanel);
-		layoutPanel.setWidgetLeftWidth(attendanceListPanel, 28.0, Unit.PX, 231.0, Unit.PX);
-		layoutPanel.setWidgetTopHeight(attendanceListPanel, 59.0, Unit.PX, 504.0, Unit.PX);
-		
-		attendanceListPanel.setSize("100", "300");
+		FlowPanel attendanceListFlowPanel = new FlowPanel();
+		layoutPanel.add(attendanceListFlowPanel);
+		layoutPanel.setWidgetLeftWidth(attendanceListFlowPanel, 15, Unit.PCT, 25, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(attendanceListFlowPanel, 15,  Unit.PCT, 60,  Unit.PCT);
 		
 		attendanceListMenu = new MenuBar(true);
-		attendanceListPanel.setWidget(attendanceListMenu);
+		attendanceListFlowPanel.add(attendanceListMenu);
 		attendanceListMenu.setSize("100%", "100%");
-		attendanceListPanel.setSize("100", "300");
 		
-		ScrollPanel scrollPanel = new ScrollPanel();
-		layoutPanel.add(scrollPanel);
-		layoutPanel.setWidgetLeftWidth(scrollPanel, 330.0, Unit.PX, 198.0, Unit.PX);
-		layoutPanel.setWidgetTopHeight(scrollPanel, 60.0, Unit.PX, 199.0, Unit.PX);
+		FlowPanel attendeeFlowPanel = new FlowPanel();
+		layoutPanel.add(attendeeFlowPanel);
+		layoutPanel.setWidgetLeftWidth(attendeeFlowPanel, 60, Unit.PCT, 25, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(attendeeFlowPanel, 15,  Unit.PCT, 60,  Unit.PCT);
 		
 		attendeeMenu = new MenuBar(true);
-		scrollPanel.setWidget(attendeeMenu);
-		attendeeMenu.setSize("90%", "90%");
+		attendeeFlowPanel.add(attendeeMenu);
+		attendeeMenu.setSize("100%", "100%");
 		
 		this.setAttendanceListQueryModel(new AttendanceListQueryModel());
 		attendanceListModel.setWeddingName(Site.currentUser.getAccountName());
@@ -87,12 +86,15 @@ public class AttendanceListView  extends Composite implements ISubscriber {
 			@Override
 			public void onSuccess(AttendanceListQueryResult result) {
 				for (final AttendanceList a : result.getAttendanceLists()) {
-					attendanceListMenu.addItem(new MenuItem(a.getName(), false, new Command() {
+					
+					MenuItem m = new MenuItem(a.getName(), false, new Command() {
 						public void execute() {			
 							handleAttendanceListClick(a.getName());
 						}
 						
-					}));
+					});				
+					//m.setStyleName("gwt-MenuBar-vertical .gwt-MenuItem");				
+					attendanceListMenu.addItem(m);
 				}
 			}
 		
