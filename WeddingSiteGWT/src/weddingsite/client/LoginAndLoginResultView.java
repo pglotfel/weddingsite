@@ -32,8 +32,9 @@ public class LoginAndLoginResultView extends Composite implements ISubscriber {
 		this.loginResult = new LoginResult();
 		
 		LayoutPanel panel = new LayoutPanel();
+		panel.setStyleName("layout");
 		initWidget(panel);
-		panel.setHeight("428px");
+		panel.setSize("100%", "100%");
 		
 		this.resultView = new LoginResultView();
 		resultView.setModel(loginResult);
@@ -83,6 +84,7 @@ public class LoginAndLoginResultView extends Composite implements ISubscriber {
 		panel.setWidgetLeftWidth(loginButton, 25.0, Unit.PX, 81.0, Unit.PX);
 		panel.setWidgetTopHeight(loginButton, 236.0, Unit.PX, 30.0, Unit.PX);
 				
+		setStyleName("layout");
 	}
 
 	@Override

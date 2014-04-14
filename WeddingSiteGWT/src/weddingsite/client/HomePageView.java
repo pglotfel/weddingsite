@@ -26,7 +26,7 @@ public class HomePageView  extends Composite implements ISubscriber {
 	public HomePageView() {
 		
 		layoutPanel = new LayoutPanel();
-		layoutPanel.setStyleName("menuBar .gwt-MenuBar");
+		layoutPanel.setStyleName("layout");
 		initWidget(layoutPanel);
 		layoutPanel.setSize("100%", "100%");
 		

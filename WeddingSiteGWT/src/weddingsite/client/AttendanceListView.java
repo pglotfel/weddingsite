@@ -38,6 +38,7 @@ public class AttendanceListView  extends Composite implements ISubscriber {
 	public AttendanceListView() {
 			
 		layoutPanel = new LayoutPanel();
+		layoutPanel.setStyleName("layout");
 		initWidget(layoutPanel);
 		layoutPanel.setSize("100%", "100%");
 		
