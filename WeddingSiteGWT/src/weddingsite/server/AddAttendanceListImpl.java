@@ -24,10 +24,9 @@ public class AddAttendanceListImpl extends RemoteServiceServlet implements AddAt
 		
 		EditDataResult result = new EditDataResult();
 		
-		return null;
+		controller.perform(result);
+		
+		return result;
 	}
-
-	
-	
 
 }
