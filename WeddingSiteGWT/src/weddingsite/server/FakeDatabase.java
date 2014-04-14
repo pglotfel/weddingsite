@@ -227,6 +227,18 @@ public class FakeDatabase implements IDatabase  {
 		return list;
 	}
 	
+	public boolean addAttendanceList(String accountName, String attendanceListName) {
+		int accountID = findAccountByAccountName(accountName).getID();
+		
+		AttendanceList a = new AttendanceList();
+		a.setAccountID(accountID);
+		a.setName(attendanceListName);
+		a.setID(attendanceLists.size());
+		attendanceLists.add(a);
+		
+		return true;
+	}
+	
 	@Override
 	public void addUser(String accountName, String userName, String userPassword) {
 		// TODO Auto-generated method stub

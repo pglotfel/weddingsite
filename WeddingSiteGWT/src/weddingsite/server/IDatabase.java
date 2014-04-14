@@ -22,4 +22,6 @@ public interface IDatabase {
 	public boolean modifyAttendee(String accountName, String attendanceListName, String attendeeName, int numAttending);
 	
 	public boolean deleteAttendee(String accountName, String attendanceListName, String attendeeName);
+	
+	public boolean addAttendanceList(String accountName, String attendanceListName);
 }

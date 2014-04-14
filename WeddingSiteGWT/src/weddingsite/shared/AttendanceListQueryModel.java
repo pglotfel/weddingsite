@@ -14,7 +14,9 @@ public class AttendanceListQueryModel extends Publisher implements Serializable 
 	private String weddingName;
 	private ActionType type;
 	
-	
+	public AttendanceListQueryModel() {
+		
+	}
 	public String getWeddingName() {
 		return weddingName;
 	}
