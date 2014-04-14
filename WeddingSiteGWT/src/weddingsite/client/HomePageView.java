@@ -28,12 +28,12 @@ public class HomePageView  extends Composite implements ISubscriber {
 		layoutPanel = new LayoutPanel();
 		layoutPanel.setStyleName("menuBar .gwt-MenuBar");
 		initWidget(layoutPanel);
-		layoutPanel.setSize("447px", "625px");
+		layoutPanel.setSize("100%", "100%");
 		
 		menuBar = new MenuBar(true);
 		layoutPanel.add(menuBar);
-		layoutPanel.setWidgetLeftWidth(menuBar, 50.0, Unit.PX, 202.0, Unit.PX);
-		layoutPanel.setWidgetTopHeight(menuBar, 50.0, Unit.PX, 353.0, Unit.PX);
+		layoutPanel.setWidgetLeftWidth(menuBar, 5, Unit.PCT, 40, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(menuBar, 5, Unit.PCT, 80, Unit.PCT);
 		menuBar.setStyleName("menuBar .gwt-MenuBar");
 		
 		AttendanceLists = new MenuItem("Attendance Lists", false, new Command() {
@@ -44,7 +44,6 @@ public class HomePageView  extends Composite implements ISubscriber {
 			
 		});
 		menuBar.addItem(AttendanceLists);
-		AttendanceLists.setSize("200", "60");
 		
 		eventsItem = new MenuItem("Events", false, new Command() {
 			public void execute() {
@@ -56,7 +55,6 @@ public class HomePageView  extends Composite implements ISubscriber {
 			
 		});
 		menuBar.addItem(eventsItem);
-		eventsItem.setSize("200", "60");
 		
 		calendarItem = new MenuItem("Calendar", false, new Command() {
 			public void execute() {
@@ -65,7 +63,6 @@ public class HomePageView  extends Composite implements ISubscriber {
 			}
 		});
 		menuBar.addItem(calendarItem);
-		calendarItem.setSize("200", "60");
 		
 		mntmAccount = new MenuItem("Account", false, new Command() {
 			public void execute() {
@@ -73,7 +70,6 @@ public class HomePageView  extends Composite implements ISubscriber {
 			}
 		});
 		menuBar.addItem(mntmAccount);
-		mntmAccount.setSize("200", "60");
 		
 		mntmSeatingCharts = new MenuItem("Seating Charts", false, new Command() {
 			public void execute() {
@@ -82,7 +78,6 @@ public class HomePageView  extends Composite implements ISubscriber {
 
 		});
 		menuBar.addItem(mntmSeatingCharts);
-		mntmSeatingCharts.setSize("200", "60");
 
 	}
 	
