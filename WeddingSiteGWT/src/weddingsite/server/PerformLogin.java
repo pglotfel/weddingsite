@@ -31,6 +31,7 @@ public class PerformLogin {
 	public void perform(LoginResult result) {
 		
 		String resultValue = "Failed to login!";
+		boolean AdminVal = false;
 		
 		switch (model.getType()) {
 		
@@ -45,6 +46,7 @@ public class PerformLogin {
 			if(u != null) {
 				if(pw.equals(u.getPassword())) {
 					resultValue = "";
+					AdminVal = u.getIsAdmin();
 				}
 			}
 			break;
@@ -54,6 +56,7 @@ public class PerformLogin {
 		}
 		
 		result.setMessage(resultValue);
+		result.setIsAdmin(AdminVal);
 	}
 
 }

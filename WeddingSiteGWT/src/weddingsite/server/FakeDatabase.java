@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import weddingsite.shared.Account;
 import weddingsite.shared.AttendanceList;
 import weddingsite.shared.Attendee;
+import weddingsite.shared.SeatingChart;
 import weddingsite.shared.User;
 
 public class FakeDatabase implements IDatabase  {
@@ -13,16 +14,17 @@ public class FakeDatabase implements IDatabase  {
 	private ArrayList<User> users;
 	private ArrayList<AttendanceList> attendanceLists;
 	private ArrayList<Attendee>  attendees;
+	private ArrayList<SeatingChart> seatingCharts;
+	
 	
 	
 	public FakeDatabase() {
-		
-		//Init
 		
 		accounts = new ArrayList<Account>();
 		users = new ArrayList<User>();
 		attendees = new ArrayList<Attendee>();
 		attendanceLists = new ArrayList<AttendanceList>();
+		seatingCharts = new ArrayList<SeatingChart>();
 		
 		
 		String [] accountNames = {"Smith", "Doe", "Harrison"};
@@ -51,7 +53,14 @@ public class FakeDatabase implements IDatabase  {
 			attend.setID(i);
 
 			accounts.add(a);
-			attendanceLists.add(attend);	
+			attendanceLists.add(attend);
+			
+			SeatingChart seat = new SeatingChart();
+			seat.setAccountID(0);
+			seat.setID(i);
+			seat.setName(attendanceListNames[i]);
+			
+			seatingCharts.add(seat);
 			
 		}
 		
@@ -67,8 +76,6 @@ public class FakeDatabase implements IDatabase  {
 		}
 		
 		
-		
-		
 	}
 	
 	
@@ -76,22 +83,27 @@ public class FakeDatabase implements IDatabase  {
 	public boolean addAttendee(String accountName, String attendanceListName, String attendeeName, int numAttending) {
 		
 		
-		
 		Attendee a = new Attendee();
-		attendees.add(a);
+		
 		
 		int accID = findAccountByAccountName(accountName).getID();
+		int attID = -1;
 		
 		for(int i = 0; i < attendanceLists.size(); i++) {
-			
-			if(attendanceLists.get(i).getAccountID() == accID && attendanceLists.get(i).getName().equals(attendanceListName)) {
-				a.setAttendanceListID(attendanceLists.get(i).getID());
-				return true;	
 				
+			if(attendanceLists.get(i).getAccountID() == accID && attendanceLists.get(i).getName().equals(attendanceListName)) {
+				attID = attendanceLists.get(i).getID();
+					
 			}
 		}
+			
+		if(attID != -1 && !attendeeExists(attID, attendeeName)) {
+			
+			a.setAttendanceListID(attID);
+			attendees.add(a);
+			return true;
+		}
 	
-		
 		return false;
 		
 		
@@ -102,6 +114,7 @@ public class FakeDatabase implements IDatabase  {
 		
 		int accID = findAccountByAccountName(accountName).getID();
 		int attID = -1;
+		
 		
 		for(int i = 0; i < attendanceLists.size(); i++) {
 			
@@ -124,6 +137,7 @@ public class FakeDatabase implements IDatabase  {
 	}
 	
 	public boolean deleteAttendee(String accountName, String attendanceListName, String attendeeName) {
+	
 		
 		int accID = findAccountByAccountName(accountName).getID();
 		int attID = -1;
@@ -180,6 +194,18 @@ public class FakeDatabase implements IDatabase  {
 		}
 		
 		return null;
+	}
+	
+	private boolean attendeeExists(int attendanceListID, String name) {
+		for(int i = 0; i < attendees.size(); i++) {
+			
+			if(attendees.get(i).getAttendanceListID() == attendanceListID && attendees.get(i).getName() == name) {
+				return true;
+			}
+			
+		}
+		
+		return false;
 	}
 	
 	

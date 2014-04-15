@@ -6,6 +6,7 @@ public class SeatingChart {
 
 	private int id;
 	private int accountID;
+	private String name;
 	
 	public SeatingChart() {
 
@@ -25,5 +26,13 @@ public class SeatingChart {
 	
 	public void setAccountID(int accountID) {
 		this.accountID = accountID;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public String getName() {
+		return name;
 	}
 }

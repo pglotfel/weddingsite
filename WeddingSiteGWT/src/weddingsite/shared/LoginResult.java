@@ -9,6 +9,7 @@ public class LoginResult extends Publisher implements Serializable {
 	}
 	
 	private String message;
+	private boolean isAdmin;
 	
 	public LoginResult() {
 		message = "";
@@ -21,5 +22,13 @@ public class LoginResult extends Publisher implements Serializable {
 	
 	public String getMessage() {
 		return message;
+	}
+	
+	public boolean getIsAdmin() {
+		return isAdmin;
+	}
+	
+	public void setIsAdmin(boolean isAdmin) {
+		this.isAdmin = isAdmin;
 	}
 }
