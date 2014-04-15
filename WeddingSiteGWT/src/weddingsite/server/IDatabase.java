@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import weddingsite.shared.AttendanceList;
 import weddingsite.shared.Attendee;
+import weddingsite.shared.SeatingChart;
 import weddingsite.shared.User;
 
 public interface IDatabase {
@@ -24,4 +25,8 @@ public interface IDatabase {
 	public boolean deleteAttendee(String accountName, String attendanceListName, String attendeeName);
 	
 	public boolean addAttendanceList(String accountName, String attendanceListName);
+	
+	public ArrayList<SeatingChart> getSeatingCharts(String accountName);
+	
+	
 }

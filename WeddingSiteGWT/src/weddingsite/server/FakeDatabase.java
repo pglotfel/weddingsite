@@ -75,6 +75,23 @@ public class FakeDatabase implements IDatabase  {
 			}
 		}
 		
+		users.get(1).setIsAdmin(true);
+		
+	}
+	
+	public ArrayList<SeatingChart> getSeatingCharts(String accountName) {
+		
+		ArrayList<SeatingChart> charts = new ArrayList<SeatingChart>();
+		
+		int acctID = findAccountByAccountName(accountName).getID();
+		
+		for(int i = 0; i < seatingCharts.size(); i++) {
+			if(seatingCharts.get(i).getAccountID() == acctID) {
+				charts.add(seatingCharts.get(i));
+			}
+		}
+		
+		return charts;
 		
 	}
 	
