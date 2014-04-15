@@ -20,7 +20,7 @@ public class PageView extends Composite {
 		
 		layoutPanel = new FlowPanel();
 		initWidget(layoutPanel);
-		layoutPanel.setSize("111px", "33px");
+		layoutPanel.setSize("116px", "32px");
 		
 		backAndHomeMenu = new MenuBar(false);
 		layoutPanel.add(backAndHomeMenu);

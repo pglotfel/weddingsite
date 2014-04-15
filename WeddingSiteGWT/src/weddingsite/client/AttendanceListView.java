@@ -26,26 +26,46 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.DockPanel;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
 
 public class AttendanceListView  extends Composite implements ISubscriber {
+	
+	private enum ViewModes {
+		INIT,
+		NORMAL,
+		EDITING,
+	}
+	
+	//TODO: MAKE SURE ATTENDEE LIST IS VALID + ADD BUTTONS TO GET BACK AND BLAH
+	
 	private MenuBar attendanceListMenu;
 	private AttendanceListQueryModel attendanceListModel;
 	private AttendeeQueryModel attendeeModel;
 	private LayoutPanel layoutPanel;
 	private Label attendanceListLabel;
 	private MenuBar attendeeMenu;
+	private FlowPanel attendeeFlowPanel;
+	private FlowPanel attendanceListFlowPanel;
+	private Button manageAttendeeButton;
 	
 	public AttendanceListView() {
-			
+		
 		layoutPanel = new LayoutPanel();
 		layoutPanel.setStyleName("layout");
 		initWidget(layoutPanel);
-		layoutPanel.setSize("100%", "100%");
-		
+		layoutPanel.setSize("100%", "500px");
+			
+		attendanceListFlowPanel = new FlowPanel();
+		attendanceListMenu = new MenuBar(true);
+		attendanceListFlowPanel.add(attendanceListMenu);
+		attendanceListMenu.setSize("100%", "100%");	
+
 		PageView pageView = new PageView();
 		layoutPanel.add(pageView);
-		layoutPanel.setWidgetTopBottom(pageView, 94.3,  Unit.PCT, 0.0, Unit.PCT);
-		layoutPanel.setWidgetLeftRight(pageView, 0.0, Unit.PCT, 79.4, Unit.PCT);
+		layoutPanel.setWidgetTopBottom(pageView, 93.7,  Unit.PCT, 0.0, Unit.PCT);
+		layoutPanel.setWidgetLeftRight(pageView, 0.0, Unit.PCT, 30, Unit.PCT);
 		
 		attendanceListLabel = new Label("Attendance Lists");
 		layoutPanel.add(attendanceListLabel);
@@ -53,23 +73,26 @@ public class AttendanceListView  extends Composite implements ISubscriber {
 		layoutPanel.setWidgetTopHeight(attendanceListLabel, 5, Unit.PCT, 10, Unit.PCT);
 		attendanceListLabel.setStyleName("attendanceList");
 		
-		FlowPanel attendanceListFlowPanel = new FlowPanel();
-		layoutPanel.add(attendanceListFlowPanel);
-		layoutPanel.setWidgetLeftWidth(attendanceListFlowPanel, 15, Unit.PCT, 25, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(attendanceListFlowPanel, 15,  Unit.PCT, 60,  Unit.PCT);
-		
-		attendanceListMenu = new MenuBar(true);
-		attendanceListFlowPanel.add(attendanceListMenu);
-		attendanceListMenu.setSize("100%", "100%");
-		
-		FlowPanel attendeeFlowPanel = new FlowPanel();
-		layoutPanel.add(attendeeFlowPanel);
-		layoutPanel.setWidgetLeftWidth(attendeeFlowPanel, 60, Unit.PCT, 25, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(attendeeFlowPanel, 15,  Unit.PCT, 60,  Unit.PCT);
-		
+		attendeeFlowPanel = new FlowPanel();	
 		attendeeMenu = new MenuBar(true);
 		attendeeFlowPanel.add(attendeeMenu);
 		attendeeMenu.setSize("100%", "100%");
+		
+		manageAttendeeButton = new Button("New button");
+		manageAttendeeButton.setText("Manage Parties");
+		manageAttendeeButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				switchViewMode(ViewModes.EDITING);
+			}
+		});
+		
+		//TEST
+		//addManageAttendeeButtonToView();
+		//addAttendanceListToView();
+		//addAttendeeListToViewNormal();
+		//TEST
+		
+		switchViewMode(ViewModes.INIT);
 		
 		this.setAttendanceListQueryModel(new AttendanceListQueryModel());
 		attendanceListModel.setWeddingName(Site.currentUser.getAccountName());
@@ -94,14 +117,50 @@ public class AttendanceListView  extends Composite implements ISubscriber {
 						}
 						
 					});				
-					//m.setStyleName("gwt-MenuBar-vertical .gwt-MenuItem");				
+					
 					attendanceListMenu.addItem(m);
 				}
 			}
 		
 		});
 	}
-
+	
+	public void addAttendanceListToView() {		
+		layoutPanel.add(attendanceListFlowPanel);
+		layoutPanel.setWidgetLeftWidth(attendanceListFlowPanel, 15, Unit.PCT, 25, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(attendanceListFlowPanel, 15,  Unit.PCT, 60,  Unit.PCT);		
+	}
+	
+	public void removeAttendanceListFromView() {
+		layoutPanel.remove(attendanceListFlowPanel);
+	}
+	
+	public void addAttendeeListToViewNormal() {
+		layoutPanel.add(attendeeFlowPanel);
+		layoutPanel.setWidgetLeftWidth(attendeeFlowPanel, 60, Unit.PCT, 25, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(attendeeFlowPanel, 15,  Unit.PCT, 60,  Unit.PCT);
+	}
+	
+	public void removeAttendeeListFromView() {
+		layoutPanel.remove(attendeeFlowPanel);
+	}
+	
+	public void addManageAttendeeButtonToView() {
+		layoutPanel.add(manageAttendeeButton);
+		layoutPanel.setWidgetLeftWidth(manageAttendeeButton, 65.5, Unit.PCT, 15, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(manageAttendeeButton, 80, Unit.PCT, 8, Unit.PCT);
+	}
+	
+	public void addAttendeeListToViewEditing() {
+		layoutPanel.add(attendeeFlowPanel);
+		layoutPanel.setWidgetLeftWidth(attendeeFlowPanel, 0, Unit.PCT, 25, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(attendeeFlowPanel, 15,  Unit.PCT, 60,  Unit.PCT);
+	}
+	
+	public void removeManageAttendeeButtonFromView() {
+		layoutPanel.remove(manageAttendeeButton);
+	}
+	
 	public void setAttendanceListQueryModel(AttendanceListQueryModel model) {
 		this.attendanceListModel = model;
 		this.attendanceListModel.subscribe(Login.Events.VALUE_OR_ACTION_TYPE_CHANGED, this);
@@ -134,6 +193,42 @@ public class AttendanceListView  extends Composite implements ISubscriber {
 			}
 		
 		});		
+	}
+	
+	public void switchViewMode(ViewModes v) {
+		switch(v) {
+		
+			case INIT:
+				addAttendanceListToView();
+				addAttendeeListToViewNormal();
+				
+				if(Site.currentUser.getIsAdmin()) {
+					addManageAttendeeButtonToView();
+				}
+			break;
+		
+			case NORMAL:
+				removeAttendeeListFromView();
+				addAttendanceListToView();
+				addAttendeeListToViewNormal();	
+				if(Site.currentUser.getIsAdmin()) {
+					addManageAttendeeButtonToView();
+				}
+			break;
+			
+			case EDITING:
+				if(Site.currentUser.getIsAdmin()) {
+					removeManageAttendeeButtonFromView();
+				}
+				removeAttendanceListFromView();
+				removeAttendeeListFromView();
+				addAttendeeListToViewEditing();
+			break;
+			
+			default:
+				throw new UnsupportedOperationException("Unknown operation type: " + v);
+		
+		}
 	}
 	
 	
