@@ -49,6 +49,9 @@ public class AttendanceListView  extends Composite implements ISubscriber {
 	private FlowPanel attendeeFlowPanel;
 	private FlowPanel attendanceListFlowPanel;
 	private Button manageAttendeeButton;
+	private boolean isValidAttendanceList;
+	private EditAttendeeView editAttendeeView;
+	private ViewModes currentView;
 	
 	public AttendanceListView() {
 		
@@ -56,6 +59,15 @@ public class AttendanceListView  extends Composite implements ISubscriber {
 		layoutPanel.setStyleName("layout");
 		initWidget(layoutPanel);
 		layoutPanel.setSize("100%", "500px");
+		
+		editAttendeeView = new EditAttendeeView();
+		editAttendeeView.getAttendeeLabel().setSize("58px", "18px");
+		
+		editAttendeeView.getCloseButton().addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				switchViewMode(ViewModes.NORMAL);
+			}
+		});		
 			
 		attendanceListFlowPanel = new FlowPanel();
 		attendanceListMenu = new MenuBar(true);
@@ -77,12 +89,16 @@ public class AttendanceListView  extends Composite implements ISubscriber {
 		attendeeMenu = new MenuBar(true);
 		attendeeFlowPanel.add(attendeeMenu);
 		attendeeMenu.setSize("100%", "100%");
+		isValidAttendanceList = false;
 		
 		manageAttendeeButton = new Button("New button");
 		manageAttendeeButton.setText("Manage Parties");
 		manageAttendeeButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				switchViewMode(ViewModes.EDITING);
+				if(isValidAttendanceList) {
+					
+					switchViewMode(ViewModes.EDITING);
+				}
 			}
 		});
 		
@@ -114,8 +130,7 @@ public class AttendanceListView  extends Composite implements ISubscriber {
 					MenuItem m = new MenuItem(a.getName(), false, new Command() {
 						public void execute() {			
 							handleAttendanceListClick(a.getName());
-						}
-						
+						}				
 					});				
 					
 					attendanceListMenu.addItem(m);
@@ -123,6 +138,14 @@ public class AttendanceListView  extends Composite implements ISubscriber {
 			}
 		
 		});
+	}
+	
+	public void addEditAttendeeToView() {
+		layoutPanel.add(editAttendeeView);
+	}
+	
+	public void removeEditAttendeeFromView() {
+		layoutPanel.remove(editAttendeeView);
 	}
 	
 	public void addAttendanceListToView() {		
@@ -188,11 +211,42 @@ public class AttendanceListView  extends Composite implements ISubscriber {
 			public void onSuccess(AttendeeQueryResult result) {
 				attendeeMenu.clearItems();
 				for (final Attendee a : result.getAttendees()) {
-					attendeeMenu.addItem(new MenuItem("Party: " + a.getName() + " Attending: " + a.getNumAttending(), false, (Command) null));
+					attendeeMenu.addItem(new MenuItem("Party: " + a.getName() + " Attending: " + a.getNumAttending(), false, new Command() {
+						public void execute() {			
+							handleAttendeeListClick(a.getName());
+						}				
+					}));				
 				}
-			}
-		
+				
+				if(result.getAttendees().size() == 0) {
+					attendeeMenu.addItem(new MenuItem("There is currently no one registered to this attendance list", false, (Command) null));
+					isValidAttendanceList = false;
+				} else {
+					isValidAttendanceList = true;
+				}
+			}		
 		});		
+	}
+	
+	public void handleAttendeeListClick(String name) {
+		if(currentView == ViewModes.EDITING) {
+			if(layoutPanel.getWidgetIndex(editAttendeeView) == -1) {
+				addEditAttendeeToView();
+			}
+			
+			//TODO: Add rpc call for editing and deleting
+			editAttendeeView.getAttendeeLabel().setText("Party Name: \n" + name);
+			
+			editAttendeeView.getNumberAttendingTextBox();
+			
+			editAttendeeView.getSubmitChangesButton().addClickHandler(new ClickHandler() {			
+				public void onClick(ClickEvent event) {
+					if(isValidAttendanceList) {					
+						removeEditAttendeeFromView();
+					}
+				}
+			});
+		}
 	}
 	
 	public void switchViewMode(ViewModes v) {
@@ -205,6 +259,7 @@ public class AttendanceListView  extends Composite implements ISubscriber {
 				if(Site.currentUser.getIsAdmin()) {
 					addManageAttendeeButtonToView();
 				}
+				currentView = ViewModes.INIT;
 			break;
 		
 			case NORMAL:
@@ -214,6 +269,7 @@ public class AttendanceListView  extends Composite implements ISubscriber {
 				if(Site.currentUser.getIsAdmin()) {
 					addManageAttendeeButtonToView();
 				}
+				currentView = ViewModes.NORMAL;
 			break;
 			
 			case EDITING:
@@ -223,6 +279,7 @@ public class AttendanceListView  extends Composite implements ISubscriber {
 				removeAttendanceListFromView();
 				removeAttendeeListFromView();
 				addAttendeeListToViewEditing();
+				currentView = ViewModes.EDITING;
 			break;
 			
 			default:
