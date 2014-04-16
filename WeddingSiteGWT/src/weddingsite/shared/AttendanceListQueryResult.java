@@ -28,8 +28,5 @@ public class AttendanceListQueryResult extends Publisher implements Serializable
 		notifySubscribers(Events.VALUE_CHANGED, attendanceLists);
 	}
 	
-	
-	
-	
 
 }
