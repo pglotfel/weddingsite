@@ -8,6 +8,8 @@ import weddingsite.shared.AttendanceListQueryResult;
 import weddingsite.shared.Attendee;
 import weddingsite.shared.AttendeeQueryModel;
 import weddingsite.shared.AttendeeQueryResult;
+import weddingsite.shared.EditAttendeeModel;
+import weddingsite.shared.EditDataResult;
 import weddingsite.shared.IPublisher;
 import weddingsite.shared.ISubscriber;
 import weddingsite.shared.Login;
@@ -38,8 +40,6 @@ public class AttendanceListView  extends Composite implements ISubscriber {
 		EDITING,
 	}
 	
-	//TODO: MAKE SURE ATTENDEE LIST IS VALID + ADD BUTTONS TO GET BACK AND BLAH
-	
 	private MenuBar attendanceListMenu;
 	private AttendanceListQueryModel attendanceListModel;
 	private AttendeeQueryModel attendeeModel;
@@ -50,10 +50,14 @@ public class AttendanceListView  extends Composite implements ISubscriber {
 	private FlowPanel attendanceListFlowPanel;
 	private Button manageAttendeeButton;
 	private boolean isValidAttendanceList;
+	private EditAttendeeModel editAttendeeModel;
 	private EditAttendeeView editAttendeeView;
 	private ViewModes currentView;
 	
 	public AttendanceListView() {
+		
+		editAttendeeModel = new EditAttendeeModel();
+		editAttendeeModel.setAccountName(Site.currentUser.getAccountName());
 		
 		layoutPanel = new LayoutPanel();
 		layoutPanel.setStyleName("layout");
@@ -61,11 +65,11 @@ public class AttendanceListView  extends Composite implements ISubscriber {
 		layoutPanel.setSize("100%", "500px");
 		
 		editAttendeeView = new EditAttendeeView();
-		editAttendeeView.getAttendeeLabel().setSize("58px", "18px");
 		
 		editAttendeeView.getCloseButton().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				switchViewMode(ViewModes.NORMAL);
+				removeEditAttendeeFromView();
 			}
 		});		
 			
@@ -95,8 +99,7 @@ public class AttendanceListView  extends Composite implements ISubscriber {
 		manageAttendeeButton.setText("Manage Parties");
 		manageAttendeeButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				if(isValidAttendanceList) {
-					
+				if(isValidAttendanceList) {					
 					switchViewMode(ViewModes.EDITING);
 				}
 			}
@@ -142,6 +145,8 @@ public class AttendanceListView  extends Composite implements ISubscriber {
 	
 	public void addEditAttendeeToView() {
 		layoutPanel.add(editAttendeeView);
+		layoutPanel.setWidgetLeftWidth(editAttendeeView, 50, Unit.PCT, 80, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(editAttendeeView, 15,  Unit.PCT, 60,  Unit.PCT);	
 	}
 	
 	public void removeEditAttendeeFromView() {
@@ -194,8 +199,7 @@ public class AttendanceListView  extends Composite implements ISubscriber {
 		this.attendeeModel.subscribe(Login.Events.VALUE_OR_ACTION_TYPE_CHANGED, this);
 	}
 	
-	
-	public void handleAttendanceListClick(String attendanceListName) {
+	public void handleAttendanceListClick(final String attendanceListName) {
 		attendeeModel.setAccountName(Site.currentUser.getAccountName());
 		attendeeModel.setAttendanceListName(attendanceListName);
 		attendeeModel.setType(ActionType.GETATTENDEES);
@@ -213,7 +217,8 @@ public class AttendanceListView  extends Composite implements ISubscriber {
 				for (final Attendee a : result.getAttendees()) {
 					attendeeMenu.addItem(new MenuItem("Party: " + a.getName() + " Attending: " + a.getNumAttending(), false, new Command() {
 						public void execute() {			
-							handleAttendeeListClick(a.getName());
+							handleAttendeeListClick(a);
+							editAttendeeModel.setAttendanceListName(attendanceListName);
 						}				
 					}));				
 				}
@@ -228,24 +233,78 @@ public class AttendanceListView  extends Composite implements ISubscriber {
 		});		
 	}
 	
-	public void handleAttendeeListClick(String name) {
+	public void handleAttendeeListClick(final Attendee a) {
+		
 		if(currentView == ViewModes.EDITING) {
 			if(layoutPanel.getWidgetIndex(editAttendeeView) == -1) {
 				addEditAttendeeToView();
 			}
+						
+			editAttendeeView.getAttendeeLabel().setText("Party Name: " + a.getName());			
 			
-			//TODO: Add rpc call for editing and deleting
-			editAttendeeView.getAttendeeLabel().setText("Party Name: \n" + name);
+			editAttendeeView.getNumberAttendingTextBox().setText("" + a.getNumAttending());;
 			
-			editAttendeeView.getNumberAttendingTextBox();
+			editAttendeeModel.setName(a.getName());
+			editAttendeeModel.setNumAttending(a.getNumAttending());
 			
 			editAttendeeView.getSubmitChangesButton().addClickHandler(new ClickHandler() {			
 				public void onClick(ClickEvent event) {
-					if(isValidAttendanceList) {					
+					if(isValidAttendanceList) {				
+						
+						editAttendeeModel.setType(ActionType.EDITATTENDEE);
+						editAttendeeModel.setNumAttending(Integer.parseInt(editAttendeeView.getNumberAttendingTextBox().getText()));
+						
+						RPC.performEditAttendeeService.PerformEditAttendee(editAttendeeModel, new AsyncCallback<EditDataResult>() {
+
+							@Override
+							public void onFailure(Throwable caught) {
+								
+							}
+
+							@Override
+							public void onSuccess(EditDataResult result) {		
+								if(result.getResult()) {
+									handleAttendanceListClick(editAttendeeModel.getAttendanceListName());
+								}
+							}							
+						});
+												
 						removeEditAttendeeFromView();
 					}
 				}
 			});
+			
+			editAttendeeView.getRemoveButton().addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					
+					editAttendeeModel.setType(ActionType.DELETEATTENDEE);
+					
+					if(isValidAttendanceList) {
+						
+						RPC.performEditAttendeeService.PerformEditAttendee(editAttendeeModel, new AsyncCallback<EditDataResult>() {
+
+							@Override
+							public void onFailure(Throwable caught) {
+								
+							}
+
+							@Override
+							public void onSuccess(EditDataResult result) {
+								if(result.getResult()) {
+									handleAttendanceListClick(editAttendeeModel.getAttendanceListName());
+								}							
+							}
+							
+						});
+						
+						
+						removeEditAttendeeFromView();
+					}
+				}			
+			});
+			
+			
 		}
 	}
 	

@@ -31,6 +31,16 @@
   	<servlet-name>PerformAttendeeQueryImpl</servlet-name>
  	<url-pattern>/weddingsitegwt/performAttendeeQuery/*</url-pattern>
   </servlet-mapping>
+  
+    <servlet>
+	<servlet-name>PerformEditAttendeeImpl</servlet-name>
+	<servlet-class>weddingsite.server.PerformEditAttendeeImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>PerformEditAttendeeImpl</servlet-name>
+ 	<url-pattern>/weddingsitegwt/performEditAttendee/*</url-pattern>
+  </servlet-mapping>
 
   
   <!-- Servlet context listeners -->

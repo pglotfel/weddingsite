@@ -22,5 +22,8 @@ public class EditDataResult extends Publisher implements Serializable{
 		this.result = result;
 	}
 	
+	public boolean getResult() {
+		return result;
+	}
 
 }

@@ -14,6 +14,7 @@ public class EditAttendeeView extends Composite {
 	private Button closeButton;
 	private Label numberAttendingLabel;
 	private Button submitChanges;
+	private Button deleteAttendeeButton;
 	
 	public EditAttendeeView() {
 		
@@ -39,7 +40,7 @@ public class EditAttendeeView extends Composite {
 		
 		numberAttendingLabel = new Label("Number Attending");
 		layoutPanel.add(numberAttendingLabel);
-		layoutPanel.setWidgetLeftWidth(numberAttendingLabel, 85.0, Unit.PX, 115.0, Unit.PX);
+		layoutPanel.setWidgetLeftWidth(numberAttendingLabel, 85.0, Unit.PX, 173.0, Unit.PX);
 		layoutPanel.setWidgetTopHeight(numberAttendingLabel, 111.0, Unit.PX, 18.0, Unit.PX);
 		
 		attendeeLabel = new Label("");
@@ -47,7 +48,7 @@ public class EditAttendeeView extends Composite {
 		layoutPanel.setWidgetLeftWidth(attendeeLabel, 85.0, Unit.PX, 128.0, Unit.PX);
 		layoutPanel.setWidgetTopHeight(attendeeLabel, 72.0, Unit.PX, 33.0, Unit.PX);
 		
-		Button deleteAttendeeButton = new Button("New button");
+		deleteAttendeeButton = new Button("New button");
 		deleteAttendeeButton.setText("Remove Party");
 		layoutPanel.add(deleteAttendeeButton);
 		layoutPanel.setWidgetLeftWidth(deleteAttendeeButton, 132.0, Unit.PX, 81.0, Unit.PX);
@@ -60,6 +61,10 @@ public class EditAttendeeView extends Composite {
 	
 	public Button getCloseButton() {
 		return closeButton;
+	}
+	
+	public Button getRemoveButton() {
+		return deleteAttendeeButton;
 	}
 	
 	public TextBox getNumberAttendingTextBox() {
