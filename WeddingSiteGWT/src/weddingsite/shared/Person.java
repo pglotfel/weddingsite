@@ -1,6 +1,8 @@
 package weddingsite.shared;
 
-public class Person {
+import java.io.Serializable;
+
+public class Person implements Serializable {
 	
 	private int id;
 	private int tableID;

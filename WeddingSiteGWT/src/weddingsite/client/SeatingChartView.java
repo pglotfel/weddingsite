@@ -7,6 +7,7 @@ import weddingsite.shared.GetPeopleAtTableModel;
 import weddingsite.shared.GetPeopleAtTableResult;
 import weddingsite.shared.GetTablesModel;
 import weddingsite.shared.GetTablesResult;
+import weddingsite.shared.Person;
 import weddingsite.shared.SeatingChart;
 import weddingsite.shared.SeatingChartQueryModel;
 import weddingsite.shared.SeatingChartQueryResult;
@@ -75,16 +76,29 @@ public class SeatingChartView extends Composite {
 			public void onSuccess(SeatingChartQueryResult result) {
 				
 				seatingChartMenu.clearItems();
-				for(final SeatingChart s : result.getSeatingCharts()) {
-					seatingChartMenu.addItem(new MenuItem(s.getName(), false, new Command() {
-						@Override
-						public void execute() {
-							//RPC call to add tables							
-							handleSeatingChartClick(s);
-						}					
-					}));
-				}
+				tableMenu.clearItems();
+				peopleMenu.clearItems();
 				
+				ArrayList<SeatingChart> seatingCharts = result.getSeatingCharts();
+				
+				if(seatingCharts.isEmpty()) {
+					
+					seatingChartMenu.addItem(new MenuItem("There are currently no seating charts", false, (Command) null));
+					
+				} else {
+				
+					for(final SeatingChart s : result.getSeatingCharts()) {					
+						
+						seatingChartMenu.addItem(new MenuItem(s.getName(), false, new Command() {
+							@Override
+							public void execute() {
+								//RPC call to add tables							
+								handleSeatingChartClick(s);
+							}					
+						}));
+					}
+					
+				}
 			}
 			
 		});
@@ -127,16 +141,16 @@ public class SeatingChartView extends Composite {
 			public void onSuccess(GetTablesResult result) {
 				
 				ArrayList<Table> tables = result.getTables();
-				tableMenu.clearItems();			
+				tableMenu.clearItems();	
+				peopleMenu.clearItems();
 				
-				if (tables == null) {
+				if (tables.isEmpty()) {
 					tableMenu.addItem(new MenuItem("There are currently no tables in this list", false, (Command) null));
 				} else {
 					for (final Table t : tables) {
 						tableMenu.addItem(new MenuItem(t.getName(), false, new Command() {
 							@Override
 							public void execute() {
-								//RPC call to add tables
 								handleTableClick(seatingChart.getName(), t);
 							}					
 						}));
@@ -165,6 +179,16 @@ public class SeatingChartView extends Composite {
 			@Override
 			public void onSuccess(GetPeopleAtTableResult result) {
 				
+				ArrayList<Person> people = result.getPeople();
+				peopleMenu.clearItems();
+				
+				if(people.isEmpty()) {
+					peopleMenu.addItem(new MenuItem("No people are currently at this table", false, (Command) null));
+				} else {
+					for (final Person p : people) {
+						peopleMenu.addItem(new MenuItem(p.getName(), false, (Command) null));
+					}
+				}
 				
 			}
 			

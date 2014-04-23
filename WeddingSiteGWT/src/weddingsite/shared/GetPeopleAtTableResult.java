@@ -1,8 +1,9 @@
 package weddingsite.shared;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class GetPeopleAtTableResult {
+public class GetPeopleAtTableResult implements Serializable {
 	public enum Events {
 		VALUE_CHANGED
 	}

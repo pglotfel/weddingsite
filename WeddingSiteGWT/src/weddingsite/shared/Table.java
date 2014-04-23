@@ -1,8 +1,10 @@
 package weddingsite.shared;
 
+import java.io.Serializable;
 
 
-public class Table {
+
+public class Table implements Serializable {
 	
 	
 	private int id;
