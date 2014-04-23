@@ -1,10 +1,11 @@
 package weddingsite.tests;
 
 import static org.junit.Assert.*;
+
 import org.junit.Before;
 import org.junit.Test;
 
-import weddingsite.shared.Attendee;
+import weddingsite.model.Attendee;
 
 public class AttendeeTest {
 	

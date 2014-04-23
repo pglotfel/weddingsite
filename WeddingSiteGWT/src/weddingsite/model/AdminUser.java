@@ -1,4 +1,5 @@
-package weddingsite.shared;
+package weddingsite.model;
+
 
 public class AdminUser extends User {
 

@@ -2,8 +2,8 @@ package weddingsite.server;
 
 import java.util.ArrayList;
 
+import weddingsite.model.Attendee;
 import weddingsite.shared.ActionType;
-import weddingsite.shared.Attendee;
 import weddingsite.shared.AttendeeQueryModel;
 import weddingsite.shared.AttendeeQueryResult;
 

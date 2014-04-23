@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 
-import weddingsite.shared.Activity;
-import weddingsite.shared.Notification;
+import weddingsite.model.Activity;
+import weddingsite.model.Notification;
 
 public class ActivityTest {
 	

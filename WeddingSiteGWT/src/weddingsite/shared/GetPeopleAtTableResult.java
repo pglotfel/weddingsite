@@ -2,6 +2,8 @@ package weddingsite.shared;
 
 import java.util.ArrayList;
 
+import weddingsite.model.Person;
+
 public class GetPeopleAtTableResult {
 	public enum Events {
 		VALUE_CHANGED

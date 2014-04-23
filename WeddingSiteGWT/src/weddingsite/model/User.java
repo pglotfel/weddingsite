@@ -1,4 +1,4 @@
-package weddingsite.shared;
+package weddingsite.model;
 
 public class User {
 	

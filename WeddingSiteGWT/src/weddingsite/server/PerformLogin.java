@@ -1,9 +1,9 @@
 package weddingsite.server;
 
+import weddingsite.model.User;
 import weddingsite.shared.ActionType;
 import weddingsite.shared.Login;
 import weddingsite.shared.LoginResult;
-import weddingsite.shared.User;
 
 public class PerformLogin {
 	private Login model;

@@ -3,6 +3,8 @@ package weddingsite.shared;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import weddingsite.model.Table;
+
 public class getTablesResult extends Publisher implements Serializable {
 	
 	public enum Events {

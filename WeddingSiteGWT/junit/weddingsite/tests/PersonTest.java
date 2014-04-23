@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import weddingsite.shared.Person;
+import weddingsite.model.Person;
 
 public class PersonTest {
 	

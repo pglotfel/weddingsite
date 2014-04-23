@@ -1,11 +1,11 @@
 package weddingsite.client;
 
 
+import weddingsite.model.Attendee;
 import weddingsite.shared.ActionType;
 import weddingsite.shared.AttendanceList;
 import weddingsite.shared.AttendanceListQueryModel;
 import weddingsite.shared.AttendanceListQueryResult;
-import weddingsite.shared.Attendee;
 import weddingsite.shared.AttendeeQueryModel;
 import weddingsite.shared.AttendeeQueryResult;
 import weddingsite.shared.EditAttendeeModel;
@@ -13,6 +13,7 @@ import weddingsite.shared.EditDataResult;
 import weddingsite.shared.IPublisher;
 import weddingsite.shared.ISubscriber;
 import weddingsite.shared.Login;
+
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.rpc.AsyncCallback;

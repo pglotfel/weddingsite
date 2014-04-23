@@ -3,6 +3,8 @@ package weddingsite.shared;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import weddingsite.model.Attendee;
+
 public class AttendeeQueryResult extends Publisher implements Serializable  {
 	
 	public enum Events {
