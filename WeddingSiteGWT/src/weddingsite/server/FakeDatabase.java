@@ -6,6 +6,7 @@ import weddingsite.shared.Account;
 import weddingsite.shared.AttendanceList;
 import weddingsite.shared.Attendee;
 import weddingsite.shared.SeatingChart;
+import weddingsite.shared.Table;
 import weddingsite.shared.User;
 
 public class FakeDatabase implements IDatabase  {
@@ -15,7 +16,7 @@ public class FakeDatabase implements IDatabase  {
 	private ArrayList<AttendanceList> attendanceLists;
 	private ArrayList<Attendee>  attendees;
 	private ArrayList<SeatingChart> seatingCharts;
-	
+	private ArrayList<Table> tables;
 	
 	
 	public FakeDatabase() {
@@ -32,6 +33,7 @@ public class FakeDatabase implements IDatabase  {
 		String [] attendeeNames = {"Bob", "Sally", "Me", "You", "Harry", "John", "Paul", "Jones", "Billy", "hey", "hello", "test", "Fourth",
 				"fifth", "sixth", "ugh", "too many", "so many names", "just want", "to see", "if the", "scroll works", "bobby bob"};
 		String [] attendanceListNames = {"Wedding", "Rehearsal Dinner", "Bridal Shower"};
+		String [] tableNames = {"1","2","3","4","4","6","7","8","9"};
 		
 		for(int i = 0; i < attendeeNames.length; i++){
 			Attendee att = new Attendee();
@@ -40,6 +42,13 @@ public class FakeDatabase implements IDatabase  {
 			att.setNumAttending(2);
 			att.setAttendanceListID(0);
 			attendees.add(att);	
+		}
+		
+		for(int i = 0; i < tableNames.length; i++) {
+			Table t = new Table();
+			t.setName(tableNames[i]);
+			t.setSeatingChartID(0);
+			tables.add(t);
 		}
 		
 		for (int i = 0; i < 3; i++) {
@@ -92,6 +101,24 @@ public class FakeDatabase implements IDatabase  {
 		}
 		
 		return charts;
+		
+	}
+	
+	@Override
+	public ArrayList<Table> getTables(String accountName, String seatingChartName) {
+		
+		Account a = findAccountByAccountName(accountName);
+		int seatingChartId = getSeatingChartId(a.getID(), seatingChartName);
+		ArrayList<Table> result = new ArrayList<Table>();
+		
+		for(int i = 0; i < tables.size(); i++) {
+			if(tables.get(i).getSeatingChartID() == seatingChartId) {
+				result.add(tables.get(i));
+			}
+		}
+		
+		return tables;
+		
 		
 	}
 	
@@ -294,5 +321,15 @@ public class FakeDatabase implements IDatabase  {
 		// TODO Auto-generated method stub
 		
 	}	
+	
+	private int getSeatingChartId(int accountId, String name) {
+		for(int i = 0; i < seatingCharts.size(); i++) {
+			if(seatingCharts.get(i).getName().equals(name) && seatingCharts.get(i).getAccountID() == accountId) {
+				return seatingCharts.get(i).getID();
+			}
+		}
+		
+		return -1;
+	}
 	
 }

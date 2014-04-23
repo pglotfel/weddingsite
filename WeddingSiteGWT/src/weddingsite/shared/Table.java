@@ -8,6 +8,7 @@ public class Table {
 	private int id;
 	private int seatingChartID;
 	private int numSeats;
+	private String name;
 	
 	public Table() {
 		
@@ -36,5 +37,13 @@ public class Table {
 	
 	public int getNumSeats() {
 		return numSeats;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
 	}
 }
