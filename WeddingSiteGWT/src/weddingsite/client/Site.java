@@ -26,6 +26,7 @@ public class Site implements EntryPoint {
 		USERPAGE,
 		ATTENDANCELISTPAGE,
 		BACK,
+		SEATINGCHARTPAGE,
 	}
 	
 	/**
@@ -71,6 +72,17 @@ public class Site implements EntryPoint {
 			RootLayoutPanel.get().setWidgetLeftWidth(v3, 0, Unit.PCT, 100.0, Unit.PCT);
 			RootLayoutPanel.get().setWidgetTopHeight(v3, 0, Unit.PCT, 100.0, Unit.PCT);		
 			currentPage = Pages.ATTENDANCELISTPAGE;
+		break;
+		
+		case SEATINGCHARTPAGE:
+			viewHistory.push(currentPage);
+			RootLayoutPanel.get().remove(currentView);
+			SeatingChartView v4 = new SeatingChartView();
+			RootLayoutPanel.get().add(v4);
+			currentView = v4;
+			RootLayoutPanel.get().setWidgetLeftWidth(v4, 0, Unit.PCT, 100.0, Unit.PCT);
+			RootLayoutPanel.get().setWidgetTopHeight(v4, 0, Unit.PCT, 100.0, Unit.PCT);	
+			currentPage = Pages.SEATINGCHARTPAGE;
 		break;
 		
 		case BACK:

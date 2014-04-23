@@ -2,9 +2,9 @@ package weddingsite.server;
 
 import java.util.ArrayList;
 
-import weddingsite.model.Person;
 import weddingsite.shared.GetPeopleAtTableModel;
 import weddingsite.shared.GetPeopleAtTableResult;
+import weddingsite.shared.Person;
 
 public class GetPeopleAtTableQuery {
 	

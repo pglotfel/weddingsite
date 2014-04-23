@@ -3,7 +3,6 @@ package weddingsite.shared;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import weddingsite.model.SeatingChart;
 import weddingsite.shared.AttendanceListQueryResult.Events;
 
 public class SeatingChartQueryResult extends Publisher implements Serializable{

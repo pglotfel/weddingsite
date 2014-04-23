@@ -2,13 +2,13 @@ package weddingsite.server;
 
 import java.util.ArrayList;
 
-import weddingsite.model.Account;
-import weddingsite.model.Attendee;
-import weddingsite.model.Person;
-import weddingsite.model.SeatingChart;
-import weddingsite.model.Table;
-import weddingsite.model.User;
+import weddingsite.shared.Account;
 import weddingsite.shared.AttendanceList;
+import weddingsite.shared.Attendee;
+import weddingsite.shared.Person;
+import weddingsite.shared.SeatingChart;
+import weddingsite.shared.Table;
+import weddingsite.shared.User;
 
 public class FakeDatabase implements IDatabase  {
 	

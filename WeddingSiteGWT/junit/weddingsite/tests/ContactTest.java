@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import weddingsite.model.Contact;
+import weddingsite.shared.Contact;
 
 public class ContactTest {
 	

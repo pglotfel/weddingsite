@@ -2,12 +2,12 @@ package weddingsite.server;
 
 import java.util.ArrayList;
 
-import weddingsite.model.Attendee;
-import weddingsite.model.User;
 import weddingsite.shared.ActionType;
 import weddingsite.shared.AttendanceList;
 import weddingsite.shared.AttendanceListQueryModel;
 import weddingsite.shared.AttendanceListQueryResult;
+import weddingsite.shared.Attendee;
+import weddingsite.shared.User;
 
 public class PerformAttendanceListQuery {
 	

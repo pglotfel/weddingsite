@@ -59,9 +59,9 @@ h1 {
 
 .attendanceList
 {
-	font-family : "Lucida Sans Unicode", "Lucida Grande", sans-serif;
-	font-size 	:  20px;
-	text-align	: center;
+	font-size: 20px;
+	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	text-align: center;
 }
 
 .gwt-MenuBar-vertical {

@@ -1,11 +1,11 @@
 package weddingsite.client;
 
 
-import weddingsite.model.Attendee;
 import weddingsite.shared.ActionType;
 import weddingsite.shared.AttendanceList;
 import weddingsite.shared.AttendanceListQueryModel;
 import weddingsite.shared.AttendanceListQueryResult;
+import weddingsite.shared.Attendee;
 import weddingsite.shared.AttendeeQueryModel;
 import weddingsite.shared.AttendeeQueryResult;
 import weddingsite.shared.EditAttendeeModel;

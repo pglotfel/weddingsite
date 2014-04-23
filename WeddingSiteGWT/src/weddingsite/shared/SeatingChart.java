@@ -1,8 +1,8 @@
-package weddingsite.model;
+package weddingsite.shared;
 
-//TODO: FINISH
+import java.io.Serializable;
 
-public class SeatingChart {
+public class SeatingChart implements Serializable {
 
 	private int id;
 	private int accountID;

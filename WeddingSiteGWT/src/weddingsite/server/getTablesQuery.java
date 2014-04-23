@@ -2,7 +2,7 @@ package weddingsite.server;
 
 import java.util.ArrayList;
 
-import weddingsite.model.Table;
+import weddingsite.shared.Table;
 import weddingsite.shared.getTablesModel;
 import weddingsite.shared.getTablesResult;
 

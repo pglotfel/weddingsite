@@ -1,12 +1,12 @@
 package weddingsite.client;
 
 import weddingsite.client.Site.Pages;
-import weddingsite.model.User;
 import weddingsite.shared.ActionType;
 import weddingsite.shared.IPublisher;
 import weddingsite.shared.ISubscriber;
 import weddingsite.shared.Login;
 import weddingsite.shared.LoginResult;
+import weddingsite.shared.User;
 
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;

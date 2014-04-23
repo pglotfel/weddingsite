@@ -100,7 +100,7 @@ public class HomePageView  extends Composite implements ISubscriber {
 
 	//TODO: STUFF
 	private void handleSeatingChartsClick() {
-		//query server and load new web page
+		Site.search(Site.Pages.SEATINGCHARTPAGE);
 		
 		
 	}

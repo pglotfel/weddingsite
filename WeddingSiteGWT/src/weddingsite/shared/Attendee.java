@@ -1,4 +1,4 @@
-package weddingsite.model;
+package weddingsite.shared;
 
 import java.io.Serializable;
 

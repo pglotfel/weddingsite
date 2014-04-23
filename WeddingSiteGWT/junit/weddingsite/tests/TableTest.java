@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import weddingsite.model.Table;
+import weddingsite.shared.Table;
 
 public class TableTest {
 	
