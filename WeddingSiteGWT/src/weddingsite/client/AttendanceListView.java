@@ -13,7 +13,6 @@ import weddingsite.shared.EditDataResult;
 import weddingsite.shared.IPublisher;
 import weddingsite.shared.ISubscriber;
 import weddingsite.shared.Login;
-
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -22,12 +21,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
-import com.google.gwt.user.client.ui.RootLayoutPanel;
-import com.google.gwt.user.client.ui.ScrollPanel;
-import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Grid;
-import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -51,10 +45,24 @@ public class AttendanceListView  extends Composite implements ISubscriber {
 	private Button manageAttendeeButton;
 	private boolean isValidAttendanceList;
 	private EditAttendeeModel editAttendeeModel;
-	private EditAttendeeView editAttendeeView;
+	private EditAttendeeWidgetView editAttendeeView;
+	private AddAttendeeWidgetView addAttendeeView;
 	private ViewModes currentView;
+	private Button addAttendeeButton;
+	private Button closeEditingButton;
 	
 	public AttendanceListView() {
+		
+		addAttendeeButton = new Button();
+		addAttendeeButton.setText("Add Attendee");
+		addAttendeeButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {				
+				removeEditAttendeeFromView();	
+				if(layoutPanel.getWidgetIndex(addAttendeeView) == -1) {
+					addAddAttendeeToView();
+				}
+			}
+		});
 		
 		editAttendeeModel = new EditAttendeeModel();
 		editAttendeeModel.setAccountName(Site.currentUser.getAccountName());
@@ -62,11 +70,37 @@ public class AttendanceListView  extends Composite implements ISubscriber {
 		layoutPanel = new LayoutPanel();
 		layoutPanel.setStyleName("layout");
 		initWidget(layoutPanel);
-		layoutPanel.setSize("100%", "500px");
+		layoutPanel.setSize("100%", "100%");
 		
-		editAttendeeView = new EditAttendeeView();
+		addAttendeeView = new AddAttendeeWidgetView();
+		addAttendeeView.getSubmitButton().addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				editAttendeeModel.setType(ActionType.ADDATTENDEE);
+				editAttendeeModel.setName(addAttendeeView.getAttendeeTextBox().getText());
+				editAttendeeModel.setNumAttending(Integer.parseInt(addAttendeeView.getNumberAttendingList().getItemText(addAttendeeView.getNumberAttendingList().getSelectedIndex())));
+				RPC.performEditAttendeeService.PerformEditAttendee(editAttendeeModel, new AsyncCallback<EditDataResult>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						
+					}
+
+					@Override
+					public void onSuccess(EditDataResult result) {		
+						if(result.getResult()) {
+							handleAttendanceListClick(editAttendeeModel.getAttendanceListName());
+						}
+					}							
+				});
+			}			
+		});
 		
-		editAttendeeView.getCloseButton().addClickHandler(new ClickHandler() {
+		editAttendeeView = new EditAttendeeWidgetView();
+		
+		closeEditingButton = new Button();
+		closeEditingButton.setText("Close Editing");
+		closeEditingButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				switchViewMode(ViewModes.NORMAL);
 				removeEditAttendeeFromView();
@@ -143,10 +177,30 @@ public class AttendanceListView  extends Composite implements ISubscriber {
 		});
 	}
 	
+	public void addCloseEditingButtonToView() {
+		layoutPanel.add(closeEditingButton);
+		layoutPanel.setWidgetLeftWidth(closeEditingButton, 0, Unit.PCT, 20, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(closeEditingButton, 0,  Unit.PCT, 12,  Unit.PCT);
+	}
+	
+	public void removeCloseEditingButtonFromView() {
+		layoutPanel.remove(closeEditingButton);
+	}
+	
+	public void addAddAttendeeToView() {
+		layoutPanel.add(addAttendeeView);
+		layoutPanel.setWidgetLeftWidth(addAttendeeView, 30, Unit.PCT, 40, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(addAttendeeView, 15,  Unit.PCT, 40,  Unit.PCT);	
+	}
+	
+	public void removeAddAttendeeFromView() {
+		layoutPanel.remove(addAttendeeView);
+	}
+	
 	public void addEditAttendeeToView() {
 		layoutPanel.add(editAttendeeView);
-		layoutPanel.setWidgetLeftWidth(editAttendeeView, 50, Unit.PCT, 80, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(editAttendeeView, 15,  Unit.PCT, 60,  Unit.PCT);	
+		layoutPanel.setWidgetLeftWidth(editAttendeeView, 30, Unit.PCT, 40, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(editAttendeeView, 15,  Unit.PCT, 40,  Unit.PCT);	
 	}
 	
 	public void removeEditAttendeeFromView() {
@@ -175,8 +229,18 @@ public class AttendanceListView  extends Composite implements ISubscriber {
 	
 	public void addManageAttendeeButtonToView() {
 		layoutPanel.add(manageAttendeeButton);
-		layoutPanel.setWidgetLeftWidth(manageAttendeeButton, 65.5, Unit.PCT, 15, Unit.PCT);
+		layoutPanel.setWidgetLeftWidth(manageAttendeeButton, 70, Unit.PCT, 15, Unit.PCT);
 		layoutPanel.setWidgetTopHeight(manageAttendeeButton, 80, Unit.PCT, 8, Unit.PCT);
+	}
+	
+	public void addAddAttendeeButtonToView() {
+		layoutPanel.add(addAttendeeButton);
+		layoutPanel.setWidgetLeftWidth(addAttendeeButton, 2.5, Unit.PCT, 20, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(addAttendeeButton, 80,  Unit.PCT, 15,  Unit.PCT);
+	}
+	
+	public void removeAddAttendeeButtonFromView() {
+		layoutPanel.remove(addAttendeeButton);
 	}
 	
 	public void addAttendeeListToViewEditing() {
@@ -217,6 +281,7 @@ public class AttendanceListView  extends Composite implements ISubscriber {
 				for (final Attendee a : result.getAttendees()) {
 					attendeeMenu.addItem(new MenuItem("Party: " + a.getName() + " Attending: " + a.getNumAttending(), false, new Command() {
 						public void execute() {			
+							removeAddAttendeeFromView();
 							handleAttendeeListClick(a);
 							editAttendeeModel.setAttendanceListName(attendanceListName);
 						}				
@@ -240,7 +305,7 @@ public class AttendanceListView  extends Composite implements ISubscriber {
 				addEditAttendeeToView();
 			}
 						
-			editAttendeeView.getAttendeeLabel().setText("Party Name: " + a.getName());			
+			editAttendeeView.getAttendeeLabel().setText("Party Name: \n" + a.getName());			
 			
 			editAttendeeView.getNumberAttendingTextBox().setText("" + a.getNumAttending());;
 			
@@ -322,7 +387,10 @@ public class AttendanceListView  extends Composite implements ISubscriber {
 			break;
 		
 			case NORMAL:
+				removeCloseEditingButtonFromView();
 				removeAttendeeListFromView();
+				removeAddAttendeeButtonFromView();
+				removeEditAttendeeFromView();
 				addAttendanceListToView();
 				addAttendeeListToViewNormal();	
 				if(Site.currentUser.getIsAdmin()) {
@@ -335,8 +403,10 @@ public class AttendanceListView  extends Composite implements ISubscriber {
 				if(Site.currentUser.getIsAdmin()) {
 					removeManageAttendeeButtonFromView();
 				}
+				addCloseEditingButtonToView();
 				removeAttendanceListFromView();
 				removeAttendeeListFromView();
+				addAddAttendeeButtonToView();
 				addAttendeeListToViewEditing();
 				currentView = ViewModes.EDITING;
 			break;
