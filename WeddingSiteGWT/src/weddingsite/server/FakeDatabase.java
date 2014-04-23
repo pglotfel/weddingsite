@@ -100,6 +100,43 @@ public class FakeDatabase implements IDatabase  {
 		
 	}
 	
+	@Override
+	public boolean addSeatingChart(String accountName, String seatingChartName) {
+		
+		Account a = findAccountByAccountName(accountName);
+		
+		if(a != null) {
+			int acctId = a.getID();
+			SeatingChart chart = new SeatingChart();
+			chart.setName(seatingChartName);
+			chart.setAccountID(acctId);
+			chart.setID(seatingCharts.size());
+			seatingCharts.add(chart);
+			return true;
+		
+		}
+		
+		return false;
+	}
+	
+	public boolean addTableToSeatingChart(String accountName, String seatingChartName, String tableName, int numSeats) {
+		Account a = findAccountByAccountName(accountName);
+		
+		if(a != null) {
+			int acctId = a.getID();
+			int chartId = getSeatingChartId(acctId, seatingChartName);
+			Table t = new Table();
+			t.setName(tableName);
+			t.setSeatingChartID(chartId);
+			t.setNumSeats(numSeats);
+			t.setID(tables.size());
+			tables.add(t);
+			return true;
+		}
+		
+		return false;
+	}
+	
 	public ArrayList<SeatingChart> getSeatingCharts(String accountName) {
 		
 		ArrayList<SeatingChart> charts = new ArrayList<SeatingChart>();

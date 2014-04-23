@@ -38,5 +38,9 @@ public interface IDatabase {
 	
 	public int getNumAtTable(String accountName, String attendanceListName, String tableName);
 	
+	public boolean addSeatingChart(String accountName, String seatingChartName);
+	
+	public boolean addTableToSeatingChart(String accountName, String seatingChartName, String tableName, int numSeats);
+	
 	
 }
