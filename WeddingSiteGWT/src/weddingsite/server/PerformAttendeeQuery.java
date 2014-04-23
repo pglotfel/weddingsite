@@ -30,11 +30,12 @@ public class PerformAttendeeQuery {
 	public void perform(AttendeeQueryResult result) {
 		
 		ArrayList<Attendee> resultVal = new ArrayList<Attendee>();
-		
+		int totalAttending = -1;
 		switch (model.getType()) {
 		
 		case GETATTENDEES:
 			
+			totalAttending = DatabaseProvider.getInstance().getTotalAttending(model.getAccountName(), model.getAttendanceListName());
 			resultVal = DatabaseProvider.getInstance().getAttendanceListAttendees(model.getAttendanceListName(), model.getAccountName());
 			break;
 			
@@ -44,6 +45,7 @@ public class PerformAttendeeQuery {
 		}
 		
 		result.setAttendees(resultVal);
+		result.setTotalAttending(totalAttending);
 		
 	}
 

@@ -40,14 +40,6 @@ public class Attendee implements Serializable{
 		this.attendanceListID = attendanceListID;
 	}
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
 	public boolean isAttending() {
 		return attending;
 	}

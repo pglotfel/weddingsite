@@ -10,6 +10,7 @@ public class AttendeeQueryResult extends Publisher implements Serializable  {
 	}
 	
 	private ArrayList<Attendee> attendees;
+	private int totalAttending;
 	
 	public AttendeeQueryResult() {
 		attendees = new ArrayList<Attendee>();
@@ -24,6 +25,12 @@ public class AttendeeQueryResult extends Publisher implements Serializable  {
 		this.attendees = attendees;
 	}
 	
-	
+	public int getTotalAttending() {
+		return totalAttending;
+	}
+
+	public void setTotalAttending(int totalAttending) {
+		this.totalAttending = totalAttending;
+	}
 
 }

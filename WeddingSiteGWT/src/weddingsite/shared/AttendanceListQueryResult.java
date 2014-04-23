@@ -14,6 +14,7 @@ public class AttendanceListQueryResult extends Publisher implements Serializable
 	
 	private ArrayList<AttendanceList> attendanceLists;
 	
+	
 	public AttendanceListQueryResult() {
 		
 		this.attendanceLists = null;

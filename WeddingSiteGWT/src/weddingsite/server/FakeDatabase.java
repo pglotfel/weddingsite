@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import weddingsite.shared.Account;
 import weddingsite.shared.AttendanceList;
 import weddingsite.shared.Attendee;
+import weddingsite.shared.Person;
 import weddingsite.shared.SeatingChart;
 import weddingsite.shared.Table;
 import weddingsite.shared.User;
@@ -17,6 +18,7 @@ public class FakeDatabase implements IDatabase  {
 	private ArrayList<Attendee>  attendees;
 	private ArrayList<SeatingChart> seatingCharts;
 	private ArrayList<Table> tables;
+	private ArrayList<Person> people;
 	
 	
 	public FakeDatabase() {
@@ -26,6 +28,8 @@ public class FakeDatabase implements IDatabase  {
 		attendees = new ArrayList<Attendee>();
 		attendanceLists = new ArrayList<AttendanceList>();
 		seatingCharts = new ArrayList<SeatingChart>();
+		tables = new ArrayList<Table>();
+		people = new ArrayList<Person>();
 		
 		
 		String [] accountNames = {"Smith", "Doe", "Harrison"};
@@ -42,12 +46,20 @@ public class FakeDatabase implements IDatabase  {
 			att.setNumAttending(2);
 			att.setAttendanceListID(0);
 			attendees.add(att);	
+			
+			Person p = new Person();
+			p.setName(attendeeNames[i]);
+			p.setTableID(0);
+			p.setId(i);
+			people.add(p);
 		}
 		
 		for(int i = 0; i < tableNames.length; i++) {
 			Table t = new Table();
 			t.setName(tableNames[i]);
 			t.setSeatingChartID(0);
+			t.setID(i);
+			t.setNumSeats(8);
 			tables.add(t);
 		}
 		
@@ -105,6 +117,30 @@ public class FakeDatabase implements IDatabase  {
 	}
 	
 	@Override
+	public ArrayList<Person> getPeopleAtTable(String accountName, String attendanceListName, String tableName) {
+		int acctId = findAccountByAccountName(accountName).getID();
+		int seatingChartId = getSeatingChartId(acctId, attendanceListName);
+		int tableId = getTableId(seatingChartId, tableName);
+		
+		ArrayList<Person> result = new ArrayList<Person>();
+		
+		for(int i = 0; i < people.size(); i++) {
+			if(people.get(i).getTableID() == tableId) {
+				result.add(people.get(i));
+			}
+		}
+		
+		return result;
+	}
+	
+	public int getNumAtTable(String accountName, String attendanceListName, String tableName) {
+		ArrayList<Person> people = getPeopleAtTable(accountName, attendanceListName, tableName);
+		int count = people.size();
+		
+		return count;
+	}
+	
+	@Override
 	public ArrayList<Table> getTables(String accountName, String seatingChartName) {
 		
 		Account a = findAccountByAccountName(accountName);
@@ -119,6 +155,19 @@ public class FakeDatabase implements IDatabase  {
 		
 		return tables;
 		
+		
+	}
+	
+	@Override
+	public int getTotalAttending(String accountName, String seatingChartName) {
+		
+		ArrayList<Attendee> attendees = getAttendanceListAttendees(seatingChartName, accountName);
+		int count = 0;
+		for(int i = 0; i < attendees.size(); i++) {
+			count += attendees.get(i).getNumAttending();
+		}
+		
+		return count;
 		
 	}
 	
@@ -144,6 +193,9 @@ public class FakeDatabase implements IDatabase  {
 		if(attID != -1 && !attendeeExists(attID, attendeeName)) {
 			
 			a.setAttendanceListID(attID);
+			a.setName(attendeeName);
+			a.setNumAttending(numAttending);
+			a.setID(attendees.size());
 			attendees.add(a);
 			return true;
 		}
@@ -326,6 +378,16 @@ public class FakeDatabase implements IDatabase  {
 		for(int i = 0; i < seatingCharts.size(); i++) {
 			if(seatingCharts.get(i).getName().equals(name) && seatingCharts.get(i).getAccountID() == accountId) {
 				return seatingCharts.get(i).getID();
+			}
+		}
+		
+		return -1;
+	}
+	
+	private int getTableId(int seatingChartid, String name) {
+		for(int i = 0; i < tables.size(); i++) {
+			if(tables.get(i).getName().equals(name) && tables.get(i).getSeatingChartID() == seatingChartid) {
+				return tables.get(i).getID();
 			}
 		}
 		

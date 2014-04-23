@@ -28,11 +28,12 @@ public class PerformAttendanceListQuery {
 	public void perform(AttendanceListQueryResult result) {
 		
 		ArrayList<AttendanceList> resultValue = null;
+	
 		
 		switch (model.getType()) {
 		
 		case GETATTENDANCELISTS:
-				
+			
 			resultValue = DatabaseProvider.getInstance().getAttendanceLists(model.getWeddingName());
 			break;
 			

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import weddingsite.shared.AttendanceList;
 import weddingsite.shared.Attendee;
+import weddingsite.shared.Person;
 import weddingsite.shared.SeatingChart;
 import weddingsite.shared.Table;
 import weddingsite.shared.User;
@@ -30,6 +31,12 @@ public interface IDatabase {
 	public ArrayList<SeatingChart> getSeatingCharts(String accountName);
 	
 	public ArrayList<Table> getTables(String accountName, String SeatingChartName);
+	
+	public int getTotalAttending(String accountName, String attendanceListName);
+	
+	public ArrayList<Person> getPeopleAtTable(String accountName, String attendanceListName, String tableName);
+	
+	public int getNumAtTable(String accountName, String attendanceListName, String tableName);
 	
 	
 }
