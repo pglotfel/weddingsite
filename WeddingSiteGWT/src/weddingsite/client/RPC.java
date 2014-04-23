@@ -8,4 +8,6 @@ public class RPC {
 	public static final PerformAttendeeQueryServiceAsync performAttendeeQueryService = GWT.create(PerformAttendeeQueryService.class);
 	public static final PerformEditAttendeeServiceAsync performEditAttendeeService = GWT.create(PerformEditAttendeeService.class);
 	public static final PerformSeatingChartQueryServiceAsync performSeatingChartQueryService = GWT.create(PerformSeatingChartQueryService.class);
+	public static final GetTablesServiceAsync getTablesService = GWT.create(GetTablesService.class);
+	public static final GetPeopleAtTableAsync getPeopleAtTable = GWT.create(GetPeopleAtTable.class);
 }

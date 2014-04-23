@@ -1,12 +1,12 @@
 package weddingsite.client;
 
-import weddingsite.shared.getTablesModel;
-import weddingsite.shared.getTablesResult;
+import weddingsite.shared.GetTablesModel;
+import weddingsite.shared.GetTablesResult;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface GetTablesServiceAsync {
 
-	void getTables(getTablesModel model, AsyncCallback<getTablesResult> callback);
+	void getTables(GetTablesModel model, AsyncCallback<GetTablesResult> callback);
 
 }

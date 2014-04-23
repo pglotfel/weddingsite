@@ -1,19 +1,26 @@
 package weddingsite.client;
 
+import java.util.ArrayList;
+
 import weddingsite.shared.ActionType;
+import weddingsite.shared.GetPeopleAtTableModel;
+import weddingsite.shared.GetPeopleAtTableResult;
+import weddingsite.shared.GetTablesModel;
+import weddingsite.shared.GetTablesResult;
 import weddingsite.shared.SeatingChart;
 import weddingsite.shared.SeatingChartQueryModel;
 import weddingsite.shared.SeatingChartQueryResult;
+import weddingsite.shared.Table;
 
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.LayoutPanel;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.MenuItem;
-import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.LayoutPanel;
+import com.google.gwt.user.client.ui.MenuBar;
+import com.google.gwt.user.client.ui.MenuItem;
 
 public class SeatingChartView extends Composite {
 	
@@ -24,10 +31,15 @@ public class SeatingChartView extends Composite {
 	private FlowPanel tableFlowPanel;
 	private FlowPanel peopleFlowPanel;
 	private SeatingChartQueryModel seatingChartQueryModel;
+	private GetTablesModel getTablesModel;
+	private GetPeopleAtTableModel getPeopleAtTableModel;
 	
 	public SeatingChartView() {
 				
+		getTablesModel = new GetTablesModel();
 		seatingChartQueryModel = new SeatingChartQueryModel();
+		getPeopleAtTableModel = new GetPeopleAtTableModel();
+		
 		LayoutPanel layoutPanel = new LayoutPanel();
 		initWidget(layoutPanel);
 		layoutPanel.setSize("100%", "100%");
@@ -62,11 +74,13 @@ public class SeatingChartView extends Composite {
 			@Override
 			public void onSuccess(SeatingChartQueryResult result) {
 				
-				for(SeatingChart s : result.getSeatingCharts()) {
+				seatingChartMenu.clearItems();
+				for(final SeatingChart s : result.getSeatingCharts()) {
 					seatingChartMenu.addItem(new MenuItem(s.getName(), false, new Command() {
 						@Override
 						public void execute() {
-							//RPC call to add tables
+							//RPC call to add tables							
+							handleSeatingChartClick(s);
 						}					
 					}));
 				}
@@ -95,6 +109,67 @@ public class SeatingChartView extends Composite {
 		peopleFlowPanel.add(peopleMenu);
 		peopleMenu.setSize("100%", "100%");
 		peopleMenu.setStyleName("gwt-MenuBar-vertical");
+	}
+	
+	public void handleSeatingChartClick(final SeatingChart seatingChart) {
+		getTablesModel.setAccountName(Site.currentUser.getAccountName());
+		getTablesModel.setSeatingChartName(seatingChart.getName());
+		getTablesModel.setType(ActionType.GETTABLES);
+		
+		RPC.getTablesService.getTables(getTablesModel, new AsyncCallback<GetTablesResult>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				
+			}
+
+			@Override
+			public void onSuccess(GetTablesResult result) {
+				
+				ArrayList<Table> tables = result.getTables();
+				tableMenu.clearItems();			
+				
+				if (tables == null) {
+					tableMenu.addItem(new MenuItem("There are currently no tables in this list", false, (Command) null));
+				} else {
+					for (final Table t : tables) {
+						tableMenu.addItem(new MenuItem(t.getName(), false, new Command() {
+							@Override
+							public void execute() {
+								//RPC call to add tables
+								handleTableClick(seatingChart.getName(), t);
+							}					
+						}));
+					}
+				}
+				
+			}			
+		});
+		
+	}
+	
+	public void handleTableClick(String seatingChartName, Table t) {
+		
+		getPeopleAtTableModel.setAccountName(Site.currentUser.getAccountName());
+		getPeopleAtTableModel.setSeatingChartName(seatingChartName);
+		getPeopleAtTableModel.setTableName(t.getName());
+		getPeopleAtTableModel.setType(ActionType.GETPEOPLEATTABLE);
+		
+		RPC.getPeopleAtTable.getPeopleAtTable(getPeopleAtTableModel, new AsyncCallback<GetPeopleAtTableResult>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				
+			}
+
+			@Override
+			public void onSuccess(GetPeopleAtTableResult result) {
+				
+				
+			}
+			
+		});
+		
 	}
 	
 }

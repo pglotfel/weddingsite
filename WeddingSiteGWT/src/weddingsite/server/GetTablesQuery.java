@@ -3,18 +3,18 @@ package weddingsite.server;
 import java.util.ArrayList;
 
 import weddingsite.shared.Table;
-import weddingsite.shared.getTablesModel;
-import weddingsite.shared.getTablesResult;
+import weddingsite.shared.GetTablesModel;
+import weddingsite.shared.GetTablesResult;
 
-public class getTablesQuery {
+public class GetTablesQuery {
 	
-	private getTablesModel model;
+	private GetTablesModel model;
 	
-	public void setModel(getTablesModel model) {
+	public void setModel(GetTablesModel model) {
 		this.model = model;
 	}
 	
-	public void perform(getTablesResult result) {
+	public void perform(GetTablesResult result) {
 		ArrayList<Table> resultList = new ArrayList<Table>();
 		
 		switch (model.getType()) {

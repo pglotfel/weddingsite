@@ -2,7 +2,7 @@ package weddingsite.shared;
 
 import java.io.Serializable;
 
-public class getTablesModel extends Publisher implements Serializable {
+public class GetTablesModel extends Publisher implements Serializable {
 	
 	public enum Events {
 		VALUE_CHANGED
@@ -12,7 +12,7 @@ public class getTablesModel extends Publisher implements Serializable {
 	private String seatingChartName;
 	private ActionType type;
 	
-	public getTablesModel() {
+	public GetTablesModel() {
 		
 	}
 

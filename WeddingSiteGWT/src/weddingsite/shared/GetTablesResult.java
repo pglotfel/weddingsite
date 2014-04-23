@@ -3,7 +3,7 @@ package weddingsite.shared;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class getTablesResult extends Publisher implements Serializable {
+public class GetTablesResult extends Publisher implements Serializable {
 	
 	public enum Events {
 		VALUE_CHANGED
@@ -12,7 +12,7 @@ public class getTablesResult extends Publisher implements Serializable {
 	private ArrayList<Table> tables;
 	
 	
-	public getTablesResult() {
+	public GetTablesResult() {
 		tables = new ArrayList<Table>();
 	}
 

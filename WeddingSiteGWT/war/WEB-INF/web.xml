@@ -51,6 +51,16 @@
   	<servlet-name>PerformSeatingChartQueryImpl</servlet-name>
  	<url-pattern>/weddingsitegwt/performSeatingChartQuery/*</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+	<servlet-name>GetTablesQueryImpl</servlet-name>
+	<servlet-class>weddingsite.server.GetTablesQueryImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>GetTablesQueryImpl</servlet-name>
+ 	<url-pattern>/weddingsitegwt/GetTablesService/*</url-pattern>
+  </servlet-mapping>
 
   
   <!-- Servlet context listeners -->
