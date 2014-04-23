@@ -71,6 +71,36 @@
   	<servlet-name>GetPeopleAtTableQueryImpl</servlet-name>
  	<url-pattern>/weddingsitegwt/GetPeopleAtTable/*</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+	<servlet-name>EditSeatingChartImpl</servlet-name>
+	<servlet-class>weddingsite.server.EditSeatingChartImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>EditSeatingChartImpl</servlet-name>
+ 	<url-pattern>/weddingsitegwt/EditSeatingChartService/*</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+	<servlet-name>EditAttendanceListImpl</servlet-name>
+	<servlet-class>weddingsite.server.EditAttendanceListImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>EditAttendanceListImpl</servlet-name>
+ 	<url-pattern>/weddingsitegwt/EditAttendanceListService/*</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+	<servlet-name>EditTablesImpl</servlet-name>
+	<servlet-class>weddingsite.server.EditTablesImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>EditTablesImpl</servlet-name>
+ 	<url-pattern>/weddingsitegwt/EditTable/*</url-pattern>
+  </servlet-mapping>
 
 
   

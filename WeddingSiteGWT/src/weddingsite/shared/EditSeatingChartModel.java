@@ -2,16 +2,17 @@ package weddingsite.shared;
 
 import java.io.Serializable;
 
-public class AddSeatingChartModel extends Publisher implements Serializable {
+public class EditSeatingChartModel extends Publisher implements Serializable {
 	public enum Events {
 		VALUE_CHANGED
 	}
 	
 	private String accountName;
 	private String seatingChartName;
+	private String newName;
 	private ActionType type;
 	
-	public AddSeatingChartModel() {
+	public EditSeatingChartModel() {
 		
 	}
 	public String getAccountName() {
@@ -31,6 +32,12 @@ public class AddSeatingChartModel extends Publisher implements Serializable {
 	}
 	public void setSeatingChartName(String seatingChartName) {
 		this.seatingChartName = seatingChartName;
+	}
+	public String getNewName() {
+		return newName;
+	}
+	public void setNewName(String newName) {
+		this.newName = newName;
 	}
 	
 	

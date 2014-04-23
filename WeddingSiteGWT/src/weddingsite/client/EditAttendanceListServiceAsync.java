@@ -1,13 +1,13 @@
 package weddingsite.client;
 
-import weddingsite.shared.AddAttendanceListModel;
+import weddingsite.shared.EditAttendanceListModel;
 import weddingsite.shared.EditDataResult;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-public interface AddAttendanceListServiceAsync {
+public interface EditAttendanceListServiceAsync {
 
-	void performAddAttendanceList(AddAttendanceListModel model,
+	void performAddAttendanceList(EditAttendanceListModel model,
 			AsyncCallback<EditDataResult> callback);
 
 }

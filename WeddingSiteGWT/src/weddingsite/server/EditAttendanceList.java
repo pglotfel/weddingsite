@@ -1,14 +1,14 @@
 package weddingsite.server;
 
 import weddingsite.shared.ActionType;
-import weddingsite.shared.AddAttendanceListModel;
+import weddingsite.shared.EditAttendanceListModel;
 import weddingsite.shared.EditDataResult;
 
-public class AddAttendanceList {
+public class EditAttendanceList {
 
-	AddAttendanceListModel model;
+	EditAttendanceListModel model;
 	
-	public void setModel(AddAttendanceListModel model) {
+	public void setModel(EditAttendanceListModel model) {
 		this.model = model;
 	}
 	
@@ -34,6 +34,13 @@ public class AddAttendanceList {
 		case ADDATTENDANCELIST:
 			
 			resultVal = DatabaseProvider.getInstance().addAttendanceList(model.getAccountName(),model.getAttendanceListName());
+			break;
+			
+		case DELETEATTENDANCELIST:
+			//delete
+			break;
+		case EDITATTENDANCELIST:
+			//edit
 			break;
 		
 		default:

@@ -2,7 +2,7 @@ package weddingsite.shared;
 
 import java.io.Serializable;
 
-public class AddAttendanceListModel extends Publisher implements Serializable  {
+public class EditAttendanceListModel extends Publisher implements Serializable  {
 	
 	public enum Events {
 		VALUE_OR_ACTION_TYPE_CHANGED,
@@ -10,9 +10,10 @@ public class AddAttendanceListModel extends Publisher implements Serializable  {
 	
 	private String accountName;
 	private String attendanceListName;
+	private String newName;
 	private ActionType type;
 	
-	public AddAttendanceListModel() {
+	public EditAttendanceListModel() {
 		
 	}
 	public String getAccountName() {
@@ -32,6 +33,12 @@ public class AddAttendanceListModel extends Publisher implements Serializable  {
 	}
 	public void setType(ActionType type) {
 		this.type = type;
+	}
+	public String getNewName() {
+		return newName;
+	}
+	public void setNewName(String newName) {
+		this.newName = newName;
 	}
 	
 

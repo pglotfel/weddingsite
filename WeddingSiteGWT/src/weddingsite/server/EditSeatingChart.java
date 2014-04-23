@@ -1,13 +1,13 @@
 package weddingsite.server;
 
-import weddingsite.shared.AddSeatingChartModel;
+import weddingsite.shared.EditSeatingChartModel;
 import weddingsite.shared.EditDataResult;
 
-public class AddSeatingChart {
+public class EditSeatingChart {
 	
-	AddSeatingChartModel model;
+	EditSeatingChartModel model;
 	
-	public void setModel(AddSeatingChartModel model) {
+	public void setModel(EditSeatingChartModel model) {
 		this.model = model;
 	}
 	
@@ -20,6 +20,13 @@ public class AddSeatingChart {
 		case ADDSEATINGCHART:
 			
 			resultVal = DatabaseProvider.getInstance().addSeatingChart(model.getAccountName(), model.getSeatingChartName());
+			break;
+			
+		case DELETESEATINGCHART:
+			//delete
+			break;
+		case EDITSEATINGCHART:
+			//edit
 			break;
 			
 		default:

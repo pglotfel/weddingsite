@@ -27,6 +27,8 @@ public interface IDatabase {
 	public boolean deleteAttendee(String accountName, String attendanceListName, String attendeeName);
 	
 	public boolean addAttendanceList(String accountName, String attendanceListName);
+	//public boolean deleteAttendanceList(String accountName, String attendanceListName);
+	//public boolean editAttendanceList(String accountName, String attendanceListName, String newName);
 	
 	public ArrayList<SeatingChart> getSeatingCharts(String accountName);
 	
@@ -42,5 +44,8 @@ public interface IDatabase {
 	
 	public boolean addTableToSeatingChart(String accountName, String seatingChartName, String tableName, int numSeats);
 	
+	public boolean editTableInSeatingChart(String accountName, String seatingChartName, String tableName, String newName, int numSeats);
+	
+	public boolean deleteTableInSeatingChart(String accountName, String seatingChartName, String tableName);
 	
 }

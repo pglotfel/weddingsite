@@ -10,6 +10,7 @@ public class EditTablesModel extends Publisher implements Serializable {
 	private String accountName;
 	private String seatingChartName;
 	private String tableName;
+	private String newName;
 	private int numSeats;
 	private ActionType type;
 	
@@ -55,6 +56,14 @@ public class EditTablesModel extends Publisher implements Serializable {
 
 	public void setType(ActionType type) {
 		this.type = type;
+	}
+
+	public String getNewName() {
+		return newName;
+	}
+
+	public void setNewName(String newName) {
+		this.newName = newName;
 	}
 	
 	

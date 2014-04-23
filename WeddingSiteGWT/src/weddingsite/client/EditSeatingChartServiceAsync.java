@@ -1,13 +1,13 @@
 package weddingsite.client;
 
-import weddingsite.shared.AddSeatingChartModel;
+import weddingsite.shared.EditSeatingChartModel;
 import weddingsite.shared.EditDataResult;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-public interface AddSeatingChartServiceAsync {
+public interface EditSeatingChartServiceAsync {
 
-	void addSeatingChart(AddSeatingChartModel model,
+	void addSeatingChart(EditSeatingChartModel model,
 			AsyncCallback<EditDataResult> callback);
 
 }

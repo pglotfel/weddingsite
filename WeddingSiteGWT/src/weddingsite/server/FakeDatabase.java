@@ -137,6 +137,57 @@ public class FakeDatabase implements IDatabase  {
 		return false;
 	}
 	
+	public boolean editTableInSeatingChart(String accountName, String seatingChartName, String tableName, String newName, int numSeats) {
+		
+		Account a = findAccountByAccountName(accountName);
+		
+		if(a != null) {
+			int acctId = a.getID();
+			int seatingChartId = -1;
+			
+			for(int i = 0; i < seatingCharts.size(); i++) {
+				if(seatingCharts.get(i).getAccountID() == acctId && seatingCharts.get(i).getName().equals(seatingChartName)) {
+					seatingChartId = seatingCharts.get(i).getID();
+				}
+			}
+			
+			for(int i = 0; i < tables.size(); i++){
+				if(tables.get(i).getSeatingChartID() == seatingChartId && tables.get(i).getName().equals(tableName)) {
+					tables.get(i).setName(newName);
+					tables.get(i).setNumSeats(numSeats);
+					return true;
+				}
+			}
+		}
+		
+		return false;
+		
+	}
+	
+	public boolean deleteTableInSeatingChart(String accountName, String seatingChartName, String tableName) {
+		Account a = findAccountByAccountName(accountName);
+		
+		if(a != null) {
+			int acctId = a.getID();
+			int seatingChartId = -1;
+			
+			for(int i = 0; i < seatingCharts.size(); i++) {
+				if(seatingCharts.get(i).getAccountID() == acctId && seatingCharts.get(i).getName().equals(seatingChartName)) {
+					seatingChartId = seatingCharts.get(i).getID();
+				}
+			}
+			
+			for(int i = 0; i < tables.size(); i++){
+				if(tables.get(i).getSeatingChartID() == seatingChartId && tables.get(i).getName().equals(tableName)) {
+					tables.remove(i);
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+	
 	public ArrayList<SeatingChart> getSeatingCharts(String accountName) {
 		
 		ArrayList<SeatingChart> charts = new ArrayList<SeatingChart>();
@@ -183,6 +234,9 @@ public class FakeDatabase implements IDatabase  {
 		Account a = findAccountByAccountName(accountName);
 		int seatingChartId = getSeatingChartId(a.getID(), seatingChartName);
 		ArrayList<Table> result = new ArrayList<Table>();
+		
+		System.out.println("Seating Chart Name in Database: " + seatingChartName);
+		System.out.println("Seating ChartId in Database: " + seatingChartId);
 		
 		for(int i = 0; i < tables.size(); i++) {
 			if(tables.get(i).getSeatingChartID() == seatingChartId) {

@@ -1,21 +1,21 @@
 package weddingsite.server;
 
-import weddingsite.client.AddAttendanceListService;
+import weddingsite.client.EditAttendanceListService;
 import weddingsite.client.PerformAttendanceListQueryService;
-import weddingsite.shared.AddAttendanceListModel;
+import weddingsite.shared.EditAttendanceListModel;
 import weddingsite.shared.AttendanceListQueryModel;
 import weddingsite.shared.AttendanceListQueryResult;
 import weddingsite.shared.EditDataResult;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
-public class AddAttendanceListImpl extends RemoteServiceServlet implements AddAttendanceListService  {
+public class EditAttendanceListImpl extends RemoteServiceServlet implements EditAttendanceListService  {
 
 	@Override
-	public EditDataResult performAddAttendanceList(AddAttendanceListModel model) {
+	public EditDataResult performAddAttendanceList(EditAttendanceListModel model) {
 
 
-		AddAttendanceList controller = new AddAttendanceList();
+		EditAttendanceList controller = new EditAttendanceList();
 		
 		controller.setModel(model);
 		controller.setActionType(model.getType());
