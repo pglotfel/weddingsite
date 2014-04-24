@@ -11,13 +11,15 @@ import weddingsite.shared.User;
 
 public interface IDatabase {
 	
+	//Account
+	public boolean createAccount(String accountName, String adminName, String password);
+	
+	
 	//User
 	public User getUser(String accountName, String userName);
-	public void addUser(String accountName, String userName, String userPassword);
-	public void addAdmin(String accountName, String userName, String userPassword);
+	public boolean addUser(String accountName, String userName, String userPassword, boolean isAdmin);
 	
-	
-	
+
 	//AttendanceLists
 	public ArrayList<AttendanceList> getAttendanceLists(String accountName);
 	public boolean addAttendanceList(String accountName, String attendanceListName);

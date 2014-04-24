@@ -564,17 +564,42 @@ public class FakeDatabase implements IDatabase  {
 	}
 	
 	@Override
-	public void addUser(String accountName, String userName, String userPassword) {
-		// TODO Auto-generated method stub
+	public boolean addUser(String accountName, String userName, String userPassword, boolean isAdmin) {
+		Account a = findAccountByAccountName(accountName);
 		
+		if(a != null) {
+			User u = new User();
+			u.setUsername(userName);
+			u.setPassword(userPassword);
+			u.setAccountID(a.getID());
+			u.setID(users.size());
+			u.setIsAdmin(isAdmin);
+			users.add(u);
+			return true;
+		}
+		
+		return false;
+	}
+	
+	@Override
+	public boolean createAccount(String accountName, String adminName, String password) {
+		Account a = new Account();
+		a.setAccountName(accountName);
+		int accountId = accounts.size();
+		a.setID(accountId);
+		accounts.add(a);
+		
+		User u = new User();
+		u.setAccountID(accountId);
+		u.setID(users.size());
+		u.setIsAdmin(true);
+		u.setPassword(password);
+		u.setUsername(adminName);
+		users.add(u);
+		
+		return true;
 	}
 
-	@Override
-	public void addAdmin(String accountName, String userName,
-			String userPassword) {
-		// TODO Auto-generated method stub
-		
-	}	
 	
 	private int getSeatingChartId(int accountId, String name) {
 		for(int i = 0; i < seatingCharts.size(); i++) {
