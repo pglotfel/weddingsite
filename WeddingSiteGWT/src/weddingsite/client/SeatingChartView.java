@@ -375,7 +375,7 @@ public class SeatingChartView extends Composite {
 		submitPersonButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				if(layoutPanel.getWidgetIndex(deleteTableFlowPanel) == -1) {
+				if(layoutPanel.getWidgetIndex(deletePersonFlowPanel) == -1) {
 					handleSubmitAddPersonClick();					
 				} else {
 					handleSubmitEditPersonClick();
@@ -623,7 +623,7 @@ public class SeatingChartView extends Composite {
 		editPersonAtTableModel.setAccountName(Site.currentUser.getAccountName());
 		editPersonAtTableModel.setTableName(tableNameLabel.getText());
 		editPersonAtTableModel.setSeatingChartName(seatingChartNameLabel.getText());
-		editPersonAtTableModel.setTableName(tableNewNameTextBox.getText());
+		editPersonAtTableModel.setPersonName(personNameLabel.getText());
 		editPersonAtTableModel.setType(ActionType.DELETEPERSON);
 		
 		RPC.editPersonAtTableService.editPersonAtTable(editPersonAtTableModel, new AsyncCallback<EditDataResult>() {
@@ -803,7 +803,7 @@ public class SeatingChartView extends Composite {
 		editPersonAtTableModel.setNewName(personNewNameTextBox.getText());
 		editPersonAtTableModel.setSeatingChartName(seatingChartNameLabel.getText());
 		editPersonAtTableModel.setType(ActionType.EDITPERSON);
-		
+				
 		RPC.editPersonAtTableService.editPersonAtTable(editPersonAtTableModel, new AsyncCallback<EditDataResult>() {
 
 			@Override
