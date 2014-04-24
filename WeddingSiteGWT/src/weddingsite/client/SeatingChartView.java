@@ -4,7 +4,9 @@ import java.util.ArrayList;
 
 import weddingsite.shared.ActionType;
 import weddingsite.shared.EditDataResult;
+import weddingsite.shared.EditPersonAtTableModel;
 import weddingsite.shared.EditSeatingChartModel;
+import weddingsite.shared.EditTablesModel;
 import weddingsite.shared.GetPeopleAtTableModel;
 import weddingsite.shared.GetPeopleAtTableResult;
 import weddingsite.shared.GetTablesModel;
@@ -50,9 +52,31 @@ public class SeatingChartView extends Composite {
 	private Label seatingChartNameLabel;
 	private LayoutPanel layoutPanel;
 	private EditSeatingChartModel editSeatingChartModel;
+	private EditTablesModel editTableModel;
+	private EditPersonAtTableModel editPersonAtTableModel;
+	
+	private FlowPanel addTableButtonFlowPanel;
+	private FlowPanel editTableButtonFlowPanel;
+	private FlowPanel submitTableFlowPanel;
+	private FlowPanel cancelTableFlowPanel;
+	private FlowPanel deleteTableFlowPanel;
+	private Label tableNewNameLabel;
+	private TextBox tableNewNameTextBox;
+	private Label tableNameLabel;
+	
+	private FlowPanel addPersonButtonFlowPanel;
+	private FlowPanel editPersonButtonFlowPanel;
+	private FlowPanel submitPersonFlowPanel;
+	private FlowPanel cancelPersonFlowPanel;
+	private FlowPanel deletePersonFlowPanel;
+	private Label personNewNameLabel;
+	private TextBox personNewNameTextBox;
+	private Label personNameLabel;
 	
 	public SeatingChartView() {
 		
+		editPersonAtTableModel = new EditPersonAtTableModel();
+		editTableModel = new EditTablesModel();
 		editSeatingChartModel = new EditSeatingChartModel();
 		getTablesModel = new GetTablesModel();
 		seatingChartQueryModel = new SeatingChartQueryModel();
@@ -61,6 +85,11 @@ public class SeatingChartView extends Composite {
 		layoutPanel = new LayoutPanel();
 		initWidget(layoutPanel);
 		layoutPanel.setSize("100%", "100%");
+		
+		PageView pageView = new PageView();
+		layoutPanel.add(pageView);
+		layoutPanel.setWidgetTopBottom(pageView, 93.7,  Unit.PCT, 0.0, Unit.PCT);
+		layoutPanel.setWidgetLeftRight(pageView, 0.0, Unit.PCT, 30, Unit.PCT);
 		
 		Label titleLable = new Label("Seating Charts");
 		titleLable.setStyleName("attendanceList");
@@ -106,7 +135,7 @@ public class SeatingChartView extends Composite {
 		addSeatingChartButtonFlowPanel = new FlowPanel();
 		layoutPanel.add(addSeatingChartButtonFlowPanel);
 		layoutPanel.setWidgetLeftWidth(addSeatingChartButtonFlowPanel, 12.9, Unit.PCT, 5.0, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(addSeatingChartButtonFlowPanel, 66.6, Unit.PCT, 5.9, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(addSeatingChartButtonFlowPanel, 66.7, Unit.PCT, 5.9, Unit.PCT);
 		
 		Button addSeatingChartButton = new Button("New button");
 		addSeatingChartButtonFlowPanel.add(addSeatingChartButton);
@@ -199,9 +228,295 @@ public class SeatingChartView extends Composite {
 		layoutPanel.add(seatingChartNameLabel);
 		layoutPanel.setWidgetLeftWidth(seatingChartNameLabel, 10.0, Unit.PCT, 20.0, Unit.PCT);
 		layoutPanel.setWidgetTopHeight(seatingChartNameLabel, 61.2, Unit.PCT, 4.6, Unit.PCT);
+		
+		
+		
+		addTableButtonFlowPanel = new FlowPanel();
+		layoutPanel.add(addTableButtonFlowPanel);
+		layoutPanel.setWidgetLeftWidth(addTableButtonFlowPanel, 42.9, Unit.PCT, 5.0, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(addTableButtonFlowPanel, 66.7, Unit.PCT, 5.9, Unit.PCT);
+		
+		Button addTableButton = new Button("New button");
+		addTableButtonFlowPanel.add(addTableButton);
+		addTableButton.setSize("100%", "100%");
+		addTableButton.setText("Add");
+		
+		addTableButton.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				handleAddTableClick();			
+			}
+			
+		});
+		
+		editTableButtonFlowPanel = new FlowPanel();
+		layoutPanel.add(editTableButtonFlowPanel);
+		layoutPanel.setWidgetLeftWidth(editTableButtonFlowPanel, 51.9, Unit.PCT, 5.1, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(editTableButtonFlowPanel, 66.7, Unit.PCT, 5.9, Unit.PCT);
+		
+		Button editTableButton = new Button("New button");
+		editTableButtonFlowPanel.add(editTableButton);
+		editTableButton.setSize("100%", "100%");
+		editTableButton.setText("Edit");
+		
+		editTableButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				handleEditTableClick();
+			}		
+		});
+		
+		submitTableFlowPanel = new FlowPanel();
+		
+		Button submitTableButton = new Button("New button");
+		submitTableFlowPanel.add(submitTableButton);
+		submitTableButton.setText("Submit");
+		submitTableButton.setSize("100%", "100%");
+		
+		submitTableButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				if(layoutPanel.getWidgetIndex(deleteTableFlowPanel) == -1) {
+					handleSubmitAddTableClick();
+					
+				} else {
+					handleSubmitEditTableClick();
+				}
+				
+			}		
+		});
+		
+		cancelTableFlowPanel = new FlowPanel();
+		
+		Button cancelTableButton = new Button("New button");
+		cancelTableFlowPanel.add(cancelTableButton);
+		cancelTableButton.setText("Cancel");
+		cancelTableButton.setSize("100%", "100%");
+		
+		cancelTableButton.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				handleCancelTableClick();
+			}
+			
+		});
+		
+		deleteTableFlowPanel = new FlowPanel();
+		
+		Button deleteTableButton = new Button("New button");
+		deleteTableButton.setText("Delete");
+		deleteTableFlowPanel.add(deleteTableButton);
+		deleteTableButton.setSize("100%", "100%");
+		
+		deleteTableButton.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				handleDeleteTableClick();			
+			}
+			
+		});
+		
+		tableNewNameLabel = new Label("New name:");
+		
+		tableNewNameTextBox = new TextBox();
+		
+		tableNameLabel = new Label("Click on a table!");
+		layoutPanel.add(tableNameLabel);
+		layoutPanel.setWidgetLeftWidth(tableNameLabel, 40.0, Unit.PCT, 20.0, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(tableNameLabel, 61.2, Unit.PCT, 4.6, Unit.PCT);
+		
+		
+		addPersonButtonFlowPanel = new FlowPanel();
+		layoutPanel.add(addPersonButtonFlowPanel);
+		layoutPanel.setWidgetLeftWidth(addPersonButtonFlowPanel, 72.9, Unit.PCT, 5.0, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(addPersonButtonFlowPanel, 66.7, Unit.PCT, 5.9, Unit.PCT);
+		
+		Button addPersonButton = new Button("New button");
+		addPersonButtonFlowPanel.add(addPersonButton);
+		addPersonButton.setSize("100%", "100%");
+		addPersonButton.setText("Add");
+		
+		addPersonButton.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				handleAddPersonClick();			
+			}
+			
+		});
+		
+		editPersonButtonFlowPanel = new FlowPanel();
+		layoutPanel.add(editPersonButtonFlowPanel);
+		layoutPanel.setWidgetLeftWidth(editPersonButtonFlowPanel, 81.9, Unit.PCT, 5.1, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(editPersonButtonFlowPanel, 66.7, Unit.PCT, 5.9, Unit.PCT);
+		
+		Button editPersonButton = new Button("New button");
+		editPersonButtonFlowPanel.add(editPersonButton);
+		editPersonButton.setSize("100%", "100%");
+		editPersonButton.setText("Edit");
+		
+		editPersonButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				handleEditPersonClick();
+			}		
+		});
+		
+		submitPersonFlowPanel = new FlowPanel();
+		
+		Button submitPersonButton = new Button("New button");
+		submitPersonFlowPanel.add(submitPersonButton);
+		submitPersonButton.setText("Submit");
+		submitPersonButton.setSize("100%", "100%");
+		
+		submitPersonButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				if(layoutPanel.getWidgetIndex(deleteTableFlowPanel) == -1) {
+					handleSubmitAddPersonClick();					
+				} else {
+					handleSubmitEditPersonClick();
+				}
+				
+			}		
+		});
+		
+		cancelPersonFlowPanel = new FlowPanel();
+		
+		Button cancelPersonButton = new Button("New button");
+		cancelPersonFlowPanel.add(cancelPersonButton);
+		cancelPersonButton.setText("Cancel");
+		cancelPersonButton.setSize("100%", "100%");
+		
+		cancelPersonButton.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				handleCancelPersonClick();
+			}
+			
+		});
+		
+		deletePersonFlowPanel = new FlowPanel();
+		
+		Button deletePersonButton = new Button("New button");
+		deletePersonButton.setText("Delete");
+		deletePersonFlowPanel.add(deletePersonButton);
+		deletePersonButton.setSize("100%", "100%");
+		
+		deletePersonButton.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				handleDeletePersonClick();			
+			}
+			
+		});
+		
+		personNewNameLabel = new Label("New name:");
+		
+		personNewNameTextBox = new TextBox();
+		
+		personNameLabel = new Label("Click on a person!");
+		layoutPanel.add(personNameLabel);
+		layoutPanel.setWidgetLeftWidth(personNameLabel, 70.0, Unit.PCT, 20.0, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(personNameLabel, 61.2, Unit.PCT, 4.6, Unit.PCT);
 	}
 	
-	public void addNewNameTextBoxToView() {
+	public void addPersonNewNameTextBoxToView() {
+		layoutPanel.add(personNewNameTextBox);
+		layoutPanel.setWidgetLeftWidth(personNewNameTextBox, 81.8, Unit.PCT, 13.0, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(personNewNameTextBox, 73.4, Unit.PCT, 4.4, Unit.PCT);
+		layoutPanel.add(personNewNameLabel);
+		layoutPanel.setWidgetLeftWidth(personNewNameLabel, 69.2, Unit.PCT, 8.6, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(personNewNameLabel, 73.6, Unit.PCT, 4.3, Unit.PCT);	
+	}
+	
+	public void removePersonNewNameTextBoxFromView() {
+		layoutPanel.remove(personNewNameTextBox);
+		layoutPanel.remove(personNewNameLabel);
+		personNewNameTextBox.setText("");
+	}
+	
+	public void addDeletePersonFlowPanelToView() {
+		layoutPanel.add(deletePersonFlowPanel);
+		layoutPanel.setWidgetLeftWidth(deletePersonFlowPanel, 76.5, Unit.PCT, 6.8, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(deletePersonFlowPanel, 85.7, Unit.PCT, 5.9, Unit.PCT);
+	}
+	
+	public void removeDeletePersonFlowPanelFromView() {
+		layoutPanel.remove(deletePersonFlowPanel);
+	}
+	
+	public void addCancelPersonFlowPanelToView() {
+		layoutPanel.add(cancelPersonFlowPanel);
+		layoutPanel.setWidgetLeftWidth(cancelPersonFlowPanel, 81.8, Unit.PCT, 6.9, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(cancelPersonFlowPanel, 78.8, Unit.PCT, 5.9, Unit.PCT);
+	}
+	
+	public void removeCancelPersonFlowPanelFromView() {
+		layoutPanel.remove(cancelPersonFlowPanel);
+	}
+	
+	public void addSubmitPersonFlowPanelToView() {
+		layoutPanel.add(submitPersonFlowPanel);
+		layoutPanel.setWidgetLeftWidth(submitPersonFlowPanel, 71.2, Unit.PCT, 6.8, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(submitPersonFlowPanel, 78.8, Unit.PCT, 5.9, Unit.PCT);
+	}
+	
+	public void removeSubmitPersonFlowPanelFromView() {
+		layoutPanel.remove(submitPersonFlowPanel);
+	}
+	
+	public void addTableNewNameTextBoxToView() {
+		layoutPanel.add(tableNewNameTextBox);
+		layoutPanel.setWidgetLeftWidth(tableNewNameTextBox, 51.8, Unit.PCT, 13.0, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(tableNewNameTextBox, 73.4, Unit.PCT, 4.4, Unit.PCT);
+		layoutPanel.add(tableNewNameLabel);
+		layoutPanel.setWidgetLeftWidth(tableNewNameLabel, 39.2, Unit.PCT, 8.6, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(tableNewNameLabel, 73.6, Unit.PCT, 4.3, Unit.PCT);	
+	}
+	
+	public void removeTableNewNameTextBoxFromView() {
+		layoutPanel.remove(tableNewNameTextBox);
+		layoutPanel.remove(tableNewNameLabel);
+		tableNewNameTextBox.setText("");
+	}
+	
+	public void addDeleteTableFlowPanelToView() {
+		layoutPanel.add(deleteTableFlowPanel);
+		layoutPanel.setWidgetLeftWidth(deleteTableFlowPanel, 46.5, Unit.PCT, 6.8, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(deleteTableFlowPanel, 85.7, Unit.PCT, 5.9, Unit.PCT);
+	}
+	
+	public void removeDeleteTableFlowPanelFromView() {
+		layoutPanel.remove(deleteTableFlowPanel);
+	}
+	
+	public void addCancelTableFlowPanelToView() {
+		layoutPanel.add(cancelTableFlowPanel);
+		layoutPanel.setWidgetLeftWidth(cancelTableFlowPanel, 51.8, Unit.PCT, 6.9, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(cancelTableFlowPanel, 78.8, Unit.PCT, 5.9, Unit.PCT);
+	}
+	
+	public void removeCancelTableFlowPanelFromView() {
+		layoutPanel.remove(cancelTableFlowPanel);
+	}
+	
+	public void addSubmitTableFlowPanelToView() {
+		layoutPanel.add(submitTableFlowPanel);
+		layoutPanel.setWidgetLeftWidth(submitTableFlowPanel, 41.2, Unit.PCT, 6.8, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(submitTableFlowPanel, 78.8, Unit.PCT, 5.9, Unit.PCT);
+	}
+	
+	public void removeSubmitTableFlowPanelFromView() {
+		layoutPanel.remove(submitTableFlowPanel);
+	}
+	
+	public void addSeatingChartNewNameTextBoxToView() {
 		layoutPanel.add(newNameTextBox);
 		layoutPanel.setWidgetLeftWidth(newNameTextBox, 21.8, Unit.PCT, 13.0, Unit.PCT);
 		layoutPanel.setWidgetTopHeight(newNameTextBox, 73.4, Unit.PCT, 4.4, Unit.PCT);
@@ -210,7 +525,7 @@ public class SeatingChartView extends Composite {
 		layoutPanel.setWidgetTopHeight(seatingChartNewNameLabel, 73.6, Unit.PCT, 4.3, Unit.PCT);
 	}
 	
-	public void removeNewNameTextBoxFromView() {
+	public void removeSeatingChartNewNameTextBoxFromView() {
 		layoutPanel.remove(newNameTextBox);
 		layoutPanel.remove(seatingChartNewNameLabel);
 		newNameTextBox.setText("");
@@ -241,9 +556,25 @@ public class SeatingChartView extends Composite {
 		layoutPanel.setWidgetLeftWidth(submitSeatingChartFlowPanel, 11.2, Unit.PCT, 6.8, Unit.PCT);
 		layoutPanel.setWidgetTopHeight(submitSeatingChartFlowPanel, 78.8, Unit.PCT, 5.9, Unit.PCT);
 	}
+
 	
 	public void removeSubmitSeatingChartFlowPanelFromView() {
 		layoutPanel.remove(submitSeatingChartFlowPanel);
+	}
+	
+	public void addNewNameTextBoxToView() {
+		layoutPanel.add(newNameTextBox);
+		layoutPanel.setWidgetLeftWidth(newNameTextBox, 21.8, Unit.PCT, 13.0, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(newNameTextBox, 73.4, Unit.PCT, 4.4, Unit.PCT);
+		layoutPanel.add(seatingChartNewNameLabel);
+		layoutPanel.setWidgetLeftWidth(seatingChartNewNameLabel, 9.2, Unit.PCT, 8.6, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(seatingChartNewNameLabel, 73.6, Unit.PCT, 4.3, Unit.PCT);
+	}
+	
+	public void removeNewNameTextBoxFromView() {
+		layoutPanel.remove(newNameTextBox);
+		layoutPanel.remove(seatingChartNewNameLabel);
+		newNameTextBox.setText("");
 	}
 	
 	public void loadSeatingChart() {
@@ -276,7 +607,7 @@ public class SeatingChartView extends Composite {
 						seatingChartMenu.addItem(new MenuItem(s.getName(), false, new Command() {
 							@Override
 							public void execute() {							
-								handleSeatingChartClick(s);
+								handleSeatingChartClick(s.getName());
 							}					
 						}));
 					}
@@ -285,6 +616,67 @@ public class SeatingChartView extends Composite {
 			}
 			
 		});
+	}
+	
+	public void handleDeletePersonClick() {
+		
+		editPersonAtTableModel.setAccountName(Site.currentUser.getAccountName());
+		editPersonAtTableModel.setTableName(tableNameLabel.getText());
+		editPersonAtTableModel.setSeatingChartName(seatingChartNameLabel.getText());
+		editPersonAtTableModel.setTableName(tableNewNameTextBox.getText());
+		editPersonAtTableModel.setType(ActionType.DELETEPERSON);
+		
+		RPC.editPersonAtTableService.editPersonAtTable(editPersonAtTableModel, new AsyncCallback<EditDataResult>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				
+			}
+
+			@Override
+			public void onSuccess(EditDataResult result) {
+				if(result.getResult()) {
+					handleTableClick(editPersonAtTableModel.getTableName());
+				}
+				
+			}
+			
+		});
+		
+		removeSubmitPersonFlowPanelFromView();
+		removeCancelPersonFlowPanelFromView();
+		removeDeletePersonFlowPanelFromView();
+		removePersonNewNameTextBoxFromView();
+	}
+	
+	public void handleDeleteTableClick() {
+		
+		editTableModel.setAccountName(Site.currentUser.getAccountName());
+		editTableModel.setTableName(tableNameLabel.getText());
+		editTableModel.setSeatingChartName(seatingChartNameLabel.getText());
+		editTableModel.setType(ActionType.DELETETABLE);
+		
+		RPC.editTablesService.editTable(editTableModel, new AsyncCallback<EditDataResult>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				
+			}
+
+			@Override
+			public void onSuccess(EditDataResult result) {
+				if(result.getResult()) {
+					handleSeatingChartClick(editTableModel.getSeatingChartName());
+				}
+				
+			}
+			
+		});
+		
+		removeSubmitTableFlowPanelFromView();
+		removeCancelTableFlowPanelFromView();
+		removeDeleteTableFlowPanelFromView();
+		removeTableNewNameTextBoxFromView();
 	}
 	
 	public void handleDeleteSeatingChartClick() {	
@@ -314,6 +706,67 @@ public class SeatingChartView extends Composite {
 		removeNewNameTextBoxFromView();
 	}
 	
+	public void handleSubmitAddPersonClick() {
+		
+		editPersonAtTableModel.setAccountName(Site.currentUser.getAccountName());
+		editPersonAtTableModel.setTableName(tableNameLabel.getText());
+		editPersonAtTableModel.setSeatingChartName(seatingChartNameLabel.getText());
+		editPersonAtTableModel.setPersonName(personNewNameTextBox.getText());
+		editPersonAtTableModel.setType(ActionType.ADDPERSON);
+		
+		RPC.editPersonAtTableService.editPersonAtTable(editPersonAtTableModel, new AsyncCallback<EditDataResult>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				
+			}
+
+			@Override
+			public void onSuccess(EditDataResult result) {
+				if(result.getResult()) {
+					handleTableClick(editPersonAtTableModel.getTableName());
+				}
+				
+			}
+			
+		});
+		
+		removeSubmitPersonFlowPanelFromView();
+		removeCancelPersonFlowPanelFromView();
+		removeDeletePersonFlowPanelFromView();
+		removePersonNewNameTextBoxFromView();
+	}
+	
+	public void handleSubmitAddTableClick() {
+		
+		editTableModel.setAccountName(Site.currentUser.getAccountName());
+		editTableModel.setTableName(tableNewNameTextBox.getText());
+		editTableModel.setSeatingChartName(seatingChartNameLabel.getText());
+		editTableModel.setType(ActionType.ADDTABLE);
+		
+		RPC.editTablesService.editTable(editTableModel, new AsyncCallback<EditDataResult>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				
+			}
+
+			@Override
+			public void onSuccess(EditDataResult result) {
+				if(result.getResult()) {
+					handleSeatingChartClick(editTableModel.getSeatingChartName());
+				}
+				
+			}
+			
+		});
+		
+		removeSubmitTableFlowPanelFromView();
+		removeCancelTableFlowPanelFromView();
+		removeDeleteTableFlowPanelFromView();
+		removeTableNewNameTextBoxFromView();
+	}
+	
 	public void handleSubmitAddSeatingChartClick() {
 		
 		editSeatingChartModel.setAccountName(Site.currentUser.getAccountName());
@@ -340,6 +793,69 @@ public class SeatingChartView extends Composite {
 		removeCancelSeatingChartFlowPanelFromView();
 		removeDeleteSeatingChartFlowPanelFromView();
 		removeNewNameTextBoxFromView();
+	}
+	
+	public void handleSubmitEditPersonClick() {
+		
+		editPersonAtTableModel.setAccountName(Site.currentUser.getAccountName());
+		editPersonAtTableModel.setTableName(tableNameLabel.getText());
+		editPersonAtTableModel.setPersonName(personNameLabel.getText());
+		editPersonAtTableModel.setNewName(personNewNameTextBox.getText());
+		editPersonAtTableModel.setSeatingChartName(seatingChartNameLabel.getText());
+		editPersonAtTableModel.setType(ActionType.EDITPERSON);
+		
+		RPC.editPersonAtTableService.editPersonAtTable(editPersonAtTableModel, new AsyncCallback<EditDataResult>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				
+			}
+
+			@Override
+			public void onSuccess(EditDataResult result) {
+				if(result.getResult()) {
+					handleTableClick(editPersonAtTableModel.getTableName());
+				}
+				
+			}
+			
+		});
+		
+		removeSubmitPersonFlowPanelFromView();
+		removeCancelPersonFlowPanelFromView();
+		removeDeletePersonFlowPanelFromView();
+		removePersonNewNameTextBoxFromView();
+	}
+	
+	public void handleSubmitEditTableClick() {
+		
+		editTableModel.setAccountName(Site.currentUser.getAccountName());
+		editTableModel.setTableName(tableNameLabel.getText());
+		editTableModel.setNewName(tableNewNameTextBox.getText());
+		editTableModel.setSeatingChartName(seatingChartNameLabel.getText());
+		editTableModel.setType(ActionType.EDITTABLE);
+		
+		RPC.editTablesService.editTable(editTableModel, new AsyncCallback<EditDataResult>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				
+			}
+
+			@Override
+			public void onSuccess(EditDataResult result) {
+				if(result.getResult()) {
+					handleSeatingChartClick(editTableModel.getSeatingChartName());
+				}
+				
+			}
+			
+		});
+		
+		removeSubmitTableFlowPanelFromView();
+		removeCancelTableFlowPanelFromView();
+		removeDeleteTableFlowPanelFromView();
+		removeTableNewNameTextBoxFromView();
 	}
 	
 	public void handleSubmitEditSeatingChartClick() {
@@ -372,14 +888,70 @@ public class SeatingChartView extends Composite {
 		removeNewNameTextBoxFromView();
 	}
 	
-	public void handleCancelSeatingChartClick() {
+	private void handleCancelPersonClick() {
+		removeSubmitPersonFlowPanelFromView();
+		removeCancelPersonFlowPanelFromView();
+		removeDeletePersonFlowPanelFromView();
+		removePersonNewNameTextBoxFromView();
+	}
+	
+	private void handleAddPersonClick() {
+		removeSubmitPersonFlowPanelFromView();
+		removeCancelPersonFlowPanelFromView();
+		removeDeletePersonFlowPanelFromView();
+		removePersonNewNameTextBoxFromView();
+		addPersonNewNameTextBoxToView();
+		addSubmitPersonFlowPanelToView();
+		addCancelPersonFlowPanelToView();
+	}
+	
+	private void handleEditPersonClick() {
+		removeSubmitPersonFlowPanelFromView();
+		removeCancelPersonFlowPanelFromView();
+		removeDeletePersonFlowPanelFromView();
+		removePersonNewNameTextBoxFromView();
+		addPersonNewNameTextBoxToView();
+		addSubmitPersonFlowPanelToView();
+		addCancelPersonFlowPanelToView();
+		addDeletePersonFlowPanelToView();
+	}
+	
+	private void handleCancelTableClick() {
+		removeSubmitTableFlowPanelFromView();
+		removeCancelTableFlowPanelFromView();
+		removeDeleteTableFlowPanelFromView();
+		removeTableNewNameTextBoxFromView();
+	}
+	
+	private void handleAddTableClick() {
+		removeSubmitTableFlowPanelFromView();
+		removeCancelTableFlowPanelFromView();
+		removeDeleteTableFlowPanelFromView();
+		removeTableNewNameTextBoxFromView();
+		addTableNewNameTextBoxToView();
+		addSubmitTableFlowPanelToView();
+		addCancelTableFlowPanelToView();
+	}
+	
+	private void handleEditTableClick() {
+		removeSubmitTableFlowPanelFromView();
+		removeCancelTableFlowPanelFromView();
+		removeDeleteTableFlowPanelFromView();
+		removeTableNewNameTextBoxFromView();
+		addTableNewNameTextBoxToView();
+		addSubmitTableFlowPanelToView();
+		addCancelTableFlowPanelToView();
+		addDeleteTableFlowPanelToView();
+	}
+	
+	private void handleCancelSeatingChartClick() {
 		removeSubmitSeatingChartFlowPanelFromView();
 		removeCancelSeatingChartFlowPanelFromView();
 		removeDeleteSeatingChartFlowPanelFromView();
 		removeNewNameTextBoxFromView();
 	}
 	
-	public void handleAddSeatingChartClick() {
+	private void handleAddSeatingChartClick() {
 		removeSubmitSeatingChartFlowPanelFromView();
 		removeCancelSeatingChartFlowPanelFromView();
 		removeDeleteSeatingChartFlowPanelFromView();
@@ -389,7 +961,7 @@ public class SeatingChartView extends Composite {
 		addCancelSeatingChartFlowPanelToView();
 	}
 	
-	public void handleEditSeatingChartClick() {
+	private void handleEditSeatingChartClick() {
 		removeSubmitSeatingChartFlowPanelFromView();
 		removeCancelSeatingChartFlowPanelFromView();
 		removeDeleteSeatingChartFlowPanelFromView();
@@ -400,14 +972,14 @@ public class SeatingChartView extends Composite {
 		addDeleteSeatingChartFlowPanelToView();
 	}
 	
-	public void handleSeatingChartClick(SeatingChart seatingChart) {
+	public void handleSeatingChartClick(String name) {
 		
-		seatingChartNameLabel.setText(seatingChart.getName());
+		seatingChartNameLabel.setText(name);
 		
 		getTablesModel.setAccountName(Site.currentUser.getAccountName());
-		getTablesModel.setSeatingChartName(seatingChart.getName());
+		getTablesModel.setSeatingChartName(name);
 		getTablesModel.setType(ActionType.GETTABLES);
-		getPeopleAtTableModel.setSeatingChartName(seatingChart.getName());
+		getPeopleAtTableModel.setSeatingChartName(name);
 		
 		RPC.getTablesService.getTables(getTablesModel, new AsyncCallback<GetTablesResult>() {
 
@@ -430,7 +1002,7 @@ public class SeatingChartView extends Composite {
 						tableMenu.addItem(new MenuItem(t.getName(), false, new Command() {
 							@Override
 							public void execute() {
-								handleTableClick(t);							
+								handleTableClick(t.getName());							
 							}					
 						}));
 					}
@@ -441,11 +1013,12 @@ public class SeatingChartView extends Composite {
 		
 	}
 	
-	public void handleTableClick(Table t) {
+	public void handleTableClick(String name) {
 		
 		getPeopleAtTableModel.setAccountName(Site.currentUser.getAccountName());
-		getPeopleAtTableModel.setTableName(t.getName());
+		getPeopleAtTableModel.setTableName(name);
 		getPeopleAtTableModel.setType(ActionType.GETPEOPLEATTABLE);
+		tableNameLabel.setText(name);
 		
 		RPC.getPeopleAtTable.getPeopleAtTable(getPeopleAtTableModel, new AsyncCallback<GetPeopleAtTableResult>() {
 
@@ -464,7 +1037,12 @@ public class SeatingChartView extends Composite {
 					peopleMenu.addItem(new MenuItem("No people are currently at this table", false, (Command) null));
 				} else {
 					for (final Person p : people) {
-						peopleMenu.addItem(new MenuItem(p.getName(), false, (Command) null));
+						peopleMenu.addItem(new MenuItem(p.getName(), false, new Command() {
+							@Override
+							public void execute() {
+								handlePersonClick(p.getName());
+							}							
+						}));
 					}
 				}
 				
@@ -472,5 +1050,9 @@ public class SeatingChartView extends Composite {
 			
 		});
 		
+	}
+	
+	public void handlePersonClick(String name) {
+		personNameLabel.setText(name);		
 	}
 }

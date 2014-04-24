@@ -24,7 +24,7 @@ public class PageView extends Composite {
 		
 		backAndHomeMenu = new MenuBar(false);
 		layoutPanel.add(backAndHomeMenu);
-		backAndHomeMenu.setSize("113px", "35px");
+		backAndHomeMenu.setSize("100%", "100%");
 		
 		MenuItem backMenuItem = new MenuItem("Back", false, new Command() {
 			public void execute() {
