@@ -234,17 +234,14 @@ public class FakeDatabase implements IDatabase  {
 		Account a = findAccountByAccountName(accountName);
 		int seatingChartId = getSeatingChartId(a.getID(), seatingChartName);
 		ArrayList<Table> result = new ArrayList<Table>();
-		
-		System.out.println("Seating Chart Name in Database: " + seatingChartName);
-		System.out.println("Seating ChartId in Database: " + seatingChartId);
-		
+			
 		for(int i = 0; i < tables.size(); i++) {
 			if(tables.get(i).getSeatingChartID() == seatingChartId) {
 				result.add(tables.get(i));
 			}
 		}
 		
-		return tables;
+		return result;
 		
 		
 	}
