@@ -83,6 +83,21 @@ public class LoginAndLoginResultView extends Composite implements ISubscriber {
 		panel.add(loginButton);
 		panel.setWidgetLeftWidth(loginButton, 25.0, Unit.PX, 81.0, Unit.PX);
 		panel.setWidgetTopHeight(loginButton, 236.0, Unit.PX, 30.0, Unit.PX);
+		
+		Button createAccountButton = new Button("Create Account");
+		createAccountButton.setText("Create an Account");
+		createAccountButton.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				handleNewAccountClick();
+				
+			}
+			
+		});
+		panel.add(createAccountButton);
+		panel.setWidgetLeftWidth(createAccountButton, 25, Unit.PX, 150, Unit.PX);
+		panel.setWidgetTopHeight(createAccountButton, 270.0, Unit.PX, 30, Unit.PX);
 				
 		setStyleName("layout");
 	}
@@ -102,6 +117,10 @@ public class LoginAndLoginResultView extends Composite implements ISubscriber {
 		model.setUsername(usernameTextBox.getText());
 		model.setPassword(passwordTextBox.getText());
 		model.setType(actionType);
+	}
+	
+	protected void handleNewAccountClick() {
+		Site.search(Pages.CREATEACCOUNTPAGE);
 	}
 	
 	protected void handleLogin() {

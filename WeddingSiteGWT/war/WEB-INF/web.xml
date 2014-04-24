@@ -111,6 +111,16 @@
   	<servlet-name>EditPersonAtTableImpl</servlet-name>
  	<url-pattern>/weddingsitegwt/EditPersonAtTable/*</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+	<servlet-name>CreateAccountImpl</servlet-name>
+	<servlet-class>weddingsite.server.CreateAccountImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>CreateAccountImpl</servlet-name>
+ 	<url-pattern>/weddingsitegwt/CreateAccountService/*</url-pattern>
+  </servlet-mapping>
 
   
   <!-- Servlet context listeners -->

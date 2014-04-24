@@ -27,6 +27,7 @@ public class Site implements EntryPoint {
 		ATTENDANCELISTPAGE,
 		BACK,
 		SEATINGCHARTPAGE,
+		CREATEACCOUNTPAGE,
 	}
 	
 	/**
@@ -94,6 +95,17 @@ public class Site implements EntryPoint {
 			if(p != null) {
 				search(p);
 			}
+		break;
+		
+		case CREATEACCOUNTPAGE:
+			viewHistory.push(currentPage);
+			RootLayoutPanel.get().remove(currentView);
+			CreateAccountView v5 = new CreateAccountView();
+			RootLayoutPanel.get().add(v5);
+			currentView = v5;
+			RootLayoutPanel.get().setWidgetLeftWidth(v5, 0, Unit.PCT, 100.0, Unit.PCT);
+			RootLayoutPanel.get().setWidgetTopHeight(v5, 0, Unit.PCT, 100.0, Unit.PCT);	
+			currentPage = Pages.CREATEACCOUNTPAGE;
 		break;
 		
 		default:
