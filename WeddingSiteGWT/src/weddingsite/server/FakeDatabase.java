@@ -119,6 +119,39 @@ public class FakeDatabase implements IDatabase  {
 		return false;
 	}
 	
+	@Override
+	public boolean deleteSeatingChart(String accountName, String seatingChartName) {
+		Account a = findAccountByAccountName(accountName);
+		if(a != null) {
+			int acctId = a.getID();
+			for(int i = 0; i < seatingCharts.size(); i++) {
+				if(seatingCharts.get(i).getAccountID() == acctId && seatingCharts.get(i).getName().equals(seatingChartName)) {
+					seatingCharts.remove(i);
+					return true;
+				}
+			}
+		
+		}
+		
+		return false;
+	}
+	
+	public boolean editSeatingChart(String accountName, String seatingChartName, String newName) {
+		Account a = findAccountByAccountName(accountName);
+		if(a != null) {
+			int acctId = a.getID();
+			for(int i = 0; i < seatingCharts.size(); i++) {
+				if(seatingCharts.get(i).getAccountID() == acctId && seatingCharts.get(i).getName().equals(seatingChartName)) {
+					seatingCharts.get(i).setName(newName);
+					return true;
+				}
+			}
+		
+		}
+		
+		return false;
+	}
+	
 	public boolean addTableToSeatingChart(String accountName, String seatingChartName, String tableName, int numSeats) {
 		Account a = findAccountByAccountName(accountName);
 		
@@ -205,9 +238,9 @@ public class FakeDatabase implements IDatabase  {
 	}
 	
 	@Override
-	public ArrayList<Person> getPeopleAtTable(String accountName, String attendanceListName, String tableName) {
+	public ArrayList<Person> getPeopleAtTable(String accountName, String seatingChartName, String tableName) {
 		int acctId = findAccountByAccountName(accountName).getID();
-		int seatingChartId = getSeatingChartId(acctId, attendanceListName);
+		int seatingChartId = getSeatingChartId(acctId, seatingChartName);
 		int tableId = getTableId(seatingChartId, tableName);
 		
 		ArrayList<Person> result = new ArrayList<Person>();
@@ -221,8 +254,57 @@ public class FakeDatabase implements IDatabase  {
 		return result;
 	}
 	
-	public int getNumAtTable(String accountName, String attendanceListName, String tableName) {
-		ArrayList<Person> people = getPeopleAtTable(accountName, attendanceListName, tableName);
+	public boolean removePersonFromTable(String accountName, String seatingChartName, String tableName, String personName) {
+		int acctId = findAccountByAccountName(accountName).getID();
+		int seatingChartId = getSeatingChartId(acctId, seatingChartName);
+		int tableId = getTableId(seatingChartId, tableName);
+		
+		for(int i = 0; i < people.size(); i++) {
+			if(people.get(i).getTableID() == tableId && people.get(i).getName().equals(personName)) {
+				people.remove(i);
+				return true;
+			}
+		}
+		
+		return false;
+		
+	}
+	
+	public boolean addPersonToTable(String accountName, String seatingChartName, String tableName, String personName) {
+		int acctId = findAccountByAccountName(accountName).getID();
+		int seatingChartId = getSeatingChartId(acctId, seatingChartName);
+		int tableId = getTableId(seatingChartId, tableName);
+		
+		if(tableId != -1) {
+			Person p = new Person();
+			p.setName(personName);
+			p.setTableID(tableId);
+			p.setId(people.size());
+			
+			people.add(p);
+			
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean editPersonInTable(String accountName, String seatingChartName, String tableName, String personName, String newName) {
+		int acctId = findAccountByAccountName(accountName).getID();
+		int seatingChartId = getSeatingChartId(acctId, seatingChartName);
+		int tableId = getTableId(seatingChartId, tableName);
+		
+		for(int i = 0; i < people.size(); i++) {
+			if(people.get(i).getTableID() == tableId && people.get(i).getName().equals(newName)) {
+				people.get(i).setName(newName);
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	public int getNumAtTable(String accountName, String seatingChartName, String tableName) {
+		ArrayList<Person> people = getPeopleAtTable(accountName, seatingChartName, tableName);
 		int count = people.size();
 		
 		return count;
@@ -392,7 +474,7 @@ public class FakeDatabase implements IDatabase  {
 		return false;
 	}
 	
-	
+	@Override
 	public ArrayList<AttendanceList> getAttendanceLists(String accountName) {
 		
 		Account account = findAccountByAccountName(accountName);
@@ -409,6 +491,38 @@ public class FakeDatabase implements IDatabase  {
 		}
 		
 		return list;
+	}
+	
+	@Override
+	public boolean deleteAttendanceList(String accountName, String attendanceListName) {
+		Account account = findAccountByAccountName(accountName);
+		int acctId = account.getID();
+		
+		for(AttendanceList a : attendanceLists) {
+			
+			if(a.getAccountID() == acctId && a.getName().equals(attendanceListName)) {
+				attendanceLists.remove(a);
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	@Override
+	public boolean editAttendanceList(String accountName, String attendanceListName, String newName) {
+		Account account = findAccountByAccountName(accountName);
+		int acctId = account.getID();
+		
+		for(AttendanceList a : attendanceLists) {
+			
+			if(a.getAccountID() == acctId && a.getName().equals(attendanceListName)) {
+				a.setName(newName);;
+				return true;
+			}
+		}
+		
+		return false;
 	}
 	
 	@Override

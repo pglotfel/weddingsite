@@ -37,10 +37,10 @@ public class EditAttendanceList {
 			break;
 			
 		case DELETEATTENDANCELIST:
-			//delete
+			resultVal = DatabaseProvider.getInstance().deleteAttendanceList(model.getAccountName(), model.getAttendanceListName());
 			break;
 		case EDITATTENDANCELIST:
-			//edit
+			resultVal = DatabaseProvider.getInstance().editAttendanceList(model.getAccountName(), model.getAttendanceListName(), model.getNewName());
 			break;
 		
 		default:

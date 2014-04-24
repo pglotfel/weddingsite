@@ -23,10 +23,10 @@ public class EditSeatingChart {
 			break;
 			
 		case DELETESEATINGCHART:
-			//delete
+			resultVal = DatabaseProvider.getInstance().deleteSeatingChart(model.getAccountName(), model.getSeatingChartName());
 			break;
 		case EDITSEATINGCHART:
-			//edit
+			resultVal = DatabaseProvider.getInstance().editSeatingChart(model.getAccountName(), model.getSeatingChartName(), model.getNewName());
 			break;
 			
 		default:
