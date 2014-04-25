@@ -69,18 +69,26 @@ h1 {
 	
 }
 
+.CenterText {
+	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+	color: #3c0315;
+}
+
 .gwt-MenuBar-vertical {
-    background: white;
+    background: #cecece;
     width: 100%;
     height: 100%;
     overflow: auto;
+    color:   #3c0315;
 }
 
 .gwt-MenuBar-vertical .gwt-MenuItem
 {
     cursor                      :   hand;
     cursor                      :   pointer;
-
     border                      :   2px solid #000000;
     background-color            :   #bdbdbd;
     padding                     :   2px 10px;
@@ -134,6 +142,16 @@ h1 {
 	margin-right: auto;
 	color: #3c0315;
 	font-weight: bold;
+}
+
+.ButtonColorScheme {
+	color: #3c0315;
+}
+
+.TextColorScheme {
+	font-family : "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	font-size:	15px;
+	color: #3c0315;
 }
 
 
