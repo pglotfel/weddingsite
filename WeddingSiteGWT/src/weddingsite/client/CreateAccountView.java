@@ -33,65 +33,65 @@ public class CreateAccountView extends Composite{
 			mainFlowPanel.setSize("100%", "100%");
 			
 			LayoutPanel layoutPanel = new LayoutPanel();
-			layoutPanel.setStyleName("Background");
+			layoutPanel.setStyleName("InnerBackground");
 			mainFlowPanel.add(layoutPanel);
-			layoutPanel.setSize("544px", "579px");
+			layoutPanel.setSize("544px", "610px");
 			
 			Label lblCreateAName = new Label("Create a name for your account:");
 			lblCreateAName.setStyleName("CreateAccountLbls");
 			layoutPanel.add(lblCreateAName);
 			layoutPanel.setWidgetLeftWidth(lblCreateAName, 21.0, Unit.PX, 251.0, Unit.PX);
-			layoutPanel.setWidgetTopHeight(lblCreateAName, 56.0, Unit.PX, 18.0, Unit.PX);
+			layoutPanel.setWidgetTopHeight(lblCreateAName, 129.0, Unit.PX, 18.0, Unit.PX);
 			
 			Label lblegsmithjohnsonwedding = new Label("(Eg. \"SmithJohnsonWedding\")");
 			lblegsmithjohnsonwedding.setStyleName("CreateAccountLbls");
 			layoutPanel.add(lblegsmithjohnsonwedding);
-			layoutPanel.setWidgetLeftWidth(lblegsmithjohnsonwedding, 21.0, Unit.PX, 234.0, Unit.PX);
-			layoutPanel.setWidgetTopHeight(lblegsmithjohnsonwedding, 80.0, Unit.PX, 18.0, Unit.PX);
+			layoutPanel.setWidgetLeftWidth(lblegsmithjohnsonwedding, 31.0, Unit.PX, 234.0, Unit.PX);
+			layoutPanel.setWidgetTopHeight(lblegsmithjohnsonwedding, 153.0, Unit.PX, 18.0, Unit.PX);
 			
 			AccountNameTxt = new TextBox();
 			layoutPanel.add(AccountNameTxt);
 			layoutPanel.setWidgetLeftWidth(AccountNameTxt, 291.0, Unit.PX, 220.0, Unit.PX);
-			layoutPanel.setWidgetTopHeight(AccountNameTxt, 64.0, Unit.PX, 34.0, Unit.PX);
+			layoutPanel.setWidgetTopHeight(AccountNameTxt, 129.0, Unit.PX, 34.0, Unit.PX);
 			
 			Label lblChooseAnAdmin = new Label("Choose an admin username:");
 			lblChooseAnAdmin.setStyleName("CreateAccountLbls");
 			layoutPanel.add(lblChooseAnAdmin);
-			layoutPanel.setWidgetLeftWidth(lblChooseAnAdmin, 21.0, Unit.PX, 220.0, Unit.PX);
-			layoutPanel.setWidgetTopHeight(lblChooseAnAdmin, 137.0, Unit.PX, 18.0, Unit.PX);
+			layoutPanel.setWidgetLeftWidth(lblChooseAnAdmin, 23.0, Unit.PX, 220.0, Unit.PX);
+			layoutPanel.setWidgetTopHeight(lblChooseAnAdmin, 214.0, Unit.PX, 18.0, Unit.PX);
 			
 			AdminUsernameTxt = new TextBox();
 			layoutPanel.add(AdminUsernameTxt);
 			layoutPanel.setWidgetLeftWidth(AdminUsernameTxt, 291.0, Unit.PX, 220.0, Unit.PX);
-			layoutPanel.setWidgetTopHeight(AdminUsernameTxt, 138.0, Unit.PX, 34.0, Unit.PX);
+			layoutPanel.setWidgetTopHeight(AdminUsernameTxt, 214.0, Unit.PX, 34.0, Unit.PX);
 			
 			Label lblPleaseEnterA = new Label("Please enter a password: ");
 			lblPleaseEnterA.setStyleName("CreateAccountLbls");
 			layoutPanel.add(lblPleaseEnterA);
 			layoutPanel.setWidgetLeftWidth(lblPleaseEnterA, 21.0, Unit.PX, 195.0, Unit.PX);
-			layoutPanel.setWidgetTopHeight(lblPleaseEnterA, 209.0, Unit.PX, 18.0, Unit.PX);
+			layoutPanel.setWidgetTopHeight(lblPleaseEnterA, 305.0, Unit.PX, 18.0, Unit.PX);
 			
 			Label lblatLeast = new Label("(At least 6 characters)");
 			lblatLeast.setStyleName("CreateAccountLbls");
 			layoutPanel.add(lblatLeast);
 			layoutPanel.setWidgetLeftWidth(lblatLeast, 21.0, Unit.PX, 195.0, Unit.PX);
-			layoutPanel.setWidgetTopHeight(lblatLeast, 233.0, Unit.PX, 18.0, Unit.PX);
+			layoutPanel.setWidgetTopHeight(lblatLeast, 329.0, Unit.PX, 18.0, Unit.PX);
 			
 			PasswordTxt = new PasswordTextBox();
 			layoutPanel.add(PasswordTxt);
 			layoutPanel.setWidgetLeftWidth(PasswordTxt, 291.0, Unit.PX, 220.0, Unit.PX);
-			layoutPanel.setWidgetTopHeight(PasswordTxt, 217.0, Unit.PX, 34.0, Unit.PX);
+			layoutPanel.setWidgetTopHeight(PasswordTxt, 305.0, Unit.PX, 34.0, Unit.PX);
 			
 			Label lblPleaseReenterThe = new Label("Please re-enter the password:");
 			lblPleaseReenterThe.setStyleName("CreateAccountLbls");
 			layoutPanel.add(lblPleaseReenterThe);
 			layoutPanel.setWidgetLeftWidth(lblPleaseReenterThe, 21.0, Unit.PX, 234.0, Unit.PX);
-			layoutPanel.setWidgetTopHeight(lblPleaseReenterThe, 335.0, Unit.PX, 18.0, Unit.PX);
+			layoutPanel.setWidgetTopHeight(lblPleaseReenterThe, 401.0, Unit.PX, 18.0, Unit.PX);
 			
 			ConfirmPasswordTxt = new PasswordTextBox();
 			layoutPanel.add(ConfirmPasswordTxt);
 			layoutPanel.setWidgetLeftWidth(ConfirmPasswordTxt, 291.0, Unit.PX, 220.0, Unit.PX);
-			layoutPanel.setWidgetTopHeight(ConfirmPasswordTxt, 335.0, Unit.PX, 34.0, Unit.PX);
+			layoutPanel.setWidgetTopHeight(ConfirmPasswordTxt, 401.0, Unit.PX, 34.0, Unit.PX);
 			
 			Button CreateAccountBtn = new Button("New button");
 			CreateAccountBtn.setStyleName("h1");
@@ -103,12 +103,13 @@ public class CreateAccountView extends Composite{
 			CreateAccountBtn.setText("Create Account");
 			layoutPanel.add(CreateAccountBtn);
 			layoutPanel.setWidgetLeftWidth(CreateAccountBtn, 161.0, Unit.PX, 184.0, Unit.PX);
-			layoutPanel.setWidgetTopHeight(CreateAccountBtn, 452.0, Unit.PX, 30.0, Unit.PX);
+			layoutPanel.setWidgetTopHeight(CreateAccountBtn, 496.0, Unit.PX, 30.0, Unit.PX);
 			
 			ErrorLbl = new Label("");
+			ErrorLbl.setStyleName("CreateAccountLbls");
 			layoutPanel.add(ErrorLbl);
 			layoutPanel.setWidgetLeftWidth(ErrorLbl, 161.0, Unit.PX, 184.0, Unit.PX);
-			layoutPanel.setWidgetTopHeight(ErrorLbl, 394.0, Unit.PX, 18.0, Unit.PX);
+			layoutPanel.setWidgetTopHeight(ErrorLbl, 458.0, Unit.PX, 18.0, Unit.PX);
 			
 			
 			

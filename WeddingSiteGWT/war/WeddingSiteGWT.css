@@ -113,5 +113,12 @@ h1 {
 	margin-right: auto;
 }
 
+.InnerBackground {
+	background-color: #bdbdbd;
+	margin-left: auto;
+	margin-right: auto;
+	border:   2px solid #3c0315;
+}
+
 
 
