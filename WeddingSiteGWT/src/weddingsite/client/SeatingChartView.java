@@ -466,7 +466,7 @@ public class SeatingChartView extends Composite {
 		layoutPanel.setWidgetLeftWidth(personNewNameTextBox, 81.8, Unit.PCT, 10.0, Unit.PCT);
 		layoutPanel.setWidgetTopHeight(personNewNameTextBox, 73.4, Unit.PCT, 3.2, Unit.PCT);
 		layoutPanel.add(personNewNameLabel);
-		layoutPanel.setWidgetLeftWidth(personNewNameLabel, 69.2, Unit.PCT, 8.6, Unit.PCT);
+		layoutPanel.setWidgetLeftWidth(personNewNameLabel, 69.2, Unit.PCT, 10.0, Unit.PCT);
 		layoutPanel.setWidgetTopHeight(personNewNameLabel, 73.6, Unit.PCT, 3.2, Unit.PCT);	
 	}
 	
@@ -511,7 +511,7 @@ public class SeatingChartView extends Composite {
 		layoutPanel.setWidgetLeftWidth(tableNewNameTextBox, 51.8, Unit.PCT, 10.0, Unit.PCT);
 		layoutPanel.setWidgetTopHeight(tableNewNameTextBox, 73.4, Unit.PCT, 3.2, Unit.PCT);
 		layoutPanel.add(tableNewNameLabel);
-		layoutPanel.setWidgetLeftWidth(tableNewNameLabel, 39.2, Unit.PCT, 8.6, Unit.PCT);
+		layoutPanel.setWidgetLeftWidth(tableNewNameLabel, 39.2, Unit.PCT, 10.0, Unit.PCT);
 		layoutPanel.setWidgetTopHeight(tableNewNameLabel, 73.6, Unit.PCT, 3.2, Unit.PCT);	
 	}
 	
@@ -602,7 +602,7 @@ public class SeatingChartView extends Composite {
 		layoutPanel.setWidgetLeftWidth(newNameTextBox, 21.8, Unit.PCT, 10.0, Unit.PCT);
 		layoutPanel.setWidgetTopHeight(newNameTextBox, 73.4, Unit.PCT, 3.2, Unit.PCT);
 		layoutPanel.add(seatingChartNewNameLabel);
-		layoutPanel.setWidgetLeftWidth(seatingChartNewNameLabel, 9.2, Unit.PCT, 8.6, Unit.PCT);
+		layoutPanel.setWidgetLeftWidth(seatingChartNewNameLabel, 9.2, Unit.PCT, 10.0, Unit.PCT);
 		layoutPanel.setWidgetTopHeight(seatingChartNewNameLabel, 73.6, Unit.PCT, 3.2, Unit.PCT);
 	}
 	
