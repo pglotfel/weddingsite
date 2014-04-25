@@ -35,80 +35,82 @@ public class CreateAccountView extends Composite{
 			LayoutPanel layoutPanel = new LayoutPanel();
 			layoutPanel.setStyleName("InnerBackground");
 			mainFlowPanel.add(layoutPanel);
-			layoutPanel.setSize("524px", "610px");
+			layoutPanel.setSize("600px", "650px");
 			
 			Label lblCreateAName = new Label("Create a name for your account:");
 			lblCreateAName.setStyleName("CreateAccountLbls");
 			layoutPanel.add(lblCreateAName);
-			layoutPanel.setWidgetLeftWidth(lblCreateAName, 21.0, Unit.PX, 251.0, Unit.PX);
+			layoutPanel.setWidgetLeftWidth(lblCreateAName, 35.0, Unit.PX, 251.0, Unit.PX);
 			layoutPanel.setWidgetTopHeight(lblCreateAName, 129.0, Unit.PX, 18.0, Unit.PX);
 			
 			Label lblegsmithjohnsonwedding = new Label("(Eg. \"SmithJohnsonWedding\")");
 			lblegsmithjohnsonwedding.setStyleName("CreateAccountLbls");
 			layoutPanel.add(lblegsmithjohnsonwedding);
-			layoutPanel.setWidgetLeftWidth(lblegsmithjohnsonwedding, 33.0, Unit.PX, 239.0, Unit.PX);
+			layoutPanel.setWidgetLeftWidth(lblegsmithjohnsonwedding, 47.0, Unit.PX, 239.0, Unit.PX);
 			layoutPanel.setWidgetTopHeight(lblegsmithjohnsonwedding, 153.0, Unit.PX, 18.0, Unit.PX);
 			
 			AccountNameTxt = new TextBox();
+			AccountNameTxt.setStyleName("EditTextStyle");
 			layoutPanel.add(AccountNameTxt);
-			layoutPanel.setWidgetLeftWidth(AccountNameTxt, 291.0, Unit.PX, 220.0, Unit.PX);
+			layoutPanel.setWidgetLeftWidth(AccountNameTxt, 310.0, Unit.PX, 220.0, Unit.PX);
 			layoutPanel.setWidgetTopHeight(AccountNameTxt, 129.0, Unit.PX, 34.0, Unit.PX);
 			
 			Label lblChooseAnAdmin = new Label("Choose an admin username:");
 			lblChooseAnAdmin.setStyleName("CreateAccountLbls");
 			layoutPanel.add(lblChooseAnAdmin);
-			layoutPanel.setWidgetLeftWidth(lblChooseAnAdmin, 23.0, Unit.PX, 242.0, Unit.PX);
+			layoutPanel.setWidgetLeftWidth(lblChooseAnAdmin, 44.0, Unit.PX, 242.0, Unit.PX);
 			layoutPanel.setWidgetTopHeight(lblChooseAnAdmin, 214.0, Unit.PX, 18.0, Unit.PX);
 			
 			AdminUsernameTxt = new TextBox();
+			AdminUsernameTxt.setStyleName("EditTextStyle");
 			layoutPanel.add(AdminUsernameTxt);
-			layoutPanel.setWidgetLeftWidth(AdminUsernameTxt, 291.0, Unit.PX, 220.0, Unit.PX);
+			layoutPanel.setWidgetLeftWidth(AdminUsernameTxt, 310.0, Unit.PX, 220.0, Unit.PX);
 			layoutPanel.setWidgetTopHeight(AdminUsernameTxt, 214.0, Unit.PX, 34.0, Unit.PX);
 			
 			Label lblPleaseEnterA = new Label("Please enter a password: ");
 			lblPleaseEnterA.setStyleName("CreateAccountLbls");
 			layoutPanel.add(lblPleaseEnterA);
-			layoutPanel.setWidgetLeftWidth(lblPleaseEnterA, 21.0, Unit.PX, 244.0, Unit.PX);
+			layoutPanel.setWidgetLeftWidth(lblPleaseEnterA, 42.0, Unit.PX, 244.0, Unit.PX);
 			layoutPanel.setWidgetTopHeight(lblPleaseEnterA, 305.0, Unit.PX, 18.0, Unit.PX);
 			
 			Label lblatLeast = new Label("(At least 6 characters)");
 			lblatLeast.setStyleName("CreateAccountLbls");
 			layoutPanel.add(lblatLeast);
-			layoutPanel.setWidgetLeftWidth(lblatLeast, 21.0, Unit.PX, 244.0, Unit.PX);
+			layoutPanel.setWidgetLeftWidth(lblatLeast, 42.0, Unit.PX, 244.0, Unit.PX);
 			layoutPanel.setWidgetTopHeight(lblatLeast, 329.0, Unit.PX, 18.0, Unit.PX);
 			
 			PasswordTxt = new PasswordTextBox();
+			PasswordTxt.setStyleName("EditTextStyle");
 			layoutPanel.add(PasswordTxt);
-			layoutPanel.setWidgetLeftWidth(PasswordTxt, 291.0, Unit.PX, 220.0, Unit.PX);
+			layoutPanel.setWidgetLeftWidth(PasswordTxt, 310.0, Unit.PX, 220.0, Unit.PX);
 			layoutPanel.setWidgetTopHeight(PasswordTxt, 305.0, Unit.PX, 34.0, Unit.PX);
 			
 			Label lblPleaseReenterThe = new Label("Please re-enter the password:");
 			lblPleaseReenterThe.setStyleName("CreateAccountLbls");
 			layoutPanel.add(lblPleaseReenterThe);
-			layoutPanel.setWidgetLeftWidth(lblPleaseReenterThe, 23.0, Unit.PX, 249.0, Unit.PX);
-			layoutPanel.setWidgetTopHeight(lblPleaseReenterThe, 401.0, Unit.PX, 18.0, Unit.PX);
+			layoutPanel.setWidgetLeftWidth(lblPleaseReenterThe, 37.0, Unit.PX, 249.0, Unit.PX);
+			layoutPanel.setWidgetTopHeight(lblPleaseReenterThe, 399.0, Unit.PX, 18.0, Unit.PX);
 			
 			ConfirmPasswordTxt = new PasswordTextBox();
+			ConfirmPasswordTxt.setStyleName("EditTextStyle");
 			layoutPanel.add(ConfirmPasswordTxt);
-			layoutPanel.setWidgetLeftWidth(ConfirmPasswordTxt, 291.0, Unit.PX, 220.0, Unit.PX);
+			layoutPanel.setWidgetLeftWidth(ConfirmPasswordTxt, 310.0, Unit.PX, 220.0, Unit.PX);
 			layoutPanel.setWidgetTopHeight(ConfirmPasswordTxt, 401.0, Unit.PX, 34.0, Unit.PX);
 			
 			ErrorLbl = new Label("");
 			ErrorLbl.setStyleName("CenterText");
 			layoutPanel.add(ErrorLbl);
-			layoutPanel.setWidgetLeftWidth(ErrorLbl, 172.0, Unit.PX, 184.0, Unit.PX);
 			layoutPanel.setWidgetTopHeight(ErrorLbl, 457.0, Unit.PX, 18.0, Unit.PX);
 			
 			Label CreateAccountHeader = new Label("Create An Account");
 			CreateAccountHeader.setStyleName("CenterTitles");
 			layoutPanel.add(CreateAccountHeader);
-			layoutPanel.setWidgetLeftWidth(CreateAccountHeader, 130.0, Unit.PX, 259.0, Unit.PX);
 			layoutPanel.setWidgetTopHeight(CreateAccountHeader, 47.0, Unit.PX, 34.0, Unit.PX);
 			
 			FlowPanel flowPanel = new FlowPanel();
 			flowPanel.setStyleName("CenterButton");
 			layoutPanel.add(flowPanel);
-			layoutPanel.setWidgetLeftWidth(flowPanel, 158.0, Unit.PX, 212.0, Unit.PX);
+			flowPanel.setSize("150px", "40px");
 			layoutPanel.setWidgetTopHeight(flowPanel, 491.0, Unit.PX, 42.0, Unit.PX);
 			
 			Button CreateAccountBtn = new Button("New button");

@@ -41,60 +41,58 @@ public class LoginAndLoginResultView extends Composite implements ISubscriber {
 		LayoutPanel panel = new LayoutPanel();
 		panel.setStyleName("InnerBackground");
 		mainFlowPanel.add(panel);
-		panel.setSize("288px", "483px");
+		panel.setSize("350px", "500px");
 		
 		this.resultView = new LoginResultView();
 		resultView.setStyleName("CenterText");
 		resultView.setModel(loginResult);
 		panel.add(resultView);
-		panel.setWidgetLeftWidth(resultView, 53.0, Unit.PX, 200.0, Unit.PX);
 		panel.setWidgetTopHeight(resultView, 418.0, Unit.PX, 31.0, Unit.PX);
 		
 		accountNameTextBox = new TextBox();
+		accountNameTextBox.setStyleName("CenterEditText");
+		accountNameTextBox.setSize("200px", "30px");
 		panel.add(accountNameTextBox);
-		panel.setWidgetLeftWidth(accountNameTextBox, 25.0, Unit.PX, 173.0, Unit.PX);
 		panel.setWidgetTopHeight(accountNameTextBox, 127.0, Unit.PX, 34.0, Unit.PX);
 		
 		usernameTextBox = new TextBox();
+		usernameTextBox.setStyleName("CenterEditText");
 		panel.add(usernameTextBox);
-		panel.setWidgetLeftWidth(usernameTextBox, 25.0, Unit.PX, 173.0, Unit.PX);
+		usernameTextBox.setSize("200px", "30px");
 		panel.setWidgetTopHeight(usernameTextBox, 191.0, Unit.PX, 34.0, Unit.PX);
 		
 		passwordTextBox = new PasswordTextBox();
+		passwordTextBox.setStyleName("CenterEditText");
 		panel.add(passwordTextBox);
-		panel.setWidgetLeftWidth(passwordTextBox, 25.0, Unit.PX, 173.0, Unit.PX);
+		passwordTextBox.setSize("200px", "30px");
 		panel.setWidgetTopHeight(passwordTextBox, 267.0, Unit.PX, 34.0, Unit.PX);
 		
-		Label accountNameLabel = new Label("Account Name");
-		accountNameLabel.setStyleName("TextColorScheme");
+		Label accountNameLabel = new Label("Account Name:");
+		accountNameLabel.setStyleName("CenterText");
 		panel.add(accountNameLabel);
-		panel.setWidgetLeftWidth(accountNameLabel, 25.0, Unit.PX, 150.0, Unit.PX);
 		panel.setWidgetTopHeight(accountNameLabel, 103.0, Unit.PX, 18.0, Unit.PX);
 		
-		Label usernameLabel = new Label("Username");
-		usernameLabel.setStyleName("TextColorScheme");
+		Label usernameLabel = new Label("Username:");
+		usernameLabel.setStyleName("CenterText");
 		panel.add(usernameLabel);
-		panel.setWidgetLeftWidth(usernameLabel, 25.0, Unit.PX, 101.0, Unit.PX);
 		panel.setWidgetTopHeight(usernameLabel, 167.0, Unit.PX, 18.0, Unit.PX);
 		
-		Label passwordLabel = new Label("Password");
-		passwordLabel.setStyleName("TextColorScheme");
+		Label passwordLabel = new Label("Password:");
+		passwordLabel.setStyleName("CenterText");
 		panel.add(passwordLabel);
-		panel.setWidgetLeftWidth(passwordLabel, 25.0, Unit.PX, 114.0, Unit.PX);
 		panel.setWidgetTopHeight(passwordLabel, 243.0, Unit.PX, 18.0, Unit.PX);
 		
 		Label LoginTitle = new Label("Log In");
 		LoginTitle.setStyleName("CenterTitles");
 		panel.add(LoginTitle);
-		panel.setWidgetLeftWidth(LoginTitle, 74.0, Unit.PX, 143.0, Unit.PX);
+		LoginTitle.setSize("150px", "30px");
 		panel.setWidgetTopHeight(LoginTitle, 37.0, Unit.PX, 34.0, Unit.PX);
 		
 		FlowPanel CreateAcctBtnPanel = new FlowPanel();
 		CreateAcctBtnPanel.setStyleName("CenterButton");
 		panel.add(CreateAcctBtnPanel);
-		CreateAcctBtnPanel.setSize("90", "30");
-		panel.setWidgetLeftWidth(CreateAcctBtnPanel, 98.0, Unit.PX, 100.0, Unit.PX);
-		panel.setWidgetTopHeight(CreateAcctBtnPanel, 369.0, Unit.PX, 43.0, Unit.PX);
+		CreateAcctBtnPanel.setSize("150px", "30px");
+		panel.setWidgetTopHeight(CreateAcctBtnPanel, 366.0, Unit.PX, 43.0, Unit.PX);
 		
 		Button createAccountButton = new Button("Create Account");
 		CreateAcctBtnPanel.add(createAccountButton);
@@ -105,9 +103,9 @@ public class LoginAndLoginResultView extends Composite implements ISubscriber {
 		FlowPanel loginButtonPanel = new FlowPanel();
 		loginButtonPanel.setStyleName("CenterButton");
 		panel.add(loginButtonPanel);
-		loginButtonPanel.setSize("90", "30");
-		panel.setWidgetLeftWidth(loginButtonPanel, 108.0, Unit.PX, 90.0, Unit.PX);
-		panel.setWidgetTopHeight(loginButtonPanel, 320.0, Unit.PX, 31.0, Unit.PX);
+		loginButtonPanel.setSize("150px", "30px");
+		panel.setWidgetTopHeight(loginButtonPanel, 326.0, Unit.PX, 93.0, Unit.PX);
+		
 		
 		Button loginButton = new Button("New button");
 		loginButtonPanel.add(loginButton);
