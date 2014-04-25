@@ -93,20 +93,8 @@ public class CreateAccountView extends Composite{
 			layoutPanel.setWidgetLeftWidth(ConfirmPasswordTxt, 291.0, Unit.PX, 220.0, Unit.PX);
 			layoutPanel.setWidgetTopHeight(ConfirmPasswordTxt, 401.0, Unit.PX, 34.0, Unit.PX);
 			
-			Button CreateAccountBtn = new Button("New button");
-			CreateAccountBtn.setStyleName("CenterButton");
-			CreateAccountBtn.addClickHandler(new ClickHandler() {
-				public void onClick(ClickEvent event) {
-					handleCreateAccountBtnClick();
-				}
-			});
-			CreateAccountBtn.setText("Create Account");
-			layoutPanel.add(CreateAccountBtn);
-			layoutPanel.setWidgetLeftWidth(CreateAccountBtn, 172.0, Unit.PX, 184.0, Unit.PX);
-			layoutPanel.setWidgetTopHeight(CreateAccountBtn, 496.0, Unit.PX, 30.0, Unit.PX);
-			
 			ErrorLbl = new Label("");
-			ErrorLbl.setStyleName("CreateAccountLbls");
+			ErrorLbl.setStyleName("CenterText");
 			layoutPanel.add(ErrorLbl);
 			layoutPanel.setWidgetLeftWidth(ErrorLbl, 172.0, Unit.PX, 184.0, Unit.PX);
 			layoutPanel.setWidgetTopHeight(ErrorLbl, 457.0, Unit.PX, 18.0, Unit.PX);
@@ -116,6 +104,23 @@ public class CreateAccountView extends Composite{
 			layoutPanel.add(CreateAccountHeader);
 			layoutPanel.setWidgetLeftWidth(CreateAccountHeader, 130.0, Unit.PX, 259.0, Unit.PX);
 			layoutPanel.setWidgetTopHeight(CreateAccountHeader, 47.0, Unit.PX, 34.0, Unit.PX);
+			
+			FlowPanel flowPanel = new FlowPanel();
+			flowPanel.setStyleName("CenterButton");
+			layoutPanel.add(flowPanel);
+			layoutPanel.setWidgetLeftWidth(flowPanel, 158.0, Unit.PX, 212.0, Unit.PX);
+			layoutPanel.setWidgetTopHeight(flowPanel, 491.0, Unit.PX, 42.0, Unit.PX);
+			
+			Button CreateAccountBtn = new Button("New button");
+			flowPanel.add(CreateAccountBtn);
+			CreateAccountBtn.setSize("100%", "100%");
+			CreateAccountBtn.setStyleName("CenterButton");
+			CreateAccountBtn.addClickHandler(new ClickHandler() {
+				public void onClick(ClickEvent event) {
+					handleCreateAccountBtnClick();
+				}
+			});
+			CreateAccountBtn.setText("Create Account");
 			
 			
 			
