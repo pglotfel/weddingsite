@@ -93,7 +93,7 @@ public class HomePageView  extends Composite implements ISubscriber {
 
 
 	protected void handleCalendarClick() {
-		Site.search(Site.Pages.CALENDARPAGE);
+		//Site.search(Site.Pages.CALENDARPAGE);
 		
 	}
 

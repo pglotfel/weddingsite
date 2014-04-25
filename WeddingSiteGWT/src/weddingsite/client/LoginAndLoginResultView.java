@@ -88,17 +88,11 @@ public class LoginAndLoginResultView extends Composite implements ISubscriber {
 		LoginTitle.setSize("150px", "30px");
 		panel.setWidgetTopHeight(LoginTitle, 37.0, Unit.PX, 34.0, Unit.PX);
 		
-		FlowPanel CreateAcctBtnPanel = new FlowPanel();
-		CreateAcctBtnPanel.setStyleName("CenterButton");
-		panel.add(CreateAcctBtnPanel);
-		CreateAcctBtnPanel.setSize("150px", "30px");
-		panel.setWidgetTopHeight(CreateAcctBtnPanel, 366.0, Unit.PX, 43.0, Unit.PX);
-		
-		Button createAccountButton = new Button("Create Account");
-		CreateAcctBtnPanel.add(createAccountButton);
-		createAccountButton.setSize("100%", "100%");
-		createAccountButton.setStyleName("CenterButton");
-		createAccountButton.setText("Create an Account");
+//		Button createAccountButton = new Button("Create Account");
+//		CreateAcctBtnPanel.add(createAccountButton);
+//		createAccountButton.setSize("100%", "100%");
+//		createAccountButton.setStyleName("CenterButton");
+//		createAccountButton.setText("Create an Account");
 		
 		FlowPanel loginButtonPanel = new FlowPanel();
 		loginButtonPanel.setStyleName("CenterButton");
@@ -112,13 +106,26 @@ public class LoginAndLoginResultView extends Composite implements ISubscriber {
 		loginButton.setSize("100%", "100%");
 		loginButton.setStyleName("CenterButton");
 		loginButton.setText("Login");
+		
+		FlowPanel CreateAccountPanel = new FlowPanel();
+		CreateAccountPanel.setStyleName("CenterButton");
+		panel.add(CreateAccountPanel);
+		panel.setWidgetLeftWidth(CreateAccountPanel, 101.0, Unit.PX, 149.0, Unit.PX);
+		panel.setWidgetTopHeight(CreateAccountPanel, 362.0, Unit.PX, 41.0, Unit.PX);
+		
+		Button btnNewButton = new Button("New button");
+		btnNewButton.setText("Create Account");
+		btnNewButton.setStyleName("CenterButton");
+		CreateAccountPanel.add(btnNewButton);
+		btnNewButton.setSize("100%", "100%");
 		loginButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				handleLogin();
 				
 			}			
 		});
-		createAccountButton.addClickHandler(new ClickHandler() {
+		
+		btnNewButton.addClickHandler(new ClickHandler() {
 
 			@Override
 			public void onClick(ClickEvent event) {
@@ -127,7 +134,6 @@ public class LoginAndLoginResultView extends Composite implements ISubscriber {
 			}
 			
 		});
-				
 		setStyleName("Background");
 	}
 

@@ -87,16 +87,16 @@ public class Site implements EntryPoint {
 			currentPage = Pages.SEATINGCHARTPAGE;
 		break;
 		
-		case CALENDARPAGE:
-			viewHistory.push(currentPage);
-			RootLayoutPanel.get().remove(currentView);
-			CalendarView v6 = new CalendarView();
-			RootLayoutPanel.get().add(v6);
-			currentView = v6;
-			RootLayoutPanel.get().setWidgetLeftWidth(v6, 0, Unit.PCT, 100.0, Unit.PCT);
-			RootLayoutPanel.get().setWidgetTopHeight(v6, 0, Unit.PCT, 100.0, Unit.PCT);	
-			currentPage = Pages.SEATINGCHARTPAGE;
-		break;
+//		case CALENDARPAGE:
+//			viewHistory.push(currentPage);
+//			RootLayoutPanel.get().remove(currentView);
+//			CalendarView v6 = new CalendarView();
+//			RootLayoutPanel.get().add(v6);
+//			currentView = v6;
+//			RootLayoutPanel.get().setWidgetLeftWidth(v6, 0, Unit.PCT, 100.0, Unit.PCT);
+//			RootLayoutPanel.get().setWidgetTopHeight(v6, 0, Unit.PCT, 100.0, Unit.PCT);	
+//			currentPage = Pages.SEATINGCHARTPAGE;
+//		break;
 		
 		case BACK:
 			Pages p = null;
