@@ -57,11 +57,16 @@ h1 {
 -o-transition: height 1s; /* Opera  */
 }
 
-.attendanceList
+.CenterTitles
 {
 	font-size: 20px;
 	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+	color: #3c0315;
+	font-weight: bold;
+	
 }
 
 .gwt-MenuBar-vertical {
@@ -77,10 +82,11 @@ h1 {
     cursor                      :   pointer;
 
     border                      :   2px solid #000000;
-    background-color            :   white;
+    background-color            :   #bdbdbd;
     padding                     :   2px 10px;
     height						: 	30px;
     width						: 	1000px;
+    color						:   #3c0315;
     text-align					: 	left;
     font-size					:	15px;
     font-family					: 	"Lucida Sans Unicode", "Lucida Grande", sans-serif;
@@ -103,6 +109,7 @@ h1 {
 .CreateAccountLbls {
 	font-family : "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 	font-size					:	15px;
+	text-align: center;
 	color: #3c0315;
 	background-color : #bdbdbd;
 }
@@ -113,11 +120,20 @@ h1 {
 	margin-right: auto;
 }
 
+
 .InnerBackground {
 	background-color: #bdbdbd;
 	margin-left: auto;
 	margin-right: auto;
+	margin-top: 20px;
 	border:   2px solid #3c0315;
+}
+
+.CenterButton {
+	margin-left: auto;
+	margin-right: auto;
+	color: #3c0315;
+	font-weight: bold;
 }
 
 
