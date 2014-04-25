@@ -29,10 +29,13 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
 
 public class SeatingChartView extends Composite {
 	
+	private FlowPanel mainFlowPanel;
+	private ScrollPanel scrollPanel;
 	private MenuBar seatingChartMenu;
 	private MenuBar tableMenu;
 	private MenuBar peopleMenu;
@@ -82,9 +85,20 @@ public class SeatingChartView extends Composite {
 		seatingChartQueryModel = new SeatingChartQueryModel();
 		getPeopleAtTableModel = new GetPeopleAtTableModel();
 		
+		mainFlowPanel = new FlowPanel();
+		mainFlowPanel.setStyleName("Background");
+		initWidget(mainFlowPanel);
+		mainFlowPanel.setSize("100%", "100%");
+		
+		scrollPanel = new ScrollPanel();
+		scrollPanel.setStyleName("Background");
+		mainFlowPanel.add(scrollPanel);
+		scrollPanel.setSize("800px", "900px");
+		
 		layoutPanel = new LayoutPanel();
-		initWidget(layoutPanel);
-		layoutPanel.setSize("100%", "100%");
+		layoutPanel.setStyleName("InnerBackground");
+		scrollPanel.add(layoutPanel);
+		layoutPanel.setSize("750px", "850px");
 		
 		PageView pageView = new PageView();
 		layoutPanel.add(pageView);
@@ -92,12 +106,13 @@ public class SeatingChartView extends Composite {
 		layoutPanel.setWidgetLeftRight(pageView, 0.0, Unit.PCT, 30, Unit.PCT);
 		
 		Label titleLable = new Label("Seating Charts");
-		titleLable.setStyleName("attendanceList");
+		titleLable.setStyleName("CenterTitles");
 		layoutPanel.add(titleLable);
 		layoutPanel.setWidgetLeftWidth(titleLable, 25, Unit.PCT, 50, Unit.PCT);
 		layoutPanel.setWidgetTopHeight(titleLable, 5, Unit.PCT, 10, Unit.PCT);
 		
 		seatingChartFlowPanel = new FlowPanel();
+		seatingChartFlowPanel.setStyleName("Background");
 		layoutPanel.add(seatingChartFlowPanel);
 		layoutPanel.setWidgetLeftWidth(seatingChartFlowPanel, 10, Unit.PCT, 20, Unit.PCT);
 		layoutPanel.setWidgetTopHeight(seatingChartFlowPanel, 20, Unit.PCT, 40, Unit.PCT);
@@ -113,6 +128,7 @@ public class SeatingChartView extends Composite {
 		
 		
 		tableFlowPanel = new FlowPanel();
+		tableFlowPanel.setStyleName("Background");
 		layoutPanel.add(tableFlowPanel);
 		layoutPanel.setWidgetLeftWidth(tableFlowPanel, 40, Unit.PCT, 20, Unit.PCT);
 		layoutPanel.setWidgetTopHeight(tableFlowPanel, 20, Unit.PCT, 40, Unit.PCT);
@@ -123,6 +139,7 @@ public class SeatingChartView extends Composite {
 		tableMenu.setStyleName("gwt-MenuBar-vertical");
 		
 		peopleFlowPanel = new FlowPanel();
+		peopleFlowPanel.setStyleName("Background");
 		layoutPanel.add(peopleFlowPanel);
 		layoutPanel.setWidgetLeftWidth(peopleFlowPanel, 70, Unit.PCT, 20, Unit.PCT);
 		layoutPanel.setWidgetTopHeight(peopleFlowPanel, 20, Unit.PCT, 40, Unit.PCT);
@@ -135,9 +152,10 @@ public class SeatingChartView extends Composite {
 		addSeatingChartButtonFlowPanel = new FlowPanel();
 		layoutPanel.add(addSeatingChartButtonFlowPanel);
 		layoutPanel.setWidgetLeftWidth(addSeatingChartButtonFlowPanel, 12.9, Unit.PCT, 5.0, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(addSeatingChartButtonFlowPanel, 66.7, Unit.PCT, 5.9, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(addSeatingChartButtonFlowPanel, 66.7, Unit.PCT, 3.2, Unit.PCT);
 		
 		Button addSeatingChartButton = new Button("New button");
+		addSeatingChartButton.setStyleName("ButtonColorScheme");
 		addSeatingChartButtonFlowPanel.add(addSeatingChartButton);
 		addSeatingChartButton.setSize("100%", "100%");
 		addSeatingChartButton.setText("Add");
@@ -153,10 +171,11 @@ public class SeatingChartView extends Composite {
 		
 		editSeatingChartButtonFlowPanel = new FlowPanel();
 		layoutPanel.add(editSeatingChartButtonFlowPanel);
-		layoutPanel.setWidgetLeftWidth(editSeatingChartButtonFlowPanel, 21.9, Unit.PCT, 5.1, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(editSeatingChartButtonFlowPanel, 66.7, Unit.PCT, 5.9, Unit.PCT);
+		layoutPanel.setWidgetLeftWidth(editSeatingChartButtonFlowPanel, 21.9, Unit.PCT, 5.0, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(editSeatingChartButtonFlowPanel, 66.7, Unit.PCT, 3.2, Unit.PCT);
 		
 		Button editSeatingChartButton = new Button("New button");
+		editSeatingChartButton.setStyleName("ButtonColorScheme");
 		editSeatingChartButtonFlowPanel.add(editSeatingChartButton);
 		editSeatingChartButton.setSize("100%", "100%");
 		editSeatingChartButton.setText("Edit");
@@ -171,6 +190,7 @@ public class SeatingChartView extends Composite {
 		submitSeatingChartFlowPanel = new FlowPanel();
 		
 		Button submitSeatingChartButton = new Button("New button");
+		submitSeatingChartButton.setStyleName("ButtonColorScheme");
 		submitSeatingChartFlowPanel.add(submitSeatingChartButton);
 		submitSeatingChartButton.setText("Submit");
 		submitSeatingChartButton.setSize("100%", "100%");
@@ -191,6 +211,7 @@ public class SeatingChartView extends Composite {
 		cancelSeatingChartFlowPanel = new FlowPanel();
 		
 		Button cancelSeatingChartButton = new Button("New button");
+		cancelSeatingChartButton.setStyleName("ButtonColorScheme");
 		cancelSeatingChartFlowPanel.add(cancelSeatingChartButton);
 		cancelSeatingChartButton.setText("Cancel");
 		cancelSeatingChartButton.setSize("100%", "100%");
@@ -207,6 +228,7 @@ public class SeatingChartView extends Composite {
 		deleteSeatingChartFlowPanel = new FlowPanel();
 		
 		Button deleteSeatingChartButton = new Button("New button");
+		deleteSeatingChartButton.setStyleName("ButtonColorScheme");
 		deleteSeatingChartButton.setText("Delete");
 		deleteSeatingChartFlowPanel.add(deleteSeatingChartButton);
 		deleteSeatingChartButton.setSize("100%", "100%");
@@ -225,18 +247,20 @@ public class SeatingChartView extends Composite {
 		newNameTextBox = new TextBox();
 		
 		seatingChartNameLabel = new Label("Click on a seating chart!");
+		seatingChartNameLabel.setStyleName("TextColorScheme");
 		layoutPanel.add(seatingChartNameLabel);
 		layoutPanel.setWidgetLeftWidth(seatingChartNameLabel, 10.0, Unit.PCT, 20.0, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(seatingChartNameLabel, 61.2, Unit.PCT, 4.6, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(seatingChartNameLabel, 61.2, Unit.PCT, 4.9, Unit.PCT);
 		
 		
 		
 		addTableButtonFlowPanel = new FlowPanel();
 		layoutPanel.add(addTableButtonFlowPanel);
 		layoutPanel.setWidgetLeftWidth(addTableButtonFlowPanel, 42.9, Unit.PCT, 5.0, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(addTableButtonFlowPanel, 66.7, Unit.PCT, 5.9, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(addTableButtonFlowPanel, 66.7, Unit.PCT, 3.2, Unit.PCT);
 		
 		Button addTableButton = new Button("New button");
+		addTableButton.setStyleName("ButtonColorScheme");
 		addTableButtonFlowPanel.add(addTableButton);
 		addTableButton.setSize("100%", "100%");
 		addTableButton.setText("Add");
@@ -252,10 +276,11 @@ public class SeatingChartView extends Composite {
 		
 		editTableButtonFlowPanel = new FlowPanel();
 		layoutPanel.add(editTableButtonFlowPanel);
-		layoutPanel.setWidgetLeftWidth(editTableButtonFlowPanel, 51.9, Unit.PCT, 5.1, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(editTableButtonFlowPanel, 66.7, Unit.PCT, 5.9, Unit.PCT);
+		layoutPanel.setWidgetLeftWidth(editTableButtonFlowPanel, 51.9, Unit.PCT, 5.0, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(editTableButtonFlowPanel, 66.7, Unit.PCT, 3.2, Unit.PCT);
 		
 		Button editTableButton = new Button("New button");
+		editTableButton.setStyleName("ButtonColorScheme");
 		editTableButtonFlowPanel.add(editTableButton);
 		editTableButton.setSize("100%", "100%");
 		editTableButton.setText("Edit");
@@ -270,6 +295,7 @@ public class SeatingChartView extends Composite {
 		submitTableFlowPanel = new FlowPanel();
 		
 		Button submitTableButton = new Button("New button");
+		submitTableButton.setStyleName("ButtonColorScheme");
 		submitTableFlowPanel.add(submitTableButton);
 		submitTableButton.setText("Submit");
 		submitTableButton.setSize("100%", "100%");
@@ -290,6 +316,7 @@ public class SeatingChartView extends Composite {
 		cancelTableFlowPanel = new FlowPanel();
 		
 		Button cancelTableButton = new Button("New button");
+		cancelTableButton.setStyleName("ButtonColorScheme");
 		cancelTableFlowPanel.add(cancelTableButton);
 		cancelTableButton.setText("Cancel");
 		cancelTableButton.setSize("100%", "100%");
@@ -306,6 +333,7 @@ public class SeatingChartView extends Composite {
 		deleteTableFlowPanel = new FlowPanel();
 		
 		Button deleteTableButton = new Button("New button");
+		deleteTableButton.setStyleName("ButtonColorScheme");
 		deleteTableButton.setText("Delete");
 		deleteTableFlowPanel.add(deleteTableButton);
 		deleteTableButton.setSize("100%", "100%");
@@ -324,17 +352,19 @@ public class SeatingChartView extends Composite {
 		tableNewNameTextBox = new TextBox();
 		
 		tableNameLabel = new Label("Click on a table!");
+		tableNameLabel.setStyleName("TextColorScheme");
 		layoutPanel.add(tableNameLabel);
 		layoutPanel.setWidgetLeftWidth(tableNameLabel, 40.0, Unit.PCT, 20.0, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(tableNameLabel, 61.2, Unit.PCT, 4.6, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(tableNameLabel, 61.2, Unit.PCT, 4.9, Unit.PCT);
 		
 		
 		addPersonButtonFlowPanel = new FlowPanel();
 		layoutPanel.add(addPersonButtonFlowPanel);
 		layoutPanel.setWidgetLeftWidth(addPersonButtonFlowPanel, 72.9, Unit.PCT, 5.0, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(addPersonButtonFlowPanel, 66.7, Unit.PCT, 5.9, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(addPersonButtonFlowPanel, 66.7, Unit.PCT, 3.2, Unit.PCT);
 		
 		Button addPersonButton = new Button("New button");
+		addPersonButton.setStyleName("ButtonColorScheme");
 		addPersonButtonFlowPanel.add(addPersonButton);
 		addPersonButton.setSize("100%", "100%");
 		addPersonButton.setText("Add");
@@ -350,10 +380,11 @@ public class SeatingChartView extends Composite {
 		
 		editPersonButtonFlowPanel = new FlowPanel();
 		layoutPanel.add(editPersonButtonFlowPanel);
-		layoutPanel.setWidgetLeftWidth(editPersonButtonFlowPanel, 81.9, Unit.PCT, 5.1, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(editPersonButtonFlowPanel, 66.7, Unit.PCT, 5.9, Unit.PCT);
+		layoutPanel.setWidgetLeftWidth(editPersonButtonFlowPanel, 81.9, Unit.PCT, 5.0, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(editPersonButtonFlowPanel, 66.7, Unit.PCT, 3.2, Unit.PCT);
 		
 		Button editPersonButton = new Button("New button");
+		editPersonButton.setStyleName("ButtonColorScheme");
 		editPersonButtonFlowPanel.add(editPersonButton);
 		editPersonButton.setSize("100%", "100%");
 		editPersonButton.setText("Edit");
@@ -368,6 +399,7 @@ public class SeatingChartView extends Composite {
 		submitPersonFlowPanel = new FlowPanel();
 		
 		Button submitPersonButton = new Button("New button");
+		submitPersonButton.setStyleName("ButtonColorScheme");
 		submitPersonFlowPanel.add(submitPersonButton);
 		submitPersonButton.setText("Submit");
 		submitPersonButton.setSize("100%", "100%");
@@ -387,6 +419,7 @@ public class SeatingChartView extends Composite {
 		cancelPersonFlowPanel = new FlowPanel();
 		
 		Button cancelPersonButton = new Button("New button");
+		cancelPersonButton.setStyleName("ButtonColorScheme");
 		cancelPersonFlowPanel.add(cancelPersonButton);
 		cancelPersonButton.setText("Cancel");
 		cancelPersonButton.setSize("100%", "100%");
@@ -403,6 +436,7 @@ public class SeatingChartView extends Composite {
 		deletePersonFlowPanel = new FlowPanel();
 		
 		Button deletePersonButton = new Button("New button");
+		deletePersonButton.setStyleName("ButtonColorScheme");
 		deletePersonButton.setText("Delete");
 		deletePersonFlowPanel.add(deletePersonButton);
 		deletePersonButton.setSize("100%", "100%");
@@ -421,18 +455,19 @@ public class SeatingChartView extends Composite {
 		personNewNameTextBox = new TextBox();
 		
 		personNameLabel = new Label("Click on a person!");
+		personNameLabel.setStyleName("TextColorScheme");
 		layoutPanel.add(personNameLabel);
 		layoutPanel.setWidgetLeftWidth(personNameLabel, 70.0, Unit.PCT, 20.0, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(personNameLabel, 61.2, Unit.PCT, 4.6, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(personNameLabel, 61.2, Unit.PCT, 4.9, Unit.PCT);
 	}
 	
 	public void addPersonNewNameTextBoxToView() {
 		layoutPanel.add(personNewNameTextBox);
-		layoutPanel.setWidgetLeftWidth(personNewNameTextBox, 81.8, Unit.PCT, 13.0, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(personNewNameTextBox, 73.4, Unit.PCT, 4.4, Unit.PCT);
+		layoutPanel.setWidgetLeftWidth(personNewNameTextBox, 81.8, Unit.PCT, 10.0, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(personNewNameTextBox, 73.4, Unit.PCT, 3.2, Unit.PCT);
 		layoutPanel.add(personNewNameLabel);
 		layoutPanel.setWidgetLeftWidth(personNewNameLabel, 69.2, Unit.PCT, 8.6, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(personNewNameLabel, 73.6, Unit.PCT, 4.3, Unit.PCT);	
+		layoutPanel.setWidgetTopHeight(personNewNameLabel, 73.6, Unit.PCT, 3.2, Unit.PCT);	
 	}
 	
 	public void removePersonNewNameTextBoxFromView() {
@@ -444,7 +479,7 @@ public class SeatingChartView extends Composite {
 	public void addDeletePersonFlowPanelToView() {
 		layoutPanel.add(deletePersonFlowPanel);
 		layoutPanel.setWidgetLeftWidth(deletePersonFlowPanel, 76.5, Unit.PCT, 6.8, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(deletePersonFlowPanel, 85.7, Unit.PCT, 5.9, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(deletePersonFlowPanel, 85.7, Unit.PCT, 3.2, Unit.PCT);
 	}
 	
 	public void removeDeletePersonFlowPanelFromView() {
@@ -454,7 +489,7 @@ public class SeatingChartView extends Composite {
 	public void addCancelPersonFlowPanelToView() {
 		layoutPanel.add(cancelPersonFlowPanel);
 		layoutPanel.setWidgetLeftWidth(cancelPersonFlowPanel, 81.8, Unit.PCT, 6.9, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(cancelPersonFlowPanel, 78.8, Unit.PCT, 5.9, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(cancelPersonFlowPanel, 78.8, Unit.PCT, 3.2, Unit.PCT);
 	}
 	
 	public void removeCancelPersonFlowPanelFromView() {
@@ -464,7 +499,7 @@ public class SeatingChartView extends Composite {
 	public void addSubmitPersonFlowPanelToView() {
 		layoutPanel.add(submitPersonFlowPanel);
 		layoutPanel.setWidgetLeftWidth(submitPersonFlowPanel, 71.2, Unit.PCT, 6.8, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(submitPersonFlowPanel, 78.8, Unit.PCT, 5.9, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(submitPersonFlowPanel, 78.8, Unit.PCT, 3.2, Unit.PCT);
 	}
 	
 	public void removeSubmitPersonFlowPanelFromView() {
@@ -473,11 +508,11 @@ public class SeatingChartView extends Composite {
 	
 	public void addTableNewNameTextBoxToView() {
 		layoutPanel.add(tableNewNameTextBox);
-		layoutPanel.setWidgetLeftWidth(tableNewNameTextBox, 51.8, Unit.PCT, 13.0, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(tableNewNameTextBox, 73.4, Unit.PCT, 4.4, Unit.PCT);
+		layoutPanel.setWidgetLeftWidth(tableNewNameTextBox, 51.8, Unit.PCT, 10.0, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(tableNewNameTextBox, 73.4, Unit.PCT, 3.2, Unit.PCT);
 		layoutPanel.add(tableNewNameLabel);
 		layoutPanel.setWidgetLeftWidth(tableNewNameLabel, 39.2, Unit.PCT, 8.6, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(tableNewNameLabel, 73.6, Unit.PCT, 4.3, Unit.PCT);	
+		layoutPanel.setWidgetTopHeight(tableNewNameLabel, 73.6, Unit.PCT, 3.2, Unit.PCT);	
 	}
 	
 	public void removeTableNewNameTextBoxFromView() {
@@ -489,7 +524,7 @@ public class SeatingChartView extends Composite {
 	public void addDeleteTableFlowPanelToView() {
 		layoutPanel.add(deleteTableFlowPanel);
 		layoutPanel.setWidgetLeftWidth(deleteTableFlowPanel, 46.5, Unit.PCT, 6.8, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(deleteTableFlowPanel, 85.7, Unit.PCT, 5.9, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(deleteTableFlowPanel, 85.7, Unit.PCT, 3.2, Unit.PCT);
 	}
 	
 	public void removeDeleteTableFlowPanelFromView() {
@@ -499,7 +534,7 @@ public class SeatingChartView extends Composite {
 	public void addCancelTableFlowPanelToView() {
 		layoutPanel.add(cancelTableFlowPanel);
 		layoutPanel.setWidgetLeftWidth(cancelTableFlowPanel, 51.8, Unit.PCT, 6.9, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(cancelTableFlowPanel, 78.8, Unit.PCT, 5.9, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(cancelTableFlowPanel, 78.8, Unit.PCT, 3.2, Unit.PCT);
 	}
 	
 	public void removeCancelTableFlowPanelFromView() {
@@ -509,7 +544,7 @@ public class SeatingChartView extends Composite {
 	public void addSubmitTableFlowPanelToView() {
 		layoutPanel.add(submitTableFlowPanel);
 		layoutPanel.setWidgetLeftWidth(submitTableFlowPanel, 41.2, Unit.PCT, 6.8, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(submitTableFlowPanel, 78.8, Unit.PCT, 5.9, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(submitTableFlowPanel, 78.8, Unit.PCT, 3.2, Unit.PCT);
 	}
 	
 	public void removeSubmitTableFlowPanelFromView() {
@@ -518,11 +553,11 @@ public class SeatingChartView extends Composite {
 	
 	public void addSeatingChartNewNameTextBoxToView() {
 		layoutPanel.add(newNameTextBox);
-		layoutPanel.setWidgetLeftWidth(newNameTextBox, 21.8, Unit.PCT, 13.0, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(newNameTextBox, 73.4, Unit.PCT, 4.4, Unit.PCT);
+		layoutPanel.setWidgetLeftWidth(newNameTextBox, 21.8, Unit.PCT, 10.0, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(newNameTextBox, 73.4, Unit.PCT, 3.2, Unit.PCT);
 		layoutPanel.add(seatingChartNewNameLabel);
 		layoutPanel.setWidgetLeftWidth(seatingChartNewNameLabel, 9.2, Unit.PCT, 8.6, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(seatingChartNewNameLabel, 73.6, Unit.PCT, 4.3, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(seatingChartNewNameLabel, 73.6, Unit.PCT, 3.2, Unit.PCT);
 	}
 	
 	public void removeSeatingChartNewNameTextBoxFromView() {
@@ -534,7 +569,7 @@ public class SeatingChartView extends Composite {
 	public void addDeleteSeatingChartFlowPanelToView() {
 		layoutPanel.add(deleteSeatingChartFlowPanel);
 		layoutPanel.setWidgetLeftWidth(deleteSeatingChartFlowPanel, 16.5, Unit.PCT, 6.8, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(deleteSeatingChartFlowPanel, 85.7, Unit.PCT, 5.9, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(deleteSeatingChartFlowPanel, 85.7, Unit.PCT, 3.2, Unit.PCT);
 	}
 	
 	public void removeDeleteSeatingChartFlowPanelFromView() {
@@ -544,7 +579,7 @@ public class SeatingChartView extends Composite {
 	public void addCancelSeatingChartFlowPanelToView() {
 		layoutPanel.add(cancelSeatingChartFlowPanel);
 		layoutPanel.setWidgetLeftWidth(cancelSeatingChartFlowPanel, 21.8, Unit.PCT, 6.9, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(cancelSeatingChartFlowPanel, 78.8, Unit.PCT, 5.9, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(cancelSeatingChartFlowPanel, 78.8, Unit.PCT, 3.2, Unit.PCT);
 	}
 	
 	public void removeCancelSeatingChartFlowPanelFromView() {
@@ -554,7 +589,7 @@ public class SeatingChartView extends Composite {
 	public void addSubmitSeatingChartFlowPanelToView() {
 		layoutPanel.add(submitSeatingChartFlowPanel);
 		layoutPanel.setWidgetLeftWidth(submitSeatingChartFlowPanel, 11.2, Unit.PCT, 6.8, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(submitSeatingChartFlowPanel, 78.8, Unit.PCT, 5.9, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(submitSeatingChartFlowPanel, 78.8, Unit.PCT, 3.2, Unit.PCT);
 	}
 
 	
@@ -564,11 +599,11 @@ public class SeatingChartView extends Composite {
 	
 	public void addNewNameTextBoxToView() {
 		layoutPanel.add(newNameTextBox);
-		layoutPanel.setWidgetLeftWidth(newNameTextBox, 21.8, Unit.PCT, 13.0, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(newNameTextBox, 73.4, Unit.PCT, 4.4, Unit.PCT);
+		layoutPanel.setWidgetLeftWidth(newNameTextBox, 21.8, Unit.PCT, 10.0, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(newNameTextBox, 73.4, Unit.PCT, 3.2, Unit.PCT);
 		layoutPanel.add(seatingChartNewNameLabel);
 		layoutPanel.setWidgetLeftWidth(seatingChartNewNameLabel, 9.2, Unit.PCT, 8.6, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(seatingChartNewNameLabel, 73.6, Unit.PCT, 4.3, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(seatingChartNewNameLabel, 73.6, Unit.PCT, 3.2, Unit.PCT);
 	}
 	
 	public void removeNewNameTextBoxFromView() {
