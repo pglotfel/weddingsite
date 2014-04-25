@@ -294,7 +294,7 @@ public class FakeDatabase implements IDatabase  {
 		int tableId = getTableId(seatingChartId, tableName);
 		
 		for(int i = 0; i < people.size(); i++) {
-			if(people.get(i).getTableID() == tableId && people.get(i).getName().equals(newName)) {
+			if(people.get(i).getTableID() == tableId && people.get(i).getName().equals(personName)) {
 				people.get(i).setName(newName);
 				return true;
 			}
