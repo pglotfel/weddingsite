@@ -34,8 +34,8 @@ h1 {
     cursor                      :   hand;
     cursor                      :   pointer;
 
-    border                      :   2px solid #0099CC;
-    background-color            :   #00CCFF;
+    border                      :   2px solid #4d1426;;
+    background-color            :   #dfdfdf;
     padding                     :   2px 10px;
     height						: 	40px;
     width						: 	180px;
@@ -46,7 +46,7 @@ h1 {
 
 .menuBar .gwt-MenuItem-selected
 {
-    background-color            :   #0099CC;
+    background-color            :   #cecece;
 }
 
 .menuBar .gwt-MenuItem:hover {
@@ -64,7 +64,7 @@ h1 {
 	text-align: center;
 	margin-left: auto;
 	margin-right: auto;
-	color: #3c0315;
+	color: #4d1426;
 	font-weight: bold;
 	
 }
@@ -74,7 +74,7 @@ h1 {
 	text-align: center;
 	margin-left: auto;
 	margin-right: auto;
-	color: #3c0315;
+	color: #4d1426;
 }
 
 .gwt-MenuBar-vertical {
@@ -82,7 +82,7 @@ h1 {
     width: 100%;
     height: 100%;
     overflow: auto;
-    color:   #3c0315;
+    color:   #4d1426;
 }
 
 .gwt-MenuBar-vertical .gwt-MenuItem
@@ -94,7 +94,7 @@ h1 {
     padding                     :   2px 10px;
     height						: 	30px;
     width						: 	1000px;
-    color						:   #3c0315;
+    color						:   #4d1426;
     text-align					: 	left;
     font-size					:	15px;
     font-family					: 	"Lucida Sans Unicode", "Lucida Grande", sans-serif;
@@ -109,7 +109,7 @@ h1 {
 }
 
 .layout {
-	background-color 			: 	#66CCFF;
+	background-color 			: 	#cecece;
 	height						: 	100%;
 	width						: 	100%;
 }
@@ -118,19 +118,19 @@ h1 {
 	font-family : "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 	font-size					:	15px;
 	text-align: center;
-	color: #3c0315;
-	background-color : #bdbdbd;
+	color: #4d1426;
+	background-color : #cecece;
 }
 
 .Background {
-	background-color : #cecece;
+	background-color : #dfdfdf;
 	margin-left: auto;
 	margin-right: auto;
 }
 
 
 .InnerBackground {
-	background-color: #bdbdbd;
+	background-color: #cecece;
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: 20px;
@@ -140,7 +140,7 @@ h1 {
 .CenterButton {
 	margin-left: auto;
 	margin-right: auto;
-	color: #3c0315;
+	color: #4d1426;
 	font-weight: bold;
 }
 
@@ -151,7 +151,7 @@ h1 {
 .TextColorScheme {
 	font-family : "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 	font-size:	15px;
-	color: #3c0315;
+	color: #4d1426;
 }
 
 
