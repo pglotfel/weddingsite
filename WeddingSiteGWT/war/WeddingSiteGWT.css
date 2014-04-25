@@ -100,5 +100,18 @@ h1 {
 	width						: 	100%;
 }
 
+.CreateAccountLbls {
+	font-family : "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	font-size					:	15px;
+	color: #3c0315;
+	background-color : #bdbdbd;
+}
+
+.Background {
+	background-color : #cecece;
+	margin-left: auto;
+	margin-right: auto;
+}
+
 
 
