@@ -2,6 +2,7 @@ package weddingsite.server;
 
 import java.util.ArrayList;
 
+import weddingsite.shared.Activity;
 import weddingsite.shared.AttendanceList;
 import weddingsite.shared.Attendee;
 import weddingsite.shared.Person;
@@ -52,6 +53,9 @@ public interface IDatabase {
 	public boolean removePersonFromTable(String accountName, String seatingChartName, String tableName, String personName);
 	public boolean addPersonToTable(String accountName, String seatingChartName, String tableName, String personName);
 	public boolean editPersonInTable(String accountName, String seatingChartName, String tableName, String personName, String newName);
+	
+	//Activities
+	public ArrayList<Activity> getUserActivities(String accountName, String username);
 	
 	
 }

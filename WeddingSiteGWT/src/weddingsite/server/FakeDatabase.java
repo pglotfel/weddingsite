@@ -3,8 +3,10 @@ package weddingsite.server;
 import java.util.ArrayList;
 
 import weddingsite.shared.Account;
+import weddingsite.shared.Activity;
 import weddingsite.shared.AttendanceList;
 import weddingsite.shared.Attendee;
+import weddingsite.shared.Pair;
 import weddingsite.shared.Person;
 import weddingsite.shared.SeatingChart;
 import weddingsite.shared.Table;
@@ -19,10 +21,13 @@ public class FakeDatabase implements IDatabase  {
 	private ArrayList<SeatingChart> seatingCharts;
 	private ArrayList<Table> tables;
 	private ArrayList<Person> people;
+	private ArrayList<Activity> activities;
+	private ArrayList<Pair<Integer, Integer>> userActivityLinking;
 	
 	
 	public FakeDatabase() {
 		
+		userActivityLinking = new ArrayList<Pair<Integer, Integer>>(); 
 		accounts = new ArrayList<Account>();
 		users = new ArrayList<User>();
 		attendees = new ArrayList<Attendee>();
@@ -30,6 +35,22 @@ public class FakeDatabase implements IDatabase  {
 		seatingCharts = new ArrayList<SeatingChart>();
 		tables = new ArrayList<Table>();
 		people = new ArrayList<Person>();
+		activities = new ArrayList<Activity>();
+		
+		for(int i = 0; i < 10; i++) {
+			Activity a = new Activity();
+			a.setBody("This is a test activity.");
+			a.setDate("06/01/1994");
+			a.setEndTime("1:00 P.M.");
+			a.setStartTime("10:00 A.M.");
+			a.setTitle("Test Activity!");
+			a.setID(i);
+			activities.add(a);
+			Pair<Integer, Integer> p = new Pair<Integer, Integer>(i, i);
+			userActivityLinking.add(p);
+		}
+		
+		
 		
 		
 		String [] accountNames = {"Smith", "Doe", "Harrison"};
@@ -99,6 +120,44 @@ public class FakeDatabase implements IDatabase  {
 		users.get(1).setIsAdmin(true);
 		
 	}
+	
+	@Override
+	public ArrayList<Activity> getUserActivities(String accountName, String username) {
+		
+		Account a = findAccountByAccountName(accountName);
+		ArrayList<Activity> result = new ArrayList<Activity>();
+		
+		if(a != null) {
+			
+			User u = findUserByUserNameAndAccountID(a.getID(), username);
+			int uID = u.getID();
+			
+			if(u != null) {
+				
+				Pair<Integer, Integer> p = null;
+				
+				for(int i = 0; i < userActivityLinking.size(); i++) {
+					
+					p = userActivityLinking.get(i);
+					
+					if(p.getLeft().intValue() == uID) {
+						for(int j = 0; j < activities.size(); j++) {
+							
+							Activity act = activities.get(i);
+							
+							if(p.getRight().intValue() == act.getID()) {
+								result.add(act);
+							}
+						}
+					}
+				}
+			} 			
+		} 
+		
+		return result;		
+	}
+	
+	
 	
 	@Override
 	public boolean addSeatingChart(String accountName, String seatingChartName) {

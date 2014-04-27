@@ -1,6 +1,5 @@
 package weddingsite.client;
 
-
 import weddingsite.shared.ActionType;
 import weddingsite.shared.AttendanceList;
 import weddingsite.shared.AttendanceListQueryModel;
@@ -8,153 +7,498 @@ import weddingsite.shared.AttendanceListQueryResult;
 import weddingsite.shared.Attendee;
 import weddingsite.shared.AttendeeQueryModel;
 import weddingsite.shared.AttendeeQueryResult;
+import weddingsite.shared.EditAttendanceListModel;
 import weddingsite.shared.EditAttendeeModel;
 import weddingsite.shared.EditDataResult;
-import weddingsite.shared.IPublisher;
-import weddingsite.shared.ISubscriber;
-import weddingsite.shared.Login;
 
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.IntegerBox;
 
-public class AttendanceListView  extends Composite implements ISubscriber {
+public class AttendanceListView extends Composite {
 	
-	private enum ViewModes {
-		INIT,
-		NORMAL,
-		EDITING,
-	}
-	
-	private MenuBar attendanceListMenu;
-	private AttendanceListQueryModel attendanceListModel;
-	private AttendeeQueryModel attendeeModel;
-	private LayoutPanel layoutPanel;
-	private Label attendanceListLabel;
-	private MenuBar attendeeMenu;
-	private FlowPanel attendeeFlowPanel;
+	private LayoutPanel mainLayoutPanel;
 	private FlowPanel attendanceListFlowPanel;
-	private Button manageAttendeeButton;
-	private boolean isValidAttendanceList;
+	private FlowPanel attendeeFlowPanel;
+	private FlowPanel attendanceListAddFlowPanel;
+	private FlowPanel attendanceListEditFlowPanel;
+	private MenuBar attendanceListMenu;
+	private MenuBar attendeeMenu;
+	private Label attendanceListNameLabel;
+	private FlowPanel attendanceListSubmitFlowPanel;
+	private TextBox attendanceListTextBox;
+	private Label attendanceListNewNameLabel;
+	private FlowPanel attendanceListCancelFlowPanel;
+	private FlowPanel attendanceListDeleteFlowPanel;
+	private Label attendeeNameLabel;
+	private FlowPanel attendeeSubmitFlowPanel;
+	private Label attendeeNewNameLabel;
+	private FlowPanel attendeeCancelFlowPanel;
+	private FlowPanel attendeeDeleteFlowPanel;
+	private FlowPanel attendeeAddFlowPanel;
+	private FlowPanel attendeeEditFlowPanel;
+	private Label attendeeNumberAttendingLabel;
+	private TextBox attendeeNameTextBox;	
+	private EditAttendanceListModel editAttendanceListModel;
+	private AttendanceListQueryModel attendanceListQueryModel;
+	private AttendeeQueryModel attendeeQueryModel;
 	private EditAttendeeModel editAttendeeModel;
-	private EditAttendeeWidgetView editAttendeeView;
-	private AddAttendeeWidgetView addAttendeeView;
-	private ViewModes currentView;
-	private Button addAttendeeButton;
-	private Button closeEditingButton;
+	private IntegerBox numberAttendingIntegerBox;
 	
 	public AttendanceListView() {
 		
-		addAttendeeButton = new Button();
-		addAttendeeButton.setText("Add Attendee");
-		addAttendeeButton.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {				
-				removeEditAttendeeFromView();	
-				if(layoutPanel.getWidgetIndex(addAttendeeView) == -1) {
-					addAddAttendeeToView();
-				}
-			}
-		});
-		
 		editAttendeeModel = new EditAttendeeModel();
-		editAttendeeModel.setAccountName(Site.currentUser.getAccountName());
+		editAttendanceListModel = new EditAttendanceListModel();
+		attendeeQueryModel = new AttendeeQueryModel();
+		attendanceListQueryModel = new AttendanceListQueryModel();
 		
-		layoutPanel = new LayoutPanel();
-		layoutPanel.setStyleName("layout");
-		initWidget(layoutPanel);
-		layoutPanel.setSize("100%", "100%");
+		FlowPanel mainFlowPanel = new FlowPanel();
+		mainFlowPanel.setStyleName("Background");
+		initWidget(mainFlowPanel);
+		mainFlowPanel.setSize("100%", "100%");
 		
-		addAttendeeView = new AddAttendeeWidgetView();
-		addAttendeeView.getSubmitButton().addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				editAttendeeModel.setType(ActionType.ADDATTENDEE);
-				editAttendeeModel.setName(addAttendeeView.getAttendeeTextBox().getText());
-				editAttendeeModel.setNumAttending(Integer.parseInt(addAttendeeView.getNumberAttendingList().getItemText(addAttendeeView.getNumberAttendingList().getSelectedIndex())));
-				RPC.performEditAttendeeService.PerformEditAttendee(editAttendeeModel, new AsyncCallback<EditDataResult>() {
-
-					@Override
-					public void onFailure(Throwable caught) {
-						
-					}
-
-					@Override
-					public void onSuccess(EditDataResult result) {		
-						if(result.getResult()) {
-							handleAttendanceListClick(editAttendeeModel.getAttendanceListName());
-						}
-					}							
-				});
-			}			
-		});
+		ScrollPanel mainScrollPanel = new ScrollPanel();
+		mainScrollPanel.setStyleName("Background");
+		mainFlowPanel.add(mainScrollPanel);
+		mainScrollPanel.setSize("800px", "900px");
 		
-		editAttendeeView = new EditAttendeeWidgetView();
+		mainLayoutPanel = new LayoutPanel();
+		mainLayoutPanel.setStyleName("InnerBackground");
+		mainScrollPanel.setWidget(mainLayoutPanel);
+		mainLayoutPanel.setSize("750px", "850px");
 		
-		closeEditingButton = new Button();
-		closeEditingButton.setText("Close Editing");
-		closeEditingButton.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				switchViewMode(ViewModes.NORMAL);
-				removeEditAttendeeFromView();
-			}
-		});		
-			
+		PageView pageView = new PageView();
+		mainLayoutPanel.add(pageView);
+		mainLayoutPanel.setWidgetTopBottom(pageView, 93.7,  Unit.PCT, 0.0, Unit.PCT);
+		mainLayoutPanel.setWidgetLeftRight(pageView, 0.0, Unit.PCT, 30, Unit.PCT);
+		
 		attendanceListFlowPanel = new FlowPanel();
+		attendanceListFlowPanel.setStyleName("Background");
+		mainLayoutPanel.add(attendanceListFlowPanel);
+		mainLayoutPanel.setWidgetLeftWidth(attendanceListFlowPanel, 20, Unit.PCT, 20, Unit.PCT);
+		mainLayoutPanel.setWidgetTopHeight(attendanceListFlowPanel, 15, Unit.PCT, 45, Unit.PCT);
+		
 		attendanceListMenu = new MenuBar(true);
 		attendanceListFlowPanel.add(attendanceListMenu);
-		attendanceListMenu.setSize("100%", "100%");	
-
-		PageView pageView = new PageView();
-		layoutPanel.add(pageView);
-		layoutPanel.setWidgetTopBottom(pageView, 93.7,  Unit.PCT, 0.0, Unit.PCT);
-		layoutPanel.setWidgetLeftRight(pageView, 0.0, Unit.PCT, 30, Unit.PCT);
+		attendanceListMenu.setSize("100%", "100%");
+		attendanceListMenu.setStyleName("gwt-MenuBar-vertical");
 		
-		attendanceListLabel = new Label("Attendance Lists");
-		layoutPanel.add(attendanceListLabel);
-		layoutPanel.setWidgetLeftWidth(attendanceListLabel, 25, Unit.PCT, 50, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(attendanceListLabel, 5, Unit.PCT, 10, Unit.PCT);
-		attendanceListLabel.setStyleName("attendanceList");
+		attendeeFlowPanel = new FlowPanel();
+		mainLayoutPanel.add(attendeeFlowPanel);
+		mainLayoutPanel.setWidgetLeftWidth(attendeeFlowPanel, 60.0, Unit.PCT, 20, Unit.PCT);
+		mainLayoutPanel.setWidgetTopHeight(attendeeFlowPanel, 15, Unit.PCT, 45, Unit.PCT);
 		
-		attendeeFlowPanel = new FlowPanel();	
 		attendeeMenu = new MenuBar(true);
 		attendeeFlowPanel.add(attendeeMenu);
 		attendeeMenu.setSize("100%", "100%");
-		isValidAttendanceList = false;
+		attendeeMenu.setStyleName("gwt-MenuBar-vertical");
 		
-		manageAttendeeButton = new Button("New button");
-		manageAttendeeButton.setText("Manage Parties");
-		manageAttendeeButton.addClickHandler(new ClickHandler() {
+		Label titleLabel = new Label("Attendance Lists");
+		titleLabel.setStyleName("CenterTitles");
+		mainLayoutPanel.add(titleLabel);
+		mainLayoutPanel.setWidgetTopHeight(titleLabel, 38.0, Unit.PX, 30.0, Unit.PX);
+		titleLabel.setSize("200px", "30px");
+		
+		if(Site.currentUser.getIsAdmin()) {
+			attendanceListAddFlowPanel = new FlowPanel();
+			mainLayoutPanel.add(attendanceListAddFlowPanel);
+			mainLayoutPanel.setWidgetLeftWidth(attendanceListAddFlowPanel, 17, Unit.PCT, 6, Unit.PCT);
+			mainLayoutPanel.setWidgetTopHeight(attendanceListAddFlowPanel, 65, Unit.PCT, 30.0, Unit.PX);
+			
+			Button attendanceListAddButton = new Button("New button");
+			attendanceListAddButton.setStyleName("ButtonColorScheme");
+			attendanceListAddButton.setText("Add");
+			attendanceListAddFlowPanel.add(attendanceListAddButton);
+			attendanceListAddButton.setSize("100%", "100%");
+			attendanceListAddButton.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					handleAttendanceListAdd();
+				}			
+			});
+		
+			attendanceListEditFlowPanel = new FlowPanel();
+			mainLayoutPanel.add(attendanceListEditFlowPanel);
+			mainLayoutPanel.setWidgetLeftWidth(attendanceListEditFlowPanel, 37, Unit.PCT, 6, Unit.PCT);
+			mainLayoutPanel.setWidgetTopHeight(attendanceListEditFlowPanel, 65, Unit.PCT, 3.5, Unit.PCT);
+			
+			Button attendanceListEditButton = new Button("New button");
+			attendanceListEditButton.setStyleName("ButtonColorScheme");
+			attendanceListEditButton.setText("Edit");
+			attendanceListEditFlowPanel.add(attendanceListEditButton);
+			attendanceListEditButton.setSize("100%", "100%");
+			attendanceListEditButton.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					handleAttendanceListEdit();				
+				}			
+			});
+		
+			attendanceListNameLabel = new Label("Click on an attendance list!");
+			attendanceListNameLabel.setStyleName("CenterText");
+			mainLayoutPanel.add(attendanceListNameLabel);
+			mainLayoutPanel.setWidgetLeftWidth(attendanceListNameLabel, 17, Unit.PCT, 26, Unit.PCT);
+			mainLayoutPanel.setWidgetTopHeight(attendanceListNameLabel, 61.5, Unit.PCT, 2, Unit.PCT);
+		}
+		
+		attendanceListNewNameLabel = new Label("New name:");
+		attendanceListNewNameLabel.setStyleName("TextColorScheme");
+		
+		attendanceListTextBox = new TextBox();
+		
+		attendanceListSubmitFlowPanel = new FlowPanel();
+		
+		Button attendanceListSubmitButton = new Button("New button");
+		attendanceListSubmitButton.setStyleName("ButtonColorScheme");
+		attendanceListSubmitButton.setText("Submit");
+		attendanceListSubmitFlowPanel.add(attendanceListSubmitButton);
+		attendanceListSubmitButton.setSize("100%", "100%");
+		attendanceListSubmitButton.addClickHandler(new ClickHandler() {
+			@Override
 			public void onClick(ClickEvent event) {
-				if(isValidAttendanceList) {					
-					switchViewMode(ViewModes.EDITING);
-				}
-			}
+				if(mainLayoutPanel.getWidgetIndex(attendanceListDeleteFlowPanel) == -1) {
+					handleAttendanceListSubmitAdd();
+				} else {
+					handleAttendanceListSubmitEdit();
+				}				
+			}		
 		});
 		
-		//TEST
-		//addManageAttendeeButtonToView();
-		//addAttendanceListToView();
-		//addAttendeeListToViewNormal();
-		//TEST
+		attendanceListCancelFlowPanel = new FlowPanel();
 		
-		switchViewMode(ViewModes.INIT);
+		Button attendanceListCancelButton = new Button("New button");
+		attendanceListCancelButton.setStyleName("ButtonColorScheme");
+		attendanceListCancelButton.setText("Cancel");
+		attendanceListCancelFlowPanel.add(attendanceListCancelButton);
+		attendanceListCancelButton.setSize("100%", "100%");
+		attendanceListCancelButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				removeAttendanceListWidgets();			
+			}			
+		});
 		
-		this.setAttendanceListQueryModel(new AttendanceListQueryModel());
-		attendanceListModel.setWeddingName(Site.currentUser.getAccountName());
-		attendanceListModel.setType(ActionType.GETATTENDANCELISTS);
+		attendanceListDeleteFlowPanel = new FlowPanel();
 		
-		this.setAttendeeQueryModel(new AttendeeQueryModel());
+		Button attendanceListDeleteButton = new Button("New button");
+		attendanceListDeleteButton.setStyleName("ButtonColorScheme");
+		attendanceListDeleteButton.setText("Delete");
+		attendanceListDeleteFlowPanel.add(attendanceListDeleteButton);
+		attendanceListDeleteButton.setSize("100%", "100%");
+		attendanceListDeleteButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				handleAttendanceListDelete();
+			}		
+		});
+						
+		if(Site.currentUser.getIsAdmin()) {
+			attendeeAddFlowPanel = new FlowPanel();
+			mainLayoutPanel.add(attendeeAddFlowPanel);
+			mainLayoutPanel.setWidgetLeftWidth(attendeeAddFlowPanel, 57, Unit.PCT, 6, Unit.PCT);
+			mainLayoutPanel.setWidgetTopHeight(attendeeAddFlowPanel, 65, Unit.PCT, 30.0, Unit.PX);
+			
+			Button attendeeAddButton = new Button("New button");
+			attendeeAddButton.setStyleName("ButtonColorScheme");
+			attendeeAddButton.setText("Add");
+			attendeeAddFlowPanel.add(attendeeAddButton);
+			attendeeAddButton.setSize("100%", "100%");
+			attendeeAddButton.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					handleAttendeeAdd();
+				}			
+			});
 		
-		RPC.performAttendanceListQueryService.performAttendanceListQuery(attendanceListModel, new AsyncCallback<AttendanceListQueryResult>() {
+			attendeeEditFlowPanel = new FlowPanel();
+			mainLayoutPanel.add(attendeeEditFlowPanel);
+			mainLayoutPanel.setWidgetLeftWidth(attendeeEditFlowPanel, 77, Unit.PCT, 6, Unit.PCT);
+			mainLayoutPanel.setWidgetTopHeight(attendeeEditFlowPanel, 65, Unit.PCT, 3.5, Unit.PCT);
+			
+			Button attendeeEditButton = new Button("New button");
+			attendeeEditButton.setStyleName("ButtonColorScheme");
+			attendeeEditButton.setText("Edit");
+			attendeeEditFlowPanel.add(attendeeEditButton);
+			attendeeEditButton.setSize("100%", "100%");
+			attendeeEditButton.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					handleAttendeeEdit();				
+				}			
+			});
+		
+			attendeeNameLabel = new Label("Click on an attendee list!");
+			attendeeNameLabel.setStyleName("CenterText");
+			mainLayoutPanel.add(attendeeNameLabel);
+			mainLayoutPanel.setWidgetLeftWidth(attendeeNameLabel, 57, Unit.PCT, 26, Unit.PCT);
+			mainLayoutPanel.setWidgetTopHeight(attendeeNameLabel, 61.5, Unit.PCT, 2, Unit.PCT);
+		}
+		
+		attendeeNewNameLabel = new Label("Name:");
+		attendeeNumberAttendingLabel = new Label("Number attending: ");
+		attendeeNumberAttendingLabel.setStyleName("TextColorScheme");
+		attendeeNewNameLabel.setStyleName("TextColorScheme");
+		
+		numberAttendingIntegerBox = new IntegerBox();
+		attendeeNameTextBox = new TextBox();
+		
+		attendeeSubmitFlowPanel = new FlowPanel();
+		
+		Button attendeeSubmitButton = new Button("New button");
+		attendeeSubmitButton.setStyleName("ButtonColorScheme");
+		attendeeSubmitButton.setText("Submit");
+		attendeeSubmitFlowPanel.add(attendeeSubmitButton);
+		attendeeSubmitButton.setSize("100%", "100%");
+		attendeeSubmitButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				if(mainLayoutPanel.getWidgetIndex(attendeeDeleteFlowPanel) == -1) {
+					handleAttendeeSubmitAdd();
+				} else {
+					handleAttendeeSubmitEdit();
+				}				
+			}		
+		});
+		
+		attendeeCancelFlowPanel = new FlowPanel();
+		
+		Button attendeeCancelButton = new Button("New button");
+		attendeeCancelButton.setStyleName("ButtonColorScheme");
+		attendeeCancelButton.setText("Cancel");
+		attendeeCancelFlowPanel.add(attendeeCancelButton);
+		attendeeCancelButton.setSize("100%", "100%");
+		attendeeCancelButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				removeAttendeeWidgets();			
+			}			
+		});
+		
+		attendeeDeleteFlowPanel = new FlowPanel();
+		
+		Button attendeeDeleteButton = new Button("New button");
+		attendeeDeleteButton.setStyleName("ButtonColorScheme");
+		attendeeDeleteButton.setText("Delete");
+		attendeeDeleteFlowPanel.add(attendeeDeleteButton);
+		attendeeDeleteButton.setSize("100%", "100%");
+		attendeeDeleteButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				handleAttendeeDelete();
+			}		
+		});
+							
+		setStyleName("Background");
+		
+		loadAttendanceList();
+	}
+	
+	public void handleAttendanceListAdd() {
+		
+		removeAttendanceListWidgets();
+		mainLayoutPanel.add(attendanceListCancelFlowPanel);
+		mainLayoutPanel.setWidgetLeftWidth(attendanceListCancelFlowPanel, 35, Unit.PCT, 8, Unit.PCT);
+		mainLayoutPanel.setWidgetTopHeight(attendanceListCancelFlowPanel, 77, Unit.PCT, 3.5, Unit.PCT);
+		mainLayoutPanel.add(attendanceListSubmitFlowPanel);
+		mainLayoutPanel.setWidgetLeftWidth(attendanceListSubmitFlowPanel, 17, Unit.PCT, 8, Unit.PCT);
+		mainLayoutPanel.setWidgetTopHeight(attendanceListSubmitFlowPanel, 77, Unit.PCT, 3.5, Unit.PCT);
+		mainLayoutPanel.add(attendanceListNewNameLabel);
+		mainLayoutPanel.setWidgetLeftWidth(attendanceListNewNameLabel, 15, Unit.PCT, 15, Unit.PCT);
+		mainLayoutPanel.setWidgetTopHeight(attendanceListNewNameLabel, 71.5, Unit.PCT, 3, Unit.PCT);
+		mainLayoutPanel.add(attendanceListTextBox);
+		mainLayoutPanel.setWidgetLeftWidth(attendanceListTextBox, 30, Unit.PCT, 15, Unit.PCT);
+		mainLayoutPanel.setWidgetTopHeight(attendanceListTextBox, 71.5, Unit.PCT, 3, Unit.PCT);
+	}
+	
+	public void handleAttendanceListEdit() {
+		
+		removeAttendanceListWidgets();
+		mainLayoutPanel.add(attendanceListCancelFlowPanel);
+		mainLayoutPanel.setWidgetLeftWidth(attendanceListCancelFlowPanel, 35, Unit.PCT, 8, Unit.PCT);
+		mainLayoutPanel.setWidgetTopHeight(attendanceListCancelFlowPanel, 77, Unit.PCT, 3.5, Unit.PCT);
+		mainLayoutPanel.add(attendanceListSubmitFlowPanel);
+		mainLayoutPanel.setWidgetLeftWidth(attendanceListSubmitFlowPanel, 17, Unit.PCT, 8, Unit.PCT);
+		mainLayoutPanel.setWidgetTopHeight(attendanceListSubmitFlowPanel, 77, Unit.PCT, 3.5, Unit.PCT);
+		mainLayoutPanel.add(attendanceListNewNameLabel);
+		mainLayoutPanel.setWidgetLeftWidth(attendanceListNewNameLabel, 15, Unit.PCT, 15, Unit.PCT);
+		mainLayoutPanel.setWidgetTopHeight(attendanceListNewNameLabel, 71.5, Unit.PCT, 3, Unit.PCT);
+		mainLayoutPanel.add(attendanceListTextBox);
+		mainLayoutPanel.setWidgetLeftWidth(attendanceListTextBox, 30, Unit.PCT, 15, Unit.PCT);
+		mainLayoutPanel.setWidgetTopHeight(attendanceListTextBox, 71.5, Unit.PCT, 3, Unit.PCT);
+		mainLayoutPanel.add(attendanceListDeleteFlowPanel);
+		mainLayoutPanel.setWidgetLeftWidth(attendanceListDeleteFlowPanel, 26, Unit.PCT, 8, Unit.PCT);
+		mainLayoutPanel.setWidgetTopHeight(attendanceListDeleteFlowPanel, 77, Unit.PCT, 3.5, Unit.PCT);
+	}
+	
+	public void removeAttendanceListWidgets() {
+		
+		mainLayoutPanel.remove(attendanceListCancelFlowPanel);
+		mainLayoutPanel.remove(attendanceListSubmitFlowPanel);
+		mainLayoutPanel.remove(attendanceListNewNameLabel);
+		mainLayoutPanel.remove(attendanceListTextBox);
+		mainLayoutPanel.remove(attendanceListDeleteFlowPanel);
+		attendanceListTextBox.setText("");
+	}
+	
+	public void handleAttendeeAdd() {
+		
+		removeAttendeeWidgets();
+		mainLayoutPanel.add(attendeeCancelFlowPanel);
+		mainLayoutPanel.setWidgetLeftWidth(attendeeCancelFlowPanel, 75, Unit.PCT, 8, Unit.PCT);
+		mainLayoutPanel.setWidgetTopHeight(attendeeCancelFlowPanel, 77, Unit.PCT, 3.5, Unit.PCT);
+		mainLayoutPanel.add(attendeeSubmitFlowPanel);
+		mainLayoutPanel.setWidgetLeftWidth(attendeeSubmitFlowPanel, 57, Unit.PCT, 8, Unit.PCT);
+		mainLayoutPanel.setWidgetTopHeight(attendeeSubmitFlowPanel, 77, Unit.PCT, 3.5, Unit.PCT);
+		
+		mainLayoutPanel.add(attendeeNewNameLabel);
+		mainLayoutPanel.setWidgetLeftWidth(attendeeNewNameLabel, 55, Unit.PCT, 20, Unit.PCT);
+		mainLayoutPanel.setWidgetTopHeight(attendeeNewNameLabel, 69.5, Unit.PCT, 3, Unit.PCT);
+		mainLayoutPanel.add(attendeeNameTextBox);
+		mainLayoutPanel.setWidgetLeftWidth(attendeeNameTextBox, 75, Unit.PCT, 15, Unit.PCT);
+		mainLayoutPanel.setWidgetTopHeight(attendeeNameTextBox, 69.5, Unit.PCT, 3, Unit.PCT);
+		
+		mainLayoutPanel.add(attendeeNumberAttendingLabel);
+		mainLayoutPanel.setWidgetLeftWidth(attendeeNumberAttendingLabel, 55, Unit.PCT, 20, Unit.PCT);
+		mainLayoutPanel.setWidgetTopHeight(attendeeNumberAttendingLabel, 73.0, Unit.PCT, 3, Unit.PCT);
+		mainLayoutPanel.add(numberAttendingIntegerBox);
+		mainLayoutPanel.setWidgetLeftWidth(numberAttendingIntegerBox, 75, Unit.PCT, 10, Unit.PCT);
+		mainLayoutPanel.setWidgetTopHeight(numberAttendingIntegerBox, 73.0, Unit.PCT, 3, Unit.PCT);
+		
+		
+	}
+	
+	public void handleAttendeeEdit() {
+		
+		removeAttendeeWidgets();
+		mainLayoutPanel.add(attendeeCancelFlowPanel);
+		mainLayoutPanel.setWidgetLeftWidth(attendeeCancelFlowPanel, 75, Unit.PCT, 8, Unit.PCT);
+		mainLayoutPanel.setWidgetTopHeight(attendeeCancelFlowPanel, 77, Unit.PCT, 3.5, Unit.PCT);
+		mainLayoutPanel.add(attendeeSubmitFlowPanel);
+		mainLayoutPanel.setWidgetLeftWidth(attendeeSubmitFlowPanel, 57, Unit.PCT, 8, Unit.PCT);
+		mainLayoutPanel.setWidgetTopHeight(attendeeSubmitFlowPanel, 77, Unit.PCT, 3.5, Unit.PCT);
+		mainLayoutPanel.add(attendeeNumberAttendingLabel);
+		mainLayoutPanel.setWidgetLeftWidth(attendeeNumberAttendingLabel, 55, Unit.PCT, 20, Unit.PCT);
+		mainLayoutPanel.setWidgetTopHeight(attendeeNumberAttendingLabel, 71.5, Unit.PCT, 3, Unit.PCT);
+		mainLayoutPanel.add(numberAttendingIntegerBox);
+		mainLayoutPanel.setWidgetLeftWidth(numberAttendingIntegerBox, 75, Unit.PCT, 10, Unit.PCT);
+		mainLayoutPanel.setWidgetTopHeight(numberAttendingIntegerBox, 71.5, Unit.PCT, 3, Unit.PCT);
+		mainLayoutPanel.add(attendeeDeleteFlowPanel);
+		mainLayoutPanel.setWidgetLeftWidth(attendeeDeleteFlowPanel, 66, Unit.PCT, 8, Unit.PCT);
+		mainLayoutPanel.setWidgetTopHeight(attendeeDeleteFlowPanel, 77, Unit.PCT, 3.5, Unit.PCT);
+	}
+	
+	public void removeAttendeeWidgets() {
+		
+		mainLayoutPanel.remove(attendeeCancelFlowPanel);
+		mainLayoutPanel.remove(attendeeSubmitFlowPanel);
+		mainLayoutPanel.remove(attendeeNewNameLabel);
+		mainLayoutPanel.remove(numberAttendingIntegerBox);
+		mainLayoutPanel.remove(attendeeDeleteFlowPanel);
+		mainLayoutPanel.remove(attendeeNumberAttendingLabel);
+		mainLayoutPanel.remove(attendeeNameTextBox);
+		numberAttendingIntegerBox.setText("");
+		attendeeNameTextBox.setText("");
+	}
+	
+	public void handleAttendanceListSubmitAdd() {
+		
+		editAttendanceListModel.setAccountName(Site.currentUser.getAccountName());
+		editAttendanceListModel.setAttendanceListName(attendanceListTextBox.getText());
+		editAttendanceListModel.setType(ActionType.ADDATTENDANCELIST);
+		
+		RPC.editAttendanceListService.performAddAttendanceList(editAttendanceListModel, new AsyncCallback<EditDataResult>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				System.err.println("Something went wrong with adding an attendance list...");				
+			}
+
+			@Override
+			public void onSuccess(EditDataResult result) {
+				if(result.getResult()) {
+					loadAttendanceList();
+				}			
+			}			
+		});
+		
+		attendanceListNameLabel.setText("");
+		removeAttendanceListWidgets();
+	}
+	
+	public void handleAttendanceListSubmitEdit() {
+		
+		editAttendanceListModel.setAccountName(Site.currentUser.getAccountName());
+		editAttendanceListModel.setAttendanceListName(attendanceListNameLabel.getText());
+		editAttendanceListModel.setNewName(attendanceListTextBox.getText());
+		editAttendanceListModel.setType(ActionType.EDITATTENDANCELIST);
+		
+		RPC.editAttendanceListService.performAddAttendanceList(editAttendanceListModel, new AsyncCallback<EditDataResult>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				System.err.println("Something went wrong with editing an attendance list...");				
+			}
+
+			@Override
+			public void onSuccess(EditDataResult result) {
+				if(result.getResult()) {
+					loadAttendanceList();
+				}			
+			}	
+		});
+		
+		attendanceListNameLabel.setText("");
+		removeAttendanceListWidgets();
+	}
+	
+	public void handleAttendanceListDelete() {
+		
+		editAttendanceListModel.setAccountName(Site.currentUser.getAccountName());
+		editAttendanceListModel.setAttendanceListName(attendanceListNameLabel.getText());
+		editAttendanceListModel.setType(ActionType.DELETEATTENDANCELIST);
+		
+		RPC.editAttendanceListService.performAddAttendanceList(editAttendanceListModel, new AsyncCallback<EditDataResult>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				System.err.println("Something went wrong with deleting an attendance list...");				
+			}
+
+			@Override
+			public void onSuccess(EditDataResult result) {
+				if(result.getResult()) {
+					loadAttendanceList();
+				}			
+			}			
+		});
+		
+		attendanceListNameLabel.setText("");
+		removeAttendanceListWidgets();
+	}
+			
+	public void loadAttendanceList() {
+		
+		attendanceListQueryModel.setWeddingName(Site.currentUser.getAccountName());
+		attendanceListQueryModel.setType(ActionType.GETATTENDANCELISTS);
+		
+		SlideDownAnimation attendeeAnimation = new SlideDownAnimation(attendanceListFlowPanel);
+		attendeeAnimation.expandTo(200, 400, 750);
+		
+		attendanceListMenu.clearItems();
+		
+		RPC.performAttendanceListQueryService.performAttendanceListQuery(attendanceListQueryModel, new AsyncCallback<AttendanceListQueryResult>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -166,7 +510,8 @@ public class AttendanceListView  extends Composite implements ISubscriber {
 				for (final AttendanceList a : result.getAttendanceLists()) {
 					
 					MenuItem m = new MenuItem(a.getName(), false, new Command() {
-						public void execute() {			
+						public void execute() {		
+							attendanceListNameLabel.setText(a.getName());
 							handleAttendanceListClick(a.getName());
 						}				
 					});				
@@ -178,98 +523,13 @@ public class AttendanceListView  extends Composite implements ISubscriber {
 		});
 	}
 	
-	public void addCloseEditingButtonToView() {
-		layoutPanel.add(closeEditingButton);
-		layoutPanel.setWidgetLeftWidth(closeEditingButton, 0, Unit.PCT, 20, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(closeEditingButton, 0,  Unit.PCT, 12,  Unit.PCT);
-	}
-	
-	public void removeCloseEditingButtonFromView() {
-		layoutPanel.remove(closeEditingButton);
-	}
-	
-	public void addAddAttendeeToView() {
-		layoutPanel.add(addAttendeeView);
-		layoutPanel.setWidgetLeftWidth(addAttendeeView, 30, Unit.PCT, 40, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(addAttendeeView, 15,  Unit.PCT, 40,  Unit.PCT);	
-	}
-	
-	public void removeAddAttendeeFromView() {
-		layoutPanel.remove(addAttendeeView);
-	}
-	
-	public void addEditAttendeeToView() {
-		layoutPanel.add(editAttendeeView);
-		layoutPanel.setWidgetLeftWidth(editAttendeeView, 30, Unit.PCT, 40, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(editAttendeeView, 15,  Unit.PCT, 40,  Unit.PCT);	
-	}
-	
-	public void removeEditAttendeeFromView() {
-		layoutPanel.remove(editAttendeeView);
-	}
-	
-	public void addAttendanceListToView() {		
-		layoutPanel.add(attendanceListFlowPanel);
-		layoutPanel.setWidgetLeftWidth(attendanceListFlowPanel, 15, Unit.PCT, 25, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(attendanceListFlowPanel, 15,  Unit.PCT, 60,  Unit.PCT);		
-	}
-	
-	public void removeAttendanceListFromView() {
-		layoutPanel.remove(attendanceListFlowPanel);
-	}
-	
-	public void addAttendeeListToViewNormal() {
-		layoutPanel.add(attendeeFlowPanel);
-		layoutPanel.setWidgetLeftWidth(attendeeFlowPanel, 60, Unit.PCT, 25, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(attendeeFlowPanel, 15,  Unit.PCT, 60,  Unit.PCT);
-	}
-	
-	public void removeAttendeeListFromView() {
-		layoutPanel.remove(attendeeFlowPanel);
-	}
-	
-	public void addManageAttendeeButtonToView() {
-		layoutPanel.add(manageAttendeeButton);
-		layoutPanel.setWidgetLeftWidth(manageAttendeeButton, 70, Unit.PCT, 15, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(manageAttendeeButton, 80, Unit.PCT, 8, Unit.PCT);
-	}
-	
-	public void addAddAttendeeButtonToView() {
-		layoutPanel.add(addAttendeeButton);
-		layoutPanel.setWidgetLeftWidth(addAttendeeButton, 2.5, Unit.PCT, 20, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(addAttendeeButton, 80,  Unit.PCT, 15,  Unit.PCT);
-	}
-	
-	public void removeAddAttendeeButtonFromView() {
-		layoutPanel.remove(addAttendeeButton);
-	}
-	
-	public void addAttendeeListToViewEditing() {
-		layoutPanel.add(attendeeFlowPanel);
-		layoutPanel.setWidgetLeftWidth(attendeeFlowPanel, 0, Unit.PCT, 25, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(attendeeFlowPanel, 15,  Unit.PCT, 60,  Unit.PCT);
-	}
-	
-	public void removeManageAttendeeButtonFromView() {
-		layoutPanel.remove(manageAttendeeButton);
-	}
-	
-	public void setAttendanceListQueryModel(AttendanceListQueryModel model) {
-		this.attendanceListModel = model;
-		this.attendanceListModel.subscribe(Login.Events.VALUE_OR_ACTION_TYPE_CHANGED, this);
-	}
-	
-	public void setAttendeeQueryModel(AttendeeQueryModel model) {
-		this.attendeeModel = model;
-		this.attendeeModel.subscribe(Login.Events.VALUE_OR_ACTION_TYPE_CHANGED, this);
-	}
-	
-	public void handleAttendanceListClick(final String attendanceListName) {
-		attendeeModel.setAccountName(Site.currentUser.getAccountName());
-		attendeeModel.setAttendanceListName(attendanceListName);
-		attendeeModel.setType(ActionType.GETATTENDEES);
+	public void handleAttendanceListClick(String name) {
 		
-		RPC.performAttendeeQueryService.PerformAttendeeQuery(attendeeModel, new AsyncCallback<AttendeeQueryResult>() {
+		attendeeQueryModel.setAccountName(Site.currentUser.getAccountName());
+		attendeeQueryModel.setAttendanceListName(name);
+		attendeeQueryModel.setType(ActionType.GETATTENDEES);
+		
+		RPC.performAttendeeQueryService.PerformAttendeeQuery(attendeeQueryModel, new AsyncCallback<AttendeeQueryResult>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -282,145 +542,103 @@ public class AttendanceListView  extends Composite implements ISubscriber {
 				for (final Attendee a : result.getAttendees()) {
 					attendeeMenu.addItem(new MenuItem("Party: " + a.getName() + " Attending: " + a.getNumAttending(), false, new Command() {
 						public void execute() {			
-							removeAddAttendeeFromView();
-							handleAttendeeListClick(a);
-							editAttendeeModel.setAttendanceListName(attendanceListName);
+							handleAttendeeListClick(a.getName());
 						}				
 					}));				
 				}
 				
 				if(result.getAttendees().size() == 0) {
 					attendeeMenu.addItem(new MenuItem("There is currently no one registered to this attendance list", false, (Command) null));
-					isValidAttendanceList = false;
-				} else {
-					isValidAttendanceList = true;
-				}
+				} 
 			}		
-		});		
+		});	
+		
+		SlideDownAnimation attendeeAnimation = new SlideDownAnimation(attendeeFlowPanel);
+		attendeeAnimation.expandTo(200, 400, 750);
 	}
 	
-	public void handleAttendeeListClick(final Attendee a) {
+	public void handleAttendeeSubmitAdd() {
 		
-		if(currentView == ViewModes.EDITING) {
-			if(layoutPanel.getWidgetIndex(editAttendeeView) == -1) {
-				addEditAttendeeToView();
+		editAttendeeModel.setAccountName(Site.currentUser.getAccountName());
+		editAttendeeModel.setAttendanceListName(attendanceListNameLabel.getText());
+		editAttendeeModel.setName(attendeeNameTextBox.getText());
+		editAttendeeModel.setNumAttending(numberAttendingIntegerBox.getValue());
+		editAttendeeModel.setType(ActionType.ADDATTENDEE);
+		
+		RPC.performEditAttendeeService.PerformEditAttendee(editAttendeeModel, new AsyncCallback<EditDataResult>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				System.err.println("CLIENT: Something went wrong adding an attendee...");			
 			}
-						
-			editAttendeeView.getAttendeeLabel().setText("Party Name: \n" + a.getName());			
-			
-			editAttendeeView.getNumberAttendingTextBox().setText("" + a.getNumAttending());;
-			
-			editAttendeeModel.setName(a.getName());
-			editAttendeeModel.setNumAttending(a.getNumAttending());
-			
-			editAttendeeView.getSubmitChangesButton().addClickHandler(new ClickHandler() {			
-				public void onClick(ClickEvent event) {
-					if(isValidAttendanceList) {				
-						
-						editAttendeeModel.setType(ActionType.EDITATTENDEE);
-						editAttendeeModel.setNumAttending(Integer.parseInt(editAttendeeView.getNumberAttendingTextBox().getText()));
-						
-						RPC.performEditAttendeeService.PerformEditAttendee(editAttendeeModel, new AsyncCallback<EditDataResult>() {
 
-							@Override
-							public void onFailure(Throwable caught) {
-								
-							}
-
-							@Override
-							public void onSuccess(EditDataResult result) {		
-								if(result.getResult()) {
-									handleAttendanceListClick(editAttendeeModel.getAttendanceListName());
-								}
-							}							
-						});
-												
-						removeEditAttendeeFromView();
-					}
+			@Override
+			public void onSuccess(EditDataResult result) {
+				if(result.getResult()) {
+					handleAttendanceListClick(editAttendeeModel.getAttendanceListName());
 				}
-			});
-			
-			editAttendeeView.getRemoveButton().addClickHandler(new ClickHandler() {
-				@Override
-				public void onClick(ClickEvent event) {
-					
-					editAttendeeModel.setType(ActionType.DELETEATTENDEE);
-					
-					if(isValidAttendanceList) {
-						
-						RPC.performEditAttendeeService.PerformEditAttendee(editAttendeeModel, new AsyncCallback<EditDataResult>() {
-
-							@Override
-							public void onFailure(Throwable caught) {
-								
-							}
-
-							@Override
-							public void onSuccess(EditDataResult result) {
-								if(result.getResult()) {
-									handleAttendanceListClick(editAttendeeModel.getAttendanceListName());
-								}							
-							}
-							
-						});
-						
-						
-						removeEditAttendeeFromView();
-					}
-				}			
-			});
-			
-			
-		}
+			}			
+		});
+		
+		attendeeNameLabel.setText("");
+		removeAttendeeWidgets();
 	}
 	
-	public void switchViewMode(ViewModes v) {
-		switch(v) {
+	public void handleAttendeeSubmitEdit() {
 		
-			case INIT:
-				addAttendanceListToView();
-				addAttendeeListToViewNormal();
-				
-				if(Site.currentUser.getIsAdmin()) {
-					addManageAttendeeButtonToView();
-				}
-				currentView = ViewModes.INIT;
-			break;
+		editAttendeeModel.setAccountName(Site.currentUser.getAccountName());
+		editAttendeeModel.setAttendanceListName(attendanceListNameLabel.getText());
+		editAttendeeModel.setName(attendeeNameLabel.getText());
+		editAttendeeModel.setNumAttending(numberAttendingIntegerBox.getValue());
+		editAttendeeModel.setType(ActionType.EDITATTENDEE);
 		
-			case NORMAL:
-				removeCloseEditingButtonFromView();
-				removeAttendeeListFromView();
-				removeAddAttendeeButtonFromView();
-				removeEditAttendeeFromView();
-				addAttendanceListToView();
-				addAttendeeListToViewNormal();	
-				if(Site.currentUser.getIsAdmin()) {
-					addManageAttendeeButtonToView();
+		RPC.performEditAttendeeService.PerformEditAttendee(editAttendeeModel, new AsyncCallback<EditDataResult>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				System.err.println("CLIENT: Something went wrong editing an attendee...");			
+			}
+
+			@Override
+			public void onSuccess(EditDataResult result) {
+				if(result.getResult()) {
+					handleAttendanceListClick(editAttendeeModel.getAttendanceListName());
 				}
-				currentView = ViewModes.NORMAL;
-			break;
-			
-			case EDITING:
-				if(Site.currentUser.getIsAdmin()) {
-					removeManageAttendeeButtonFromView();
-				}
-				addCloseEditingButtonToView();
-				removeAttendanceListFromView();
-				removeAttendeeListFromView();
-				addAddAttendeeButtonToView();
-				addAttendeeListToViewEditing();
-				currentView = ViewModes.EDITING;
-			break;
-			
-			default:
-				throw new UnsupportedOperationException("Unknown operation type: " + v);
+			}			
+		});
 		
-		}
+		attendeeNameLabel.setText("");
+		removeAttendeeWidgets();
+	}
+	
+	public void handleAttendeeDelete() {
+		
+		editAttendeeModel.setAccountName(Site.currentUser.getAccountName());
+		editAttendeeModel.setAttendanceListName(attendanceListNameLabel.getText());
+		editAttendeeModel.setName(attendeeNameLabel.getText());
+		editAttendeeModel.setType(ActionType.DELETEATTENDEE);
+		
+		RPC.performEditAttendeeService.PerformEditAttendee(editAttendeeModel, new AsyncCallback<EditDataResult>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				System.err.println("CLIENT: Something went wrong deleting an attendee...");			
+			}
+
+			@Override
+			public void onSuccess(EditDataResult result) {
+				if(result.getResult()) {
+					handleAttendanceListClick(editAttendeeModel.getAttendanceListName());
+				}
+			}			
+		});
+		
+		attendeeNameLabel.setText("");
+		removeAttendeeWidgets();
 	}
 	
 	
-	@Override
-	public void eventOccurred(Object key, IPublisher publisher, Object hint) {
-		//Nothing for now	
+	public void handleAttendeeListClick(String name) {
+		attendeeNameLabel.setText(name);
 	}
 }

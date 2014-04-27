@@ -128,7 +128,7 @@ public class SeatingChartView extends Composite {
 		
 		
 		tableFlowPanel = new FlowPanel();
-		tableFlowPanel.setStyleName("Background");
+		tableFlowPanel.setStyleName("InnerBackground");
 		layoutPanel.add(tableFlowPanel);
 		layoutPanel.setWidgetLeftWidth(tableFlowPanel, 40, Unit.PCT, 20, Unit.PCT);
 		layoutPanel.setWidgetTopHeight(tableFlowPanel, 20, Unit.PCT, 40, Unit.PCT);
@@ -139,7 +139,7 @@ public class SeatingChartView extends Composite {
 		tableMenu.setStyleName("gwt-MenuBar-vertical");
 		
 		peopleFlowPanel = new FlowPanel();
-		peopleFlowPanel.setStyleName("Background");
+		peopleFlowPanel.setStyleName("InnerBackground");
 		layoutPanel.add(peopleFlowPanel);
 		layoutPanel.setWidgetLeftWidth(peopleFlowPanel, 70, Unit.PCT, 20, Unit.PCT);
 		layoutPanel.setWidgetTopHeight(peopleFlowPanel, 20, Unit.PCT, 40, Unit.PCT);
@@ -149,43 +149,51 @@ public class SeatingChartView extends Composite {
 		peopleMenu.setSize("100%", "100%");
 		peopleMenu.setStyleName("gwt-MenuBar-vertical");
 		
-		addSeatingChartButtonFlowPanel = new FlowPanel();
-		layoutPanel.add(addSeatingChartButtonFlowPanel);
-		layoutPanel.setWidgetLeftWidth(addSeatingChartButtonFlowPanel, 12.9, Unit.PCT, 5.0, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(addSeatingChartButtonFlowPanel, 66.7, Unit.PCT, 3.2, Unit.PCT);
-		
-		Button addSeatingChartButton = new Button("New button");
-		addSeatingChartButton.setStyleName("ButtonColorScheme");
-		addSeatingChartButtonFlowPanel.add(addSeatingChartButton);
-		addSeatingChartButton.setSize("100%", "100%");
-		addSeatingChartButton.setText("Add");
-		
-		addSeatingChartButton.addClickHandler(new ClickHandler() {
-
-			@Override
-			public void onClick(ClickEvent event) {
-				handleAddSeatingChartClick();			
-			}
+		if(Site.currentUser.getIsAdmin()) {
+			addSeatingChartButtonFlowPanel = new FlowPanel();
+			layoutPanel.add(addSeatingChartButtonFlowPanel);
+			layoutPanel.setWidgetLeftWidth(addSeatingChartButtonFlowPanel, 12.9, Unit.PCT, 5.0, Unit.PCT);
+			layoutPanel.setWidgetTopHeight(addSeatingChartButtonFlowPanel, 66.7, Unit.PCT, 3.2, Unit.PCT);
 			
-		});
+			Button addSeatingChartButton = new Button("New button");
+			addSeatingChartButton.setStyleName("ButtonColorScheme");
+			addSeatingChartButtonFlowPanel.add(addSeatingChartButton);
+			addSeatingChartButton.setSize("100%", "100%");
+			addSeatingChartButton.setText("Add");
+			
+			addSeatingChartButton.addClickHandler(new ClickHandler() {
+	
+				@Override
+				public void onClick(ClickEvent event) {
+					handleAddSeatingChartClick();			
+				}
+				
+			});
 		
-		editSeatingChartButtonFlowPanel = new FlowPanel();
-		layoutPanel.add(editSeatingChartButtonFlowPanel);
-		layoutPanel.setWidgetLeftWidth(editSeatingChartButtonFlowPanel, 21.9, Unit.PCT, 5.0, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(editSeatingChartButtonFlowPanel, 66.7, Unit.PCT, 3.2, Unit.PCT);
-		
-		Button editSeatingChartButton = new Button("New button");
-		editSeatingChartButton.setStyleName("ButtonColorScheme");
-		editSeatingChartButtonFlowPanel.add(editSeatingChartButton);
-		editSeatingChartButton.setSize("100%", "100%");
-		editSeatingChartButton.setText("Edit");
-		
-		editSeatingChartButton.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				handleEditSeatingChartClick();
-			}		
-		});
+			editSeatingChartButtonFlowPanel = new FlowPanel();
+			layoutPanel.add(editSeatingChartButtonFlowPanel);
+			layoutPanel.setWidgetLeftWidth(editSeatingChartButtonFlowPanel, 21.9, Unit.PCT, 5.0, Unit.PCT);
+			layoutPanel.setWidgetTopHeight(editSeatingChartButtonFlowPanel, 66.7, Unit.PCT, 3.2, Unit.PCT);
+			
+			Button editSeatingChartButton = new Button("New button");
+			editSeatingChartButton.setStyleName("ButtonColorScheme");
+			editSeatingChartButtonFlowPanel.add(editSeatingChartButton);
+			editSeatingChartButton.setSize("100%", "100%");
+			editSeatingChartButton.setText("Edit");
+			
+			editSeatingChartButton.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					handleEditSeatingChartClick();
+				}		
+			});		
+			
+			seatingChartNameLabel = new Label("Click on a seating chart!");
+			seatingChartNameLabel.setStyleName("TextColorScheme");
+			layoutPanel.add(seatingChartNameLabel);
+			layoutPanel.setWidgetLeftWidth(seatingChartNameLabel, 10.0, Unit.PCT, 20.0, Unit.PCT);
+			layoutPanel.setWidgetTopHeight(seatingChartNameLabel, 61.2, Unit.PCT, 4.9, Unit.PCT);
+		}
 		
 		submitSeatingChartFlowPanel = new FlowPanel();
 		
@@ -246,51 +254,53 @@ public class SeatingChartView extends Composite {
 		
 		newNameTextBox = new TextBox();
 		
-		seatingChartNameLabel = new Label("Click on a seating chart!");
-		seatingChartNameLabel.setStyleName("TextColorScheme");
-		layoutPanel.add(seatingChartNameLabel);
-		layoutPanel.setWidgetLeftWidth(seatingChartNameLabel, 10.0, Unit.PCT, 20.0, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(seatingChartNameLabel, 61.2, Unit.PCT, 4.9, Unit.PCT);
 		
-		
-		
-		addTableButtonFlowPanel = new FlowPanel();
-		layoutPanel.add(addTableButtonFlowPanel);
-		layoutPanel.setWidgetLeftWidth(addTableButtonFlowPanel, 42.9, Unit.PCT, 5.0, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(addTableButtonFlowPanel, 66.7, Unit.PCT, 3.2, Unit.PCT);
-		
-		Button addTableButton = new Button("New button");
-		addTableButton.setStyleName("ButtonColorScheme");
-		addTableButtonFlowPanel.add(addTableButton);
-		addTableButton.setSize("100%", "100%");
-		addTableButton.setText("Add");
-		
-		addTableButton.addClickHandler(new ClickHandler() {
-
-			@Override
-			public void onClick(ClickEvent event) {
-				handleAddTableClick();			
-			}
+		if(Site.currentUser.getIsAdmin()) {
+			addTableButtonFlowPanel = new FlowPanel();
+			layoutPanel.add(addTableButtonFlowPanel);
+			layoutPanel.setWidgetLeftWidth(addTableButtonFlowPanel, 42.9, Unit.PCT, 5.0, Unit.PCT);
+			layoutPanel.setWidgetTopHeight(addTableButtonFlowPanel, 66.7, Unit.PCT, 3.2, Unit.PCT);
 			
-		});
+			Button addTableButton = new Button("New button");
+			addTableButton.setStyleName("ButtonColorScheme");
+			addTableButtonFlowPanel.add(addTableButton);
+			addTableButton.setSize("100%", "100%");
+			addTableButton.setText("Add");
+			
+			addTableButton.addClickHandler(new ClickHandler() {
+	
+				@Override
+				public void onClick(ClickEvent event) {
+					handleAddTableClick();			
+				}
+				
+			});
 		
-		editTableButtonFlowPanel = new FlowPanel();
-		layoutPanel.add(editTableButtonFlowPanel);
-		layoutPanel.setWidgetLeftWidth(editTableButtonFlowPanel, 51.9, Unit.PCT, 5.0, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(editTableButtonFlowPanel, 66.7, Unit.PCT, 3.2, Unit.PCT);
-		
-		Button editTableButton = new Button("New button");
-		editTableButton.setStyleName("ButtonColorScheme");
-		editTableButtonFlowPanel.add(editTableButton);
-		editTableButton.setSize("100%", "100%");
-		editTableButton.setText("Edit");
-		
-		editTableButton.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				handleEditTableClick();
-			}		
-		});
+			editTableButtonFlowPanel = new FlowPanel();
+			layoutPanel.add(editTableButtonFlowPanel);
+			layoutPanel.setWidgetLeftWidth(editTableButtonFlowPanel, 51.9, Unit.PCT, 5.0, Unit.PCT);
+			layoutPanel.setWidgetTopHeight(editTableButtonFlowPanel, 66.7, Unit.PCT, 3.2, Unit.PCT);
+			
+			Button editTableButton = new Button("New button");
+			editTableButton.setStyleName("ButtonColorScheme");
+			editTableButtonFlowPanel.add(editTableButton);
+			editTableButton.setSize("100%", "100%");
+			editTableButton.setText("Edit");
+			
+			editTableButton.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					handleEditTableClick();
+				}		
+			});
+			
+			
+			tableNameLabel = new Label("Click on a table!");
+			tableNameLabel.setStyleName("TextColorScheme");
+			layoutPanel.add(tableNameLabel);
+			layoutPanel.setWidgetLeftWidth(tableNameLabel, 40.0, Unit.PCT, 20.0, Unit.PCT);
+			layoutPanel.setWidgetTopHeight(tableNameLabel, 61.2, Unit.PCT, 4.9, Unit.PCT);
+		}
 		
 		submitTableFlowPanel = new FlowPanel();
 		
@@ -351,50 +361,51 @@ public class SeatingChartView extends Composite {
 		
 		tableNewNameTextBox = new TextBox();
 		
-		tableNameLabel = new Label("Click on a table!");
-		tableNameLabel.setStyleName("TextColorScheme");
-		layoutPanel.add(tableNameLabel);
-		layoutPanel.setWidgetLeftWidth(tableNameLabel, 40.0, Unit.PCT, 20.0, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(tableNameLabel, 61.2, Unit.PCT, 4.9, Unit.PCT);
-		
-		
-		addPersonButtonFlowPanel = new FlowPanel();
-		layoutPanel.add(addPersonButtonFlowPanel);
-		layoutPanel.setWidgetLeftWidth(addPersonButtonFlowPanel, 72.9, Unit.PCT, 5.0, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(addPersonButtonFlowPanel, 66.7, Unit.PCT, 3.2, Unit.PCT);
-		
-		Button addPersonButton = new Button("New button");
-		addPersonButton.setStyleName("ButtonColorScheme");
-		addPersonButtonFlowPanel.add(addPersonButton);
-		addPersonButton.setSize("100%", "100%");
-		addPersonButton.setText("Add");
-		
-		addPersonButton.addClickHandler(new ClickHandler() {
-
-			@Override
-			public void onClick(ClickEvent event) {
-				handleAddPersonClick();			
-			}
+		if(Site.currentUser.getIsAdmin()) {
+			addPersonButtonFlowPanel = new FlowPanel();
+			layoutPanel.add(addPersonButtonFlowPanel);
+			layoutPanel.setWidgetLeftWidth(addPersonButtonFlowPanel, 72.9, Unit.PCT, 5.0, Unit.PCT);
+			layoutPanel.setWidgetTopHeight(addPersonButtonFlowPanel, 66.7, Unit.PCT, 3.2, Unit.PCT);
 			
-		});
+			Button addPersonButton = new Button("New button");
+			addPersonButton.setStyleName("ButtonColorScheme");
+			addPersonButtonFlowPanel.add(addPersonButton);
+			addPersonButton.setSize("100%", "100%");
+			addPersonButton.setText("Add");
+			
+			addPersonButton.addClickHandler(new ClickHandler() {
+	
+				@Override
+				public void onClick(ClickEvent event) {
+					handleAddPersonClick();			
+				}
+				
+			});
 		
-		editPersonButtonFlowPanel = new FlowPanel();
-		layoutPanel.add(editPersonButtonFlowPanel);
-		layoutPanel.setWidgetLeftWidth(editPersonButtonFlowPanel, 81.9, Unit.PCT, 5.0, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(editPersonButtonFlowPanel, 66.7, Unit.PCT, 3.2, Unit.PCT);
-		
-		Button editPersonButton = new Button("New button");
-		editPersonButton.setStyleName("ButtonColorScheme");
-		editPersonButtonFlowPanel.add(editPersonButton);
-		editPersonButton.setSize("100%", "100%");
-		editPersonButton.setText("Edit");
-		
-		editPersonButton.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				handleEditPersonClick();
-			}		
-		});
+			editPersonButtonFlowPanel = new FlowPanel();
+			layoutPanel.add(editPersonButtonFlowPanel);
+			layoutPanel.setWidgetLeftWidth(editPersonButtonFlowPanel, 81.9, Unit.PCT, 5.0, Unit.PCT);
+			layoutPanel.setWidgetTopHeight(editPersonButtonFlowPanel, 66.7, Unit.PCT, 3.2, Unit.PCT);
+			
+			Button editPersonButton = new Button("New button");
+			editPersonButton.setStyleName("ButtonColorScheme");
+			editPersonButtonFlowPanel.add(editPersonButton);
+			editPersonButton.setSize("100%", "100%");
+			editPersonButton.setText("Edit");
+			
+			editPersonButton.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					handleEditPersonClick();
+				}		
+			});
+			
+			personNameLabel = new Label("Click on a person!");
+			personNameLabel.setStyleName("TextColorScheme");
+			layoutPanel.add(personNameLabel);
+			layoutPanel.setWidgetLeftWidth(personNameLabel, 70.0, Unit.PCT, 20.0, Unit.PCT);
+			layoutPanel.setWidgetTopHeight(personNameLabel, 61.2, Unit.PCT, 4.9, Unit.PCT);
+		}
 		
 		submitPersonFlowPanel = new FlowPanel();
 		
@@ -454,11 +465,6 @@ public class SeatingChartView extends Composite {
 		
 		personNewNameTextBox = new TextBox();
 		
-		personNameLabel = new Label("Click on a person!");
-		personNameLabel.setStyleName("TextColorScheme");
-		layoutPanel.add(personNameLabel);
-		layoutPanel.setWidgetLeftWidth(personNameLabel, 70.0, Unit.PCT, 20.0, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(personNameLabel, 61.2, Unit.PCT, 4.9, Unit.PCT);
 	}
 	
 	public void addPersonNewNameTextBoxToView() {
