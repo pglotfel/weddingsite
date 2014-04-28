@@ -2,6 +2,7 @@ package weddingsite.server;
 
 import java.util.ArrayList;
 
+import weddingsite.shared.Account;
 import weddingsite.shared.Activity;
 import weddingsite.shared.AttendanceList;
 import weddingsite.shared.Attendee;
@@ -14,6 +15,7 @@ public interface IDatabase {
 	
 	//Account
 	public boolean createAccount(String accountName, String adminName, String password);
+	public Account getAccountByAccountName(String accountName);
 	
 	
 	//User

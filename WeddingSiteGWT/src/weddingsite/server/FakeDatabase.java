@@ -679,5 +679,11 @@ public class FakeDatabase implements IDatabase  {
 		
 		return -1;
 	}
+
+	@Override
+	public Account getAccountByAccountName(String accountName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }
