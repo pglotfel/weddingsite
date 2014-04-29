@@ -6,7 +6,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.PersistenceException;
+
+
+
 import weddingsite.server.IDatabase;
 import weddingsite.shared.Account;
 import weddingsite.shared.Activity;
@@ -94,8 +99,83 @@ public class DerbyDatabase implements IDatabase {
 	
 	//OUR CODE###############################
 	
-	@Override
+	//Create Tables!!!!
+		public void createTables() {
+			executeTransaction(new Transaction<Boolean>() {
+				@Override
+				public Boolean execute(Connection conn) throws SQLException {
+					PreparedStatement accounts = null;
+					PreparedStatement users = null;
+					PreparedStatement attendanceLists = null;
+					PreparedStatement seatingCharts = null;
+					PreparedStatement tables = null;
+					PreparedStatement people = null;
+					
+					try {
+						accounts = conn.prepareStatement(
+								"create table accounts (" +
+								"    id integer primary key," +
+								"    accountName varchar(50)" +
+								")");
+						accounts.executeUpdate();
+						
+						users = conn.prepareStatement(
+								"create table users (" +
+								"    id integer primary key," +
+								"    accountID integer," +
+								"    username varchar(50)," +
+								"    password varchar(20)" +
+								"    isAdmin boolean" +
+								")");
+						users.executeUpdate();
+						
+						attendanceLists = conn.prepareStatement(
+								"create table attendanceLists (" +
+										"    id integer primary key," +
+										"    accountID integer," +
+										"    name varchar(50)" +
+								")");
+						attendanceLists.executeUpdate();	
+						
+						seatingCharts = conn.prepareStatement(
+								"create table seatingCharts (" +
+								"    id integer primary key," +
+								"    accountID integer," +
+								"    name varchar(50)" +
+								")");
+						seatingCharts.executeUpdate();
+						
+						tables = conn.prepareStatement( 
+								"create table tables (" +
+								" id integer primary key," +
+								" seatingChartID integer," +
+								" numSeats integer," +
+								" name varchar(50)" +
+								")");
+						tables.executeUpdate();
+						
+						people = conn.prepareStatement( 
+								"create table people (" +
+								"id integer primary key," +
+								"tableID integer," +
+								"name varChar(50)" +
+								")");
+						
+						
+						return true;
+					} finally {
+						DBUtil.closeQuietly(accounts);
+						DBUtil.closeQuietly(users);
+						DBUtil.closeQuietly(attendanceLists);
+						DBUtil.closeQuietly(seatingCharts);
+						DBUtil.closeQuietly(tables);
+					}
+				}
+			});
+		}
 	
+		
+	@Override
 	public Account getAccountByAccountName(final String accountName) {
 		
 		return executeTransaction(new Transaction<Account>() {
@@ -107,7 +187,7 @@ public class DerbyDatabase implements IDatabase {
 				try {
 					
 					stmt = conn.prepareStatement(
-							"select account.* " +
+							"select accounts.* " +
 							"  from accounts " +
 							" where account.name = ?" 
 					);
@@ -137,16 +217,87 @@ public class DerbyDatabase implements IDatabase {
 	@Override
 	public boolean createAccount(String accountName, String adminName,
 			String password) {
-		// TODO Auto-generated method stub
+//		return executeTransaction(new Transaction<boolean>() {
+//			@Override
+//			public boolean execute(Connection conn) throws SQLException {
+//				PreparedStatement stmt = null;
+//				ResultSet resultSet = null;
+//				
+//				try {
+//					
+//					stmt = conn.prepareStatement("insert into accounts values (?, ?)");
+//					
+//					
+//					stmt.setString(1, accountName);
+//					
+//					Account result = null;
+//					
+//					resultSet = stmt.executeQuery();
+//					
+//					while (resultSet.next()) {
+//						result = new Account();
+//						result.setID(resultSet.getInt(1));
+//						result.setAccountName(resultSet.getString(2));
+//					}
+//					
+//					return result;
+//					
+//				} finally {
+//					DBUtil.closeQuietly(resultSet);
+//					DBUtil.closeQuietly(stmt);
+//				}
+//			}
+//		});
 		return false;
 	}
 	
 	
 
 	@Override
-	public User getUser(String accountName, String userName) {
+	public User getUser(final String accountName, final String userName) {
 		// TODO Auto-generated method stub
-		return null;
+		return executeTransaction(new Transaction<User>() {
+			@Override
+			public User execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				User u = null;
+
+				
+				
+				try {
+					
+					stmt = conn.prepareStatement(
+							"select users.* " +
+							"  from users, accounts " +
+							" where user.name = ? and accounts.name = ? and users.accountId = accounts.Id" 
+					);
+					
+					stmt.setString(1, userName);
+					stmt.setString(2, accountName);
+					
+					
+					stmt.setString(1, accountName);
+					
+					resultSet = stmt.executeQuery();
+					
+					while (resultSet.next()) {
+						u = new User();
+						u.setID(resultSet.getInt("id"));
+						u.setAccountID(resultSet.getInt("accountID"));
+						u.setUsername(resultSet.getString("username"));
+						u.setPassword(resultSet.getString("password"));
+						u.setIsAdmin(resultSet.getBoolean("isAdmin"));
+					}
+					
+					return u;
+					
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
 	}
 
 	@Override
@@ -157,9 +308,42 @@ public class DerbyDatabase implements IDatabase {
 	}
 
 	@Override
-	public ArrayList<AttendanceList> getAttendanceLists(String accountName) {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<AttendanceList> getAttendanceLists(final String accountName) {
+		return executeTransaction(new Transaction<ArrayList<AttendanceList>>() {
+			@Override
+			public ArrayList<AttendanceList> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try {
+					stmt = conn.prepareStatement(
+							"select attendanceLists.*" +
+							"  from attendanceLists, accounts " +
+							" where attendanceLists.accountId = accounts.id and accounts.accountName = ?"
+							
+					);
+					
+					stmt.setString(1, accountName);
+					
+					ArrayList<AttendanceList> result = new ArrayList<AttendanceList>();
+					
+					resultSet = stmt.executeQuery();
+					while (resultSet.next()) {
+						AttendanceList list = new AttendanceList();
+						list.setAccountID(resultSet.getInt("accountID"));
+						list.setID(resultSet.getInt("id"));
+						list.setName(resultSet.getString("name"));
+						result.add(list);
+						
+					}
+					
+					return result;
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
 	}
 
 	@Override
@@ -190,10 +374,51 @@ public class DerbyDatabase implements IDatabase {
 	}
 
 	@Override
-	public ArrayList<Attendee> getAttendanceListAttendees(String name,
-			String accountName) {
+	public ArrayList<Attendee> getAttendanceListAttendees(final String name,
+			final String accountName) {
 		// TODO Auto-generated method stub
-		return null;
+		return executeTransaction(new Transaction<ArrayList<Attendee>>() {
+			@Override
+			public ArrayList<Attendee> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try {
+					stmt = conn.prepareStatement(
+							"select attendees.*" +
+							"  from attendanceLists, accounts, attendees " +
+							" where attendanceLists.accountId = accounts.id" +
+							"and attendees.attendanceListID = attendanceLists.id" +
+							"and attendanceLists.name = ?" +
+							"and accounts.name = ?"
+							
+					);
+					
+					stmt.setString(1, name);
+					stmt.setString(2, accountName);
+					
+					ArrayList<Attendee> result = new ArrayList<Attendee>();
+					
+					resultSet = stmt.executeQuery();
+					while (resultSet.next()) {
+						Attendee a = new Attendee();
+						a.setAttendanceListID(resultSet.getInt("accountID"));
+						a.setID(resultSet.getInt("id"));
+						a.setAttending(resultSet.getBoolean("attending"));
+						a.setName(resultSet.getString("name"));
+						a.setNumAttending(resultSet.getInt("numAttending"));
+						result.add(a);
+						
+					}
+					
+					return result;
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
+
 	}
 
 	@Override
@@ -218,9 +443,43 @@ public class DerbyDatabase implements IDatabase {
 	}
 
 	@Override
-	public ArrayList<SeatingChart> getSeatingCharts(String accountName) {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<SeatingChart> getSeatingCharts(final String accountName) {
+		return executeTransaction(new Transaction<ArrayList<SeatingChart>>() {
+			@Override
+			public ArrayList<SeatingChart> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try {
+					stmt = conn.prepareStatement(
+							"select seatingCharts.*" +
+							"  from accounts, seatingCharts " +
+							" where accounts.accountName = ?" +
+							"and seatingCharts.accountID = accounts.id"
+							
+					);
+					
+					stmt.setString(1, accountName);
+					
+					ArrayList<SeatingChart> result = new ArrayList<SeatingChart>();
+					
+					resultSet = stmt.executeQuery();
+					while (resultSet.next()) {
+						SeatingChart a = new SeatingChart();
+						a.setAccountID(resultSet.getInt("accountID"));
+						a.setID(resultSet.getInt("id"));
+						a.setName(resultSet.getString("name"));
+						result.add(a);
+						
+					}
+					
+					return result;
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
 	}
 
 	@Override
@@ -244,10 +503,48 @@ public class DerbyDatabase implements IDatabase {
 	}
 
 	@Override
-	public ArrayList<Table> getTables(String accountName,
-			String SeatingChartName) {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<Table> getTables(final String accountName,
+			final String SeatingChartName) {
+		return executeTransaction(new Transaction<ArrayList<Table>>() {
+			@Override
+			public ArrayList<Table> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try {
+					stmt = conn.prepareStatement(
+							"select tables.*" +
+							"  from accounts, seatingCharts, tables " +
+							" where accounts.accountName = ?" +
+							"and seatingCharts.accountID = accounts.id" +
+							"and seatingCharts.name = ?" +
+							"and tables.seatingChartID = seatingCharts.id"
+							
+					);
+					
+					stmt.setString(1, accountName);
+					stmt.setString(2, SeatingChartName);
+					
+					ArrayList<Table> result = new ArrayList<Table>();
+					
+					resultSet = stmt.executeQuery();
+					while (resultSet.next()) {
+						Table a = new Table();
+						a.setID(resultSet.getInt("id"));
+						a.setName(resultSet.getString("name"));
+						a.setNumSeats(resultSet.getInt("numSeats"));
+						a.setSeatingChartID(resultSet.getInt("seatingChartID"));
+						result.add(a);
+						
+					}
+					
+					return result;
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
 	}
 
 	@Override
@@ -280,10 +577,51 @@ public class DerbyDatabase implements IDatabase {
 	}
 
 	@Override
-	public ArrayList<Person> getPeopleAtTable(String accountName,
-			String seatingChartName, String tableName) {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<Person> getPeopleAtTable(final String accountName,
+			final String seatingChartName, final String tableName) {
+		return executeTransaction(new Transaction<ArrayList<Person>>() {
+			@Override
+			public ArrayList<Person> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try {
+					stmt = conn.prepareStatement(
+							"select people.*" +
+							"from accounts, seatingCharts, tables, people " +
+							"where accounts.accountName = ?" +
+							"and seatingCharts.accountID = accounts.id" +
+							"and seatingCharts.name = ?" +
+							"and tables.seatingChartID = seatingCharts.id" +
+							"and tables.name = ?" +
+							"and people.tableID = tables.id" 
+							
+							
+					);
+					
+					stmt.setString(1, accountName);
+					stmt.setString(2, seatingChartName);
+					stmt.setString(3, tableName);
+					
+					ArrayList<Person> result = new ArrayList<Person>();
+					
+					resultSet = stmt.executeQuery();
+					while (resultSet.next()) {
+						Person a = new Person();
+						a.setId(resultSet.getInt("id"));
+						a.setName(resultSet.getString("name"));
+						a.setTableID(resultSet.getInt("tableID"));
+						result.add(a);
+						
+					}
+					
+					return result;
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
 	}
 
 	@Override
