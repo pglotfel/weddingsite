@@ -6,9 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
-import javax.persistence.PersistenceException;
 
 
 
@@ -36,6 +34,7 @@ public class DerbyDatabase implements IDatabase {
 	}
 
 	private static final int MAX_ATTEMPTS = 10;
+	private static final String DB_NAME = "H:/weddingsite.db";
 	
 	
 	public<ResultType> ResultType executeTransaction(Transaction<ResultType> txn) {
@@ -82,7 +81,7 @@ public class DerbyDatabase implements IDatabase {
 	}
 	
 	private Connection connect() throws SQLException {
-		Connection conn = DriverManager.getConnection("jdbc:derby:books.db;create=true");
+		Connection conn = DriverManager.getConnection("jdbc:derby:" + DB_NAME + ";create=true");
 		
 		// Set autocommit to false to allow multiple the execution of
 		// multiple queries/statements as part of the same transaction.
@@ -110,28 +109,29 @@ public class DerbyDatabase implements IDatabase {
 					PreparedStatement seatingCharts = null;
 					PreparedStatement tables = null;
 					PreparedStatement people = null;
+					PreparedStatement attendees = null;
 					
 					try {
 						accounts = conn.prepareStatement(
 								"create table accounts (" +
-								"    id integer primary key," +
-								"    accountName varchar(50)" +
+								"    id integer primary key not null generated always as identity," +
+								"    accountName varchar(50) unique" +
 								")");
 						accounts.executeUpdate();
 						
 						users = conn.prepareStatement(
 								"create table users (" +
-								"    id integer primary key," +
+								"    id integer primary key not null generated always as identity," +
 								"    accountID integer," +
 								"    username varchar(50)," +
-								"    password varchar(20)" +
+								"    password varchar(20)," +
 								"    isAdmin boolean" +
 								")");
 						users.executeUpdate();
 						
 						attendanceLists = conn.prepareStatement(
 								"create table attendanceLists (" +
-										"    id integer primary key," +
+										"    id integer primary key not null generated always as identity," +
 										"    accountID integer," +
 										"    name varchar(50)" +
 								")");
@@ -139,7 +139,7 @@ public class DerbyDatabase implements IDatabase {
 						
 						seatingCharts = conn.prepareStatement(
 								"create table seatingCharts (" +
-								"    id integer primary key," +
+								"    id integer primary key not null generated always as identity," +
 								"    accountID integer," +
 								"    name varchar(50)" +
 								")");
@@ -147,7 +147,7 @@ public class DerbyDatabase implements IDatabase {
 						
 						tables = conn.prepareStatement( 
 								"create table tables (" +
-								" id integer primary key," +
+								" id integer primary key not null generated always as identity," +
 								" seatingChartID integer," +
 								" numSeats integer," +
 								" name varchar(50)" +
@@ -156,11 +156,21 @@ public class DerbyDatabase implements IDatabase {
 						
 						people = conn.prepareStatement( 
 								"create table people (" +
-								"id integer primary key," +
+								"id integer primary key not null generated always as identity," +
 								"tableID integer," +
 								"name varChar(50)" +
 								")");
+						people.executeUpdate();
 						
+						attendees = conn.prepareStatement( 
+								"create table attendees (" +
+								" id integer primary key not null generated always as identity," +
+								"attendanceListID integer," +
+								"attending boolean," +
+								"numAttending int" +
+								")"
+								);
+						attendees.executeUpdate();
 						
 						return true;
 					} finally {
@@ -169,6 +179,7 @@ public class DerbyDatabase implements IDatabase {
 						DBUtil.closeQuietly(attendanceLists);
 						DBUtil.closeQuietly(seatingCharts);
 						DBUtil.closeQuietly(tables);
+						DBUtil.closeQuietly(attendees);
 					}
 				}
 			});
@@ -189,7 +200,7 @@ public class DerbyDatabase implements IDatabase {
 					stmt = conn.prepareStatement(
 							"select accounts.* " +
 							"  from accounts " +
-							" where account.name = ?" 
+							" where accounts.accountName = ?" 
 					);
 					
 					stmt.setString(1, accountName);
@@ -215,40 +226,73 @@ public class DerbyDatabase implements IDatabase {
 	}
 
 	@Override
-	public boolean createAccount(String accountName, String adminName,
-			String password) {
-//		return executeTransaction(new Transaction<boolean>() {
-//			@Override
-//			public boolean execute(Connection conn) throws SQLException {
-//				PreparedStatement stmt = null;
-//				ResultSet resultSet = null;
-//				
-//				try {
-//					
-//					stmt = conn.prepareStatement("insert into accounts values (?, ?)");
-//					
-//					
-//					stmt.setString(1, accountName);
-//					
-//					Account result = null;
-//					
-//					resultSet = stmt.executeQuery();
-//					
-//					while (resultSet.next()) {
-//						result = new Account();
-//						result.setID(resultSet.getInt(1));
-//						result.setAccountName(resultSet.getString(2));
-//					}
-//					
-//					return result;
-//					
-//				} finally {
-//					DBUtil.closeQuietly(resultSet);
-//					DBUtil.closeQuietly(stmt);
-//				}
-//			}
-//		});
-		return false;
+	public boolean createAccount(final String accountName, final String adminName,
+			final String password) {
+		return executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				PreparedStatement stmt2 = null;
+				ResultSet generatedKeys = null;
+				ResultSet moreKeys = null;
+				
+				Account a = new Account();
+				
+				
+				try {
+					stmt = conn.prepareStatement(
+						"insert into accounts (accountName) values (?)",
+							PreparedStatement.RETURN_GENERATED_KEYS
+					);
+					
+					stmt.setString(1, accountName);
+					
+					
+					 //Attempt to insert new account
+					stmt.executeUpdate();
+
+					 //Determine the auto-generated id
+					generatedKeys = stmt.getGeneratedKeys();
+					if (!generatedKeys.next()) {
+						throw new SQLException("Could not get auto-generated key for inserted Account");
+					}
+					
+					a.setID(generatedKeys.getInt(1));
+					System.out.println("New account has id " + a.getID());
+					
+					stmt2 = conn.prepareStatement( 
+							"insert into users (accountId, username, password, isAdmin) values (?, ?, ?, ?)",
+							PreparedStatement.RETURN_GENERATED_KEYS
+						);
+					
+					stmt2.setInt(1, a.getID());
+					stmt2.setString(2, adminName);
+					stmt2.setString(3, password);
+					stmt2.setBoolean(4, true);
+					
+					//Try to insert new User
+					stmt2.executeUpdate();
+					
+					
+					moreKeys = stmt2.getGeneratedKeys();
+					if (!moreKeys.next()) {
+						throw new SQLException("Could not get auto-generated key for inserted User");
+					}
+					
+					int key = generatedKeys.getInt(1);
+					System.out.println("New user has id " + key);
+					
+					
+					
+					return true;
+				} finally {
+					DBUtil.closeQuietly(generatedKeys);
+					DBUtil.closeQuietly(stmt);
+					DBUtil.closeQuietly(moreKeys);
+					DBUtil.closeQuietly(stmt2);
+				}
+			}
+		});
 	}
 	
 	
@@ -262,15 +306,12 @@ public class DerbyDatabase implements IDatabase {
 				PreparedStatement stmt = null;
 				ResultSet resultSet = null;
 				User u = null;
-
-				
-				
 				try {
 					
 					stmt = conn.prepareStatement(
 							"select users.* " +
 							"  from users, accounts " +
-							" where user.name = ? and accounts.name = ? and users.accountId = accounts.Id" 
+							" where users.username = ? and accounts.accountName = ? and users.accountId = accounts.Id" 
 					);
 					
 					stmt.setString(1, userName);
@@ -301,10 +342,48 @@ public class DerbyDatabase implements IDatabase {
 	}
 
 	@Override
-	public boolean addUser(String accountName, String userName,
-			String userPassword, boolean isAdmin) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean addUser(final String accountName, final String userName,
+			final String userPassword, final boolean isAdmin) {
+		
+		return executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet generatedKeys = null;
+				
+				Account a = new Account();
+				a = getAccountByAccountName(accountName);
+				
+				try {
+					stmt = conn.prepareStatement(
+							"insert into users (accountId, username, password, isAdmin) values (?, ?, ?, ?)",
+							PreparedStatement.RETURN_GENERATED_KEYS
+					);
+					
+					stmt.setInt(1, a.getID());
+					stmt.setString(2, userName);
+					stmt.setString(3, userPassword);
+					stmt.setBoolean(4, isAdmin);
+
+					// Attempt to insert new account
+					stmt.executeUpdate();
+
+					// Determine the auto-generated id
+					generatedKeys = stmt.getGeneratedKeys();
+					if (!generatedKeys.next()) {
+						throw new SQLException("Could not get auto-generated key for inserted Account");
+					}
+					
+					
+					System.out.println("New user has id " + generatedKeys.getInt(1));
+					
+					return true;
+				} finally {
+					DBUtil.closeQuietly(generatedKeys);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
 	}
 
 	@Override
@@ -347,24 +426,123 @@ public class DerbyDatabase implements IDatabase {
 	}
 
 	@Override
-	public boolean addAttendanceList(String accountName,
-			String attendanceListName) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean addAttendanceList(final String accountName,
+			final String attendanceListName) {
+		return executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet generatedKeys = null;
+				
+				Account a = new Account();
+				a = getAccountByAccountName(accountName);
+				
+				try {
+					stmt = conn.prepareStatement(
+							"insert into attendanceLists (accountID, name) values (?, ?)",
+							PreparedStatement.RETURN_GENERATED_KEYS
+					);
+					
+					stmt.setInt(1, a.getID());
+					stmt.setString(2, attendanceListName);
+					
+
+					// Attempt to insert new account
+					stmt.executeUpdate();
+
+					// Determine the auto-generated id
+					generatedKeys = stmt.getGeneratedKeys();
+					if (!generatedKeys.next()) {
+						throw new SQLException("Could not get auto-generated key for inserted Attendance List");
+					}
+					
+					
+					System.out.println("New attendance list has id " + generatedKeys.getInt(1));
+					
+					return true;
+				} finally {
+					DBUtil.closeQuietly(generatedKeys);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
 	}
 
 	@Override
-	public boolean deleteAttendanceList(String accountName,
-			String attendanceListName) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean deleteAttendanceList(final String accountName,
+			final String attendanceListName) {
+		return executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				
+				Account a = new Account();
+				a = getAccountByAccountName(accountName);
+				
+				try {
+					stmt = conn.prepareStatement(
+							"delete from attendanceLists" +
+							" where attendanceLists.accountID = ? and attendanceLists.name = ?"
+					);
+					
+					stmt.setInt(1, a.getID());
+					stmt.setString(2, attendanceListName);
+					
+
+					// Attempt to insert new account
+					stmt.executeUpdate();
+
+					// Determine the auto-generated id
+					
+					
+					
+					System.out.println("successfuly deleted " + attendanceListName);
+					
+					return true;
+				} finally {
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
+	
 	}
 
 	@Override
-	public boolean editAttendanceList(String accountName,
-			String attendanceListName, String newName) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean editAttendanceList(final String accountName,
+			final String attendanceListName, final String newName) {
+		
+		return executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				
+				Account a = new Account();
+				a = getAccountByAccountName(accountName);
+				
+				try {
+					stmt = conn.prepareStatement(
+							"update attendanceLists" +
+							" set name = ? " +
+							" where attendanceLists.accountID = ? and attendanceLists.name = ?"
+					);
+					
+					stmt.setString(1, newName);
+					stmt.setInt(2, a.getID());
+					stmt.setString(3, attendanceListName);
+					
+
+					// Attempt to modify the attendance list
+					stmt.executeUpdate();
+
+					
+					System.out.println("successfuly updated " + attendanceListName + " to " + newName);
+					
+					return true;
+				} finally {
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
 	}
 
 	@Override
@@ -383,19 +561,20 @@ public class DerbyDatabase implements IDatabase {
 				PreparedStatement stmt = null;
 				ResultSet resultSet = null;
 				
+				Account b = getAccountByAccountName(accountName);
+				
+				
 				try {
 					stmt = conn.prepareStatement(
 							"select attendees.*" +
-							"  from attendanceLists, accounts, attendees " +
-							" where attendanceLists.accountId = accounts.id" +
-							"and attendees.attendanceListID = attendanceLists.id" +
-							"and attendanceLists.name = ?" +
-							"and accounts.name = ?"
-							
+							"  from attendanceLists, attendees " +
+							" where attendanceLists.accountId = ? " +
+							"and attendees.attendanceListID = attendanceLists.id " +
+							"and attendanceLists.name = ?"		
 					);
 					
-					stmt.setString(1, name);
-					stmt.setString(2, accountName);
+					stmt.setInt(1, b.getID());
+					stmt.setString(2, name);
 					
 					ArrayList<Attendee> result = new ArrayList<Attendee>();
 					
@@ -653,7 +832,12 @@ public class DerbyDatabase implements IDatabase {
 		return null;
 	}
 
-	
+	public static void main(String[] args) {
+		DerbyDatabase db = new DerbyDatabase();
+		System.out.println("Creating tables...");
+		db.createTables();
+		System.out.println("Done!");
+	}
 	
 	
 	
