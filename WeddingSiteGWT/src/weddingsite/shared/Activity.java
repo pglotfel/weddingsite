@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Activity {
 	
-	
+	private int accountID;
 	private int id;
 	private String date;
 	private String title;
@@ -69,6 +69,14 @@ public class Activity {
 
 	public void setEndTime(String endTime) {
 		this.endTime = endTime;
+	}
+
+	public int getAccountID() {
+		return accountID;
+	}
+
+	public void setAccountID(int accountID) {
+		this.accountID = accountID;
 	}
 	
 }

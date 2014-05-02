@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 
 
+
 import weddingsite.server.IDatabase;
 import weddingsite.shared.Account;
 import weddingsite.shared.Activity;
@@ -110,6 +111,8 @@ public class DerbyDatabase implements IDatabase {
 					PreparedStatement tables = null;
 					PreparedStatement people = null;
 					PreparedStatement attendees = null;
+					PreparedStatement events = null;
+					PreparedStatement eventsUsersLink = null;
 					
 					try {
 						accounts = conn.prepareStatement(
@@ -167,11 +170,30 @@ public class DerbyDatabase implements IDatabase {
 								" id integer primary key not null generated always as identity," +
 								"attendanceListID integer," +
 								"attending boolean," +
-								"numAttending int," +
+								"numAttending integer," +
 								"name varchar(50)" +
 								")"
 								);
 						attendees.executeUpdate();
+						
+						events = conn.prepareStatement(
+								"create table events (" +
+								" id integer primary key not null generated always as identity," +
+								"accountID integer," +
+								"date varchar(15)," +
+								"body varchar(500)," +
+								"startTime varchar(15)," +
+								"endTime varchar(15)" +
+								")");
+						events.executeUpdate();
+						
+						eventsUsersLink = conn.prepareStatement(
+								"create table eventsUsersLink (" +
+								"eventID integer," +
+								"userID integer" +
+								")");
+						
+						eventsUsersLink.executeUpdate();
 						
 						return true;
 					} finally {
@@ -181,6 +203,8 @@ public class DerbyDatabase implements IDatabase {
 						DBUtil.closeQuietly(seatingCharts);
 						DBUtil.closeQuietly(tables);
 						DBUtil.closeQuietly(attendees);
+						DBUtil.closeQuietly(events);
+						DBUtil.closeQuietly(eventsUsersLink);
 					}
 				}
 			});
@@ -635,8 +659,8 @@ public class DerbyDatabase implements IDatabase {
 					);
 					
 					stmt.setInt(1, a.getID());
-					stmt.setInt(2, numAttending);
-					stmt.setBoolean(3, true);
+					stmt.setInt(3, numAttending);
+					stmt.setBoolean(2, true);
 					stmt.setString(4, attendeeName);
 					
 
@@ -670,6 +694,10 @@ public class DerbyDatabase implements IDatabase {
 			public Boolean execute(Connection conn) throws SQLException {
 				PreparedStatement stmt = null;
 				
+				if(attendanceListName == null || attendeeName == null) {
+					return false;
+				}
+				
 				ArrayList<AttendanceList> aList = new ArrayList<AttendanceList>();
 				aList = getAttendanceLists(accountName);
 				
@@ -684,9 +712,9 @@ public class DerbyDatabase implements IDatabase {
 				
 				try {
 					stmt = conn.prepareStatement(
-							"update attendanceLists" +
+							"update attendees" +
 							" set numAttending = ? " +
-							" where attendee.attendanceListID = ? and attendee.name = ?"
+							" where attendees.attendanceListID = ? and attendees.name = ?"
 					);
 					
 					stmt.setInt(1, numAttending);
@@ -714,6 +742,10 @@ public class DerbyDatabase implements IDatabase {
 			@Override
 			public Boolean execute(Connection conn) throws SQLException {
 				PreparedStatement stmt = null;
+				
+				if(attendanceListName == null || attendeeName == null) {
+					return false;
+				}
 				
 				ArrayList<AttendanceList> aList = new ArrayList<AttendanceList>();
 				aList = getAttendanceLists(accountName);
@@ -791,23 +823,116 @@ public class DerbyDatabase implements IDatabase {
 	}
 
 	@Override
-	public boolean addSeatingChart(String accountName, String seatingChartName) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean addSeatingChart(final String accountName, final String seatingChartName) {
+		return executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				
+				PreparedStatement stmt = null;
+				ResultSet generatedKeys = null;
+				
+				Account a = getAccountByAccountName(accountName);
+				
+				
+				
+				//Get right list, store ID
+				
+				try {
+					stmt = conn.prepareStatement(
+							"insert into seatingCharts (accountID, name) values (?, ?)",
+							PreparedStatement.RETURN_GENERATED_KEYS
+					);
+					
+					stmt.setInt(1, a.getID());
+					stmt.setString(2, seatingChartName);
+					
+
+					// Attempt to insert new attendee
+					stmt.executeUpdate();
+
+					// Determine the auto-generated id
+					generatedKeys = stmt.getGeneratedKeys();
+					if (!generatedKeys.next()) {
+						throw new SQLException("Could not get auto-generated key for inserted Seating Chart");
+					}
+					
+					
+					System.out.println("New seating Chart has id " + generatedKeys.getInt(1));
+					
+					return true;
+				} finally {
+					DBUtil.closeQuietly(generatedKeys);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
 	}
 
 	@Override
-	public boolean deleteSeatingChart(String accountName,
-			String seatingChartName) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean deleteSeatingChart(final String accountName,
+			final String seatingChartName) {
+		return executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				
+				Account a = getAccountByAccountName(accountName);
+				
+				try {
+					stmt = conn.prepareStatement(
+							"delete from seatingCharts" +
+							" where seatingCharts.accountID = ? and seatingCharts.name = ?"
+					);
+					
+					stmt.setInt(1, a.getID());
+					stmt.setString(2, seatingChartName);
+					
+					stmt.executeUpdate();
+				
+					System.out.println("successfuly deleted " + seatingChartName);
+					
+					return true;
+				} finally {
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
 	}
 
 	@Override
-	public boolean editSeatingChart(String accountName,
-			String seatingChartName, String newName) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean editSeatingChart(final String accountName,
+			final String seatingChartName, final String newName) {
+		return executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				Account a = getAccountByAccountName(accountName);
+				
+				
+				try {
+					stmt = conn.prepareStatement(
+							"update seatingCharts" +
+							" set seatingCharts.name = ? " +
+							" where seatingCharts.accountID = ? and seatingCharts.name = ?"
+					);
+					
+					stmt.setString(1, newName);
+					stmt.setInt(2, a.getID());
+					stmt.setString(3, seatingChartName);
+					
+
+					// Attempt to modify the attendance list
+					stmt.executeUpdate();
+
+					
+					System.out.println("successfuly updated seating chart name to " + newName);
+					
+					return true;
+				} finally {
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
 	}
 
 	@Override
@@ -823,10 +948,10 @@ public class DerbyDatabase implements IDatabase {
 					stmt = conn.prepareStatement(
 							"select tables.*" +
 							"  from accounts, seatingCharts, tables " +
-							" where accounts.accountName = ?" +
-							"and seatingCharts.accountID = accounts.id" +
-							"and seatingCharts.name = ?" +
-							"and tables.seatingChartID = seatingCharts.id"
+							" where accounts.accountName = ? " +
+							"and seatingCharts.accountID = accounts.id " +
+							"and seatingCharts.name = ? " +
+							"and tables.seatingChartID = seatingCharts.id "
 							
 					);
 					
@@ -863,25 +988,123 @@ public class DerbyDatabase implements IDatabase {
 	}
 
 	@Override
-	public boolean addTableToSeatingChart(String accountName,
-			String seatingChartName, String tableName, int numSeats) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean addTableToSeatingChart(final String accountName,
+			final String seatingChartName, final String tableName, final int numSeats) {
+		return executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				
+				PreparedStatement stmt = null;
+				ResultSet generatedKeys = null;
+				
+				ArrayList<SeatingChart> charts = getSeatingCharts(accountName);
+				int seatingChartID = -1;
+				for(int i = 0; i < charts.size(); i++) {
+					if(charts.get(i).getName().equals(seatingChartName)) {
+						seatingChartID = charts.get(i).getID();
+					}
+				}
+				try {
+					stmt = conn.prepareStatement(
+							"insert into tables (seatingChartID, numSeats, name) values (?, ?, ?)",
+							PreparedStatement.RETURN_GENERATED_KEYS
+					);
+					
+					stmt.setInt(1, seatingChartID);
+					stmt.setInt(2, numSeats);
+					stmt.setString(3, tableName);
+					stmt.executeUpdate();
+
+					// Determine the auto-generated id
+					generatedKeys = stmt.getGeneratedKeys();
+					if (!generatedKeys.next()) {
+						throw new SQLException("Could not get auto-generated key for inserted table");
+					}
+					System.out.println("New table has id " + generatedKeys.getInt(1));
+					
+					return true;
+				} finally {
+					DBUtil.closeQuietly(generatedKeys);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
 	}
 
 	@Override
-	public boolean editTableInSeatingChart(String accountName,
-			String seatingChartName, String tableName, String newName,
-			int numSeats) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean editTableInSeatingChart(final String accountName,
+			final String seatingChartName, final String tableName, final String newName,
+			final int numSeats) {
+		return executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				
+				ArrayList<SeatingChart> charts = getSeatingCharts(accountName);
+				int seatingChartID = -1;
+				for(int i = 0; i < charts.size(); i++) {
+					if(charts.get(i).getName().equals(seatingChartName)) {
+						seatingChartID = charts.get(i).getID();
+					}
+				}
+				try {
+					stmt = conn.prepareStatement(
+							"update tables" +
+							" set tables.name = ?, tables.numSeats = ?" +
+							" where tables.seatingChartID = ? and tables.name = ?"
+					);
+					
+					stmt.setString(1, newName);
+					stmt.setInt(2, numSeats);
+					stmt.setInt(3, seatingChartID);
+					stmt.setString(4, tableName);
+					stmt.executeUpdate();
+					
+					System.out.println("successfuly updated table name to " + newName);
+					
+					return true;
+				} finally {
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
 	}
 
 	@Override
-	public boolean deleteTableInSeatingChart(String accountName,
-			String seatingChartName, String tableName) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean deleteTableInSeatingChart(final String accountName,
+			final String seatingChartName, final String tableName) {
+		return executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				
+				ArrayList<SeatingChart> charts = getSeatingCharts(accountName);
+				int seatingChartID = -1;
+				for(int i = 0; i < charts.size(); i++) {
+					if(charts.get(i).getName().equals(seatingChartName)) {
+						seatingChartID = charts.get(i).getID();
+					}
+				}
+				
+				try {
+					stmt = conn.prepareStatement(
+							"delete from tables" +
+							" where tables.seatingChartID = ? and tables.name = ?"
+					);
+					
+					stmt.setInt(1, seatingChartID);
+					stmt.setString(2, tableName);
+					
+					stmt.executeUpdate();
+				
+					System.out.println("successfuly deleted " + tableName);
+					
+					return true;
+				} finally {
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
 	}
 
 	@Override
@@ -897,12 +1120,12 @@ public class DerbyDatabase implements IDatabase {
 					stmt = conn.prepareStatement(
 							"select people.*" +
 							"from accounts, seatingCharts, tables, people " +
-							"where accounts.accountName = ?" +
-							"and seatingCharts.accountID = accounts.id" +
-							"and seatingCharts.name = ?" +
-							"and tables.seatingChartID = seatingCharts.id" +
-							"and tables.name = ?" +
-							"and people.tableID = tables.id" 
+							" where accounts.accountName = ? " +
+							" and seatingCharts.accountID = accounts.id" +
+							" and seatingCharts.name = ?" +
+							" and tables.seatingChartID = seatingCharts.id" +
+							" and tables.name = ?" +
+							" and people.tableID = tables.id" 
 							
 							
 					);
@@ -933,25 +1156,126 @@ public class DerbyDatabase implements IDatabase {
 	}
 
 	@Override
-	public boolean removePersonFromTable(String accountName,
-			String seatingChartName, String tableName, String personName) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean removePersonFromTable(final String accountName,
+			final String seatingChartName, final String tableName, final String personName) {
+		return executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				
+				ArrayList<Table> tables = getTables(accountName, seatingChartName);
+				int tableID = -1;
+				for(int i = 0; i < tables.size(); i++) {
+					if(tables.get(i).getName().equals(tableName)) {
+						tableID = tables.get(i).getID();
+					}
+				}
+				
+				
+				
+				try {
+					stmt = conn.prepareStatement(
+							"delete from people" +
+							" where people.tableID = ? and people.name = ?"
+					);
+					
+					stmt.setInt(1, tableID);
+					stmt.setString(2, personName);
+					
+					stmt.executeUpdate();
+				
+					System.out.println("successfuly deleted " + personName);
+					
+					return true;
+				} finally {
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
 	}
 
 	@Override
-	public boolean addPersonToTable(String accountName,
-			String seatingChartName, String tableName, String personName) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean addPersonToTable(final String accountName,
+			final String seatingChartName, final String tableName, final String personName) {
+		return executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				
+				PreparedStatement stmt = null;
+				ResultSet generatedKeys = null;
+				
+				ArrayList<Table> tables = getTables(accountName, seatingChartName);
+				int tableID = -1;
+				for(int i = 0; i < tables.size(); i++) {
+					if(tables.get(i).getName().equals(tableName)) {
+						tableID = tables.get(i).getID();
+					}
+				}
+				
+				try {
+					stmt = conn.prepareStatement(
+							"insert into people (tableID, name) values (?, ?)",
+							PreparedStatement.RETURN_GENERATED_KEYS
+					);
+					
+					stmt.setInt(1, tableID);
+					stmt.setString(2, personName);
+					stmt.executeUpdate();
+
+					// Determine the auto-generated id
+					generatedKeys = stmt.getGeneratedKeys();
+					if (!generatedKeys.next()) {
+						throw new SQLException("Could not get auto-generated key for inserted person");
+					}
+					System.out.println("New person has id " + generatedKeys.getInt(1));
+					
+					return true;
+				} finally {
+					DBUtil.closeQuietly(generatedKeys);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
 	}
 
 	@Override
-	public boolean editPersonInTable(String accountName,
-			String seatingChartName, String tableName, String personName,
-			String newName) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean editPersonInTable(final String accountName,
+			final String seatingChartName, final String tableName, final String personName,
+			final String newName) {
+		return executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				
+				ArrayList<Table> tables = getTables(accountName, seatingChartName);
+				int tableID = -1;
+				for(int i = 0; i < tables.size(); i++) {
+					if(tables.get(i).getName().equals(tableName)) {
+						tableID = tables.get(i).getID();
+					}
+				}
+				
+				
+				try {
+					stmt = conn.prepareStatement(
+							"update people" +
+							" set people.name = ?" +
+							" where people.tableID = ? and people.name = ?"
+					);
+					
+					stmt.setString(1, newName);
+					stmt.setInt(2, tableID);
+					stmt.setString(3, personName);
+					stmt.executeUpdate();
+					
+					System.out.println("successfuly updated person name to " + newName);
+					
+					return true;
+				} finally {
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
 	}
 
 	@Override
@@ -966,6 +1290,47 @@ public class DerbyDatabase implements IDatabase {
 		System.out.println("Creating tables...");
 		db.createTables();
 		System.out.println("Done!");
+	}
+
+	@Override
+	public ArrayList<User> getUsers(final String accountName) {
+		return executeTransaction(new Transaction<ArrayList<User>>() {
+			@Override
+			public ArrayList<User> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try {
+					stmt = conn.prepareStatement(
+							"select users.*" +
+							"from accounts, users " +
+							" where accounts.accountName = ? " +
+							" and users.accountID = accounts.id"		
+					);
+					
+					stmt.setString(1, accountName);
+					
+					ArrayList<User> result = new ArrayList<User>();
+					
+					resultSet = stmt.executeQuery();
+					while (resultSet.next()) {
+						User a = new User();
+						a.setAccountID(resultSet.getInt("accountID"));
+						a.setID(resultSet.getInt("id"));
+						a.setIsAdmin(resultSet.getBoolean("isAdmin"));
+						a.setPassword(resultSet.getString("password"));
+						a.setUsername(resultSet.getString("username"));
+						result.add(a);
+						
+					}
+					
+					return result;
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
 	}
 	
 	
