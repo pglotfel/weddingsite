@@ -77,8 +77,8 @@ public class HomePageView  extends Composite implements ISubscriber {
 			}
 
 		});
+		
 		menuBar.addItem(mntmSeatingCharts);
-
 	}
 	
 	
@@ -93,7 +93,7 @@ public class HomePageView  extends Composite implements ISubscriber {
 
 
 	protected void handleCalendarClick() {
-		//Site.search(Site.Pages.CALENDARPAGE);
+		Site.search(Site.Pages.CALENDARPAGE);
 		
 	}
 
@@ -101,8 +101,7 @@ public class HomePageView  extends Composite implements ISubscriber {
 	//TODO: STUFF
 	private void handleSeatingChartsClick() {
 		Site.search(Site.Pages.SEATINGCHARTPAGE);
-		
-		
+			
 	}
 	
 	private void handleAttendanceListClick() {

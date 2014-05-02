@@ -77,6 +77,16 @@ h1 {
 	color: #4d1426;
 }
 
+.textBig
+{
+	font-size: 20px;
+	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	text-align: center;
+	color: #4d1426;
+	font-weight: bold;
+	
+}
+
 .gwt-MenuBar-vertical {
     background-color: #cecece;
     width: 100%;
@@ -134,6 +144,14 @@ h1 {
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: 20px;
+	border:   1px solid #3c0315;
+}
+
+.InnerBackgroundCenter {
+	background-color: #cecece;
+	margin-left: auto;
+	margin-right: auto;
+	vertical-align: middle;
 	border:   1px solid #3c0315;
 }
 
