@@ -128,7 +128,6 @@ public class SeatingChartView extends Composite {
 		
 		
 		tableFlowPanel = new FlowPanel();
-		tableFlowPanel.setStyleName("InnerBackground");
 		layoutPanel.add(tableFlowPanel);
 		layoutPanel.setWidgetLeftWidth(tableFlowPanel, 40, Unit.PCT, 20, Unit.PCT);
 		layoutPanel.setWidgetTopHeight(tableFlowPanel, 20, Unit.PCT, 40, Unit.PCT);
@@ -139,7 +138,6 @@ public class SeatingChartView extends Composite {
 		tableMenu.setStyleName("gwt-MenuBar-vertical");
 		
 		peopleFlowPanel = new FlowPanel();
-		peopleFlowPanel.setStyleName("InnerBackground");
 		layoutPanel.add(peopleFlowPanel);
 		layoutPanel.setWidgetLeftWidth(peopleFlowPanel, 70, Unit.PCT, 20, Unit.PCT);
 		layoutPanel.setWidgetTopHeight(peopleFlowPanel, 20, Unit.PCT, 40, Unit.PCT);
