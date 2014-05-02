@@ -36,7 +36,7 @@ public class CalendarView extends Composite {
 		
 		for(int i = 0; i < 42; i++) {
 			Button b = new Button();
-			b.setStyleName("ButtonColorScheme");
+			b.setStyleName("calendarButtons");
 			b.setSize("98%", "98%");
 			buttons[i] = b;
 		}
@@ -51,17 +51,17 @@ public class CalendarView extends Composite {
 		mainScrollPanel.setSize("100%", "100%");
 		
 		mainLayoutPanel = new LayoutPanel();
-		mainLayoutPanel.setStyleName("InnerBackground");
+		mainLayoutPanel.setStyleName("calendarBackground");
 		mainScrollPanel.setWidget(mainLayoutPanel);
 		mainLayoutPanel.setSize("1200px", "900px");
 		
 		PageView pageView = new PageView();
 		mainLayoutPanel.add(pageView);
 		mainLayoutPanel.setWidgetTopBottom(pageView, 93.7,  Unit.PCT, 0.0, Unit.PCT);
-		mainLayoutPanel.setWidgetLeftRight(pageView, 0.0, Unit.PCT, 30, Unit.PCT);
+		mainLayoutPanel.setWidgetLeftRight(pageView, 2.3, Unit.PCT, 30, Unit.PCT);
 		
 		calendarGrid = new Grid(6, 7);
-		calendarGrid.setStyleName("InnerBackgroundCenter");
+		calendarGrid.setStyleName("calendarBackground");
 		mainLayoutPanel.add(calendarGrid);
 		calendarGrid.setSize("700px", "600px");
 		mainLayoutPanel.setWidgetLeftWidth(calendarGrid, 39.0, Unit.PX, 700, Unit.PX);
@@ -100,7 +100,7 @@ public class CalendarView extends Composite {
 		}
 		
 		Button goToDateButton = new Button("New button");
-		goToDateButton.setStyleName("ButtonColorScheme");
+		goToDateButton.setStyleName("calendarButtons");
 		goToDateButton.setText("Go!");
 		mainLayoutPanel.add(goToDateButton);
 		mainLayoutPanel.setWidgetLeftWidth(goToDateButton, 360.0, Unit.PX, 65.0, Unit.PX);
@@ -114,61 +114,61 @@ public class CalendarView extends Composite {
 		});
 		
 		Label monthSelectorLabel = new Label("Month");
-		monthSelectorLabel.setStyleName("CenterText");
+		monthSelectorLabel.setStyleName("calendarLabel");
 		mainLayoutPanel.add(monthSelectorLabel);
 		mainLayoutPanel.setWidgetLeftWidth(monthSelectorLabel, 304.0, Unit.PX, 85.0, Unit.PX);
 		mainLayoutPanel.setWidgetTopHeight(monthSelectorLabel, 713.0, Unit.PX, 18.0, Unit.PX);
 		
 		Label yearSelectorLabel = new Label("Year");
-		yearSelectorLabel.setStyleName("CenterText");
+		yearSelectorLabel.setStyleName("calendarLabel");
 		mainLayoutPanel.add(yearSelectorLabel);
 		mainLayoutPanel.setWidgetLeftWidth(yearSelectorLabel, 396.0, Unit.PX, 87.0, Unit.PX);
 		mainLayoutPanel.setWidgetTopHeight(yearSelectorLabel, 713.0, Unit.PX, 18.0, Unit.PX);
 		
 		calendarMonthYearLabel = new Label("");
-		calendarMonthYearLabel.setStyleName("textBig");
+		calendarMonthYearLabel.setStyleName("calendarTitle");
 		mainLayoutPanel.add(calendarMonthYearLabel);
 		mainLayoutPanel.setWidgetLeftWidth(calendarMonthYearLabel, 270.0, Unit.PX, 235.0, Unit.PX);
 		mainLayoutPanel.setWidgetTopHeight(calendarMonthYearLabel, 30.0, Unit.PX, 32.0, Unit.PX);
 		
 		Label sundayLabel = new Label("Sunday");
-		sundayLabel.setStyleName("CenterText");
+		sundayLabel.setStyleName("calendarLabel");
 		mainLayoutPanel.add(sundayLabel);
 		mainLayoutPanel.setWidgetLeftWidth(sundayLabel, 63.0, Unit.PX, 56.0, Unit.PX);
 		mainLayoutPanel.setWidgetTopHeight(sundayLabel, 68.0, Unit.PX, 18.0, Unit.PX);
 		
 		Label mondayLabel = new Label("Monday");
-		mondayLabel.setStyleName("CenterText");
+		mondayLabel.setStyleName("calendarLabel");
 		mainLayoutPanel.add(mondayLabel);
 		mainLayoutPanel.setWidgetLeftWidth(mondayLabel, 169.0, Unit.PX, 56.0, Unit.PX);
 		mainLayoutPanel.setWidgetTopHeight(mondayLabel, 68.0, Unit.PX, 18.0, Unit.PX);
 		
 		Label tuesdayLabel = new Label("Tuesday");
-		tuesdayLabel.setStyleName("CenterText");
+		tuesdayLabel.setStyleName("calendarLabel");
 		mainLayoutPanel.add(tuesdayLabel);
 		mainLayoutPanel.setWidgetLeftWidth(tuesdayLabel, 267.0, Unit.PX, 56.0, Unit.PX);
 		mainLayoutPanel.setWidgetTopHeight(tuesdayLabel, 68.0, Unit.PX, 18.0, Unit.PX);
 		
 		Label wednesdayLabel = new Label("Wednesday");
-		wednesdayLabel.setStyleName("CenterText");
+		wednesdayLabel.setStyleName("calendarLabel");
 		mainLayoutPanel.add(wednesdayLabel);
 		mainLayoutPanel.setWidgetLeftWidth(wednesdayLabel, 356.0, Unit.PX, 74.0, Unit.PX);
 		mainLayoutPanel.setWidgetTopHeight(wednesdayLabel, 68.0, Unit.PX, 18.0, Unit.PX);
 		
 		Label thursdayLabel = new Label("Thursday");
-		thursdayLabel.setStyleName("CenterText");
+		thursdayLabel.setStyleName("calendarLabel");
 		mainLayoutPanel.add(thursdayLabel);
 		mainLayoutPanel.setWidgetLeftWidth(thursdayLabel, 458.0, Unit.PX, 65.0, Unit.PX);
 		mainLayoutPanel.setWidgetTopHeight(thursdayLabel, 68.0, Unit.PX, 18.0, Unit.PX);
 		
 		Label fridayLabel = new Label("Friday");
-		fridayLabel.setStyleName("CenterText");
+		fridayLabel.setStyleName("calendarLabel");
 		mainLayoutPanel.add(fridayLabel);
 		mainLayoutPanel.setWidgetLeftWidth(fridayLabel, 561.0, Unit.PX, 56.0, Unit.PX);
 		mainLayoutPanel.setWidgetTopHeight(fridayLabel, 68.0, Unit.PX, 18.0, Unit.PX);
 		
 		Label saturdayLabel = new Label("Saturday");
-		saturdayLabel.setStyleName("CenterText");
+		saturdayLabel.setStyleName("calendarLabel");
 		mainLayoutPanel.add(saturdayLabel);
 		mainLayoutPanel.setWidgetLeftWidth(saturdayLabel, 659.0, Unit.PX, 56.0, Unit.PX);
 		mainLayoutPanel.setWidgetTopHeight(saturdayLabel, 68.0, Unit.PX, 18.0, Unit.PX);

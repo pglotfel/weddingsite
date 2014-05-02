@@ -87,6 +87,40 @@ h1 {
 	
 }
 
+.calendarBackground {
+	background-color: #5e2537;
+	margin-left: auto;
+	margin-right: auto;
+	border:   1px solid #cecece;	
+}
+
+.calendarTitle {
+	font-size: 20px;
+	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	text-align: center;
+	color: #cecece;
+	font-weight: bold;
+}
+
+.calendarLabel {
+	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	text-align: center;
+	color: #cecece;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.calendarButtons {
+	color: #5e2537;
+	font-weight: bold;
+}
+
+.calendarButtons .gwt-Button:hover {
+	color: #5e2537;
+	background-color: #acacac;
+	font-weight: bold;
+}
+
 .gwt-MenuBar-vertical {
     background-color: #cecece;
     width: 100%;
@@ -133,7 +167,7 @@ h1 {
 }
 
 .Background {
-	background-color : #dfdfdf;
+	background-image: url("/res/weddingSiteBkgrnd.jpg");
 	margin-left: auto;
 	margin-right: auto;
 }
