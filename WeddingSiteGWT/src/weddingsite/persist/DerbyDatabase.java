@@ -158,7 +158,7 @@ public class DerbyDatabase implements IDatabase {
 								"create table people (" +
 								"id integer primary key not null generated always as identity," +
 								"tableID integer," +
-								"name varChar(50)" +
+								"name varchar(50)" +
 								")");
 						people.executeUpdate();
 						
@@ -167,7 +167,8 @@ public class DerbyDatabase implements IDatabase {
 								" id integer primary key not null generated always as identity," +
 								"attendanceListID integer," +
 								"attending boolean," +
-								"numAttending int" +
+								"numAttending int," +
+								"name varchar(50)" +
 								")"
 								);
 						attendees.executeUpdate();
@@ -581,13 +582,12 @@ public class DerbyDatabase implements IDatabase {
 					resultSet = stmt.executeQuery();
 					while (resultSet.next()) {
 						Attendee a = new Attendee();
-						a.setAttendanceListID(resultSet.getInt("accountID"));
+						a.setAttendanceListID(resultSet.getInt("attendanceListID"));
 						a.setID(resultSet.getInt("id"));
 						a.setAttending(resultSet.getBoolean("attending"));
 						a.setName(resultSet.getString("name"));
 						a.setNumAttending(resultSet.getInt("numAttending"));
-						result.add(a);
-						
+						result.add(a);						
 					}
 					
 					return result;
@@ -601,24 +601,153 @@ public class DerbyDatabase implements IDatabase {
 	}
 
 	@Override
-	public boolean addAttendee(String accountName, String attendanceListName,
-			String attendeeName, int numAttending) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean addAttendee(final String accountName, final String attendanceListName, final String attendeeName, final int numAttending) {
+		
+		return executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				
+				if(attendanceListName == null) {
+					return false;
+				}
+				
+				PreparedStatement stmt = null;
+				ResultSet generatedKeys = null;
+				
+				ArrayList<AttendanceList> aList = getAttendanceLists(accountName);
+				
+				AttendanceList a = null;
+				
+				for(int i = 0; i < aList.size(); i++) {
+					if(aList.get(i).getName().equals(attendanceListName)) {
+						a = aList.get(i); 
+						break;
+					}
+				}
+				
+				
+				//Get right list, store ID
+				
+				try {
+					stmt = conn.prepareStatement(
+							"insert into attendees (attendanceListID, attending, numAttending, name) values (?, ?, ?, ?)",
+							PreparedStatement.RETURN_GENERATED_KEYS
+					);
+					
+					stmt.setInt(1, a.getID());
+					stmt.setInt(2, numAttending);
+					stmt.setBoolean(3, true);
+					stmt.setString(4, attendeeName);
+					
+
+					// Attempt to insert new attendee
+					stmt.executeUpdate();
+
+					// Determine the auto-generated id
+					generatedKeys = stmt.getGeneratedKeys();
+					if (!generatedKeys.next()) {
+						throw new SQLException("Could not get auto-generated key for inserted Attendance List");
+					}
+					
+					
+					System.out.println("New attendee has id " + generatedKeys.getInt(1));
+					
+					return true;
+				} finally {
+					DBUtil.closeQuietly(generatedKeys);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
 	}
 
 	@Override
-	public boolean modifyAttendee(String accountName,
-			String attendanceListName, String attendeeName, int numAttending) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean modifyAttendee(final String accountName,
+			final String attendanceListName, final String attendeeName, final int numAttending) {
+		
+		return executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				
+				ArrayList<AttendanceList> aList = new ArrayList<AttendanceList>();
+				aList = getAttendanceLists(accountName);
+				
+				AttendanceList a = null;
+				
+				for(AttendanceList i : aList) {
+					if(i.getName().equals(attendanceListName)) {
+						a = i; 
+						break;
+					}
+				}
+				
+				try {
+					stmt = conn.prepareStatement(
+							"update attendanceLists" +
+							" set numAttending = ? " +
+							" where attendee.attendanceListID = ? and attendee.name = ?"
+					);
+					
+					stmt.setInt(1, numAttending);
+					stmt.setInt(2, a.getID());
+					stmt.setString(3, attendeeName);
+					
+
+					// Attempt to modify the attendance list
+					stmt.executeUpdate();
+
+					
+					System.out.println("successfuly updated number attending to " + numAttending);
+					
+					return true;
+				} finally {
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
 	}
 
 	@Override
-	public boolean deleteAttendee(String accountName,
-			String attendanceListName, String attendeeName) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean deleteAttendee(final String accountName, final String attendanceListName, final String attendeeName) {
+		return executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				
+				ArrayList<AttendanceList> aList = new ArrayList<AttendanceList>();
+				aList = getAttendanceLists(accountName);
+				
+				AttendanceList a = null;
+				
+				for(AttendanceList i : aList) {
+					if(i.getName().equals(attendanceListName)) {
+						a = i; 
+						break;
+					}
+				}
+				
+				try {
+					stmt = conn.prepareStatement(
+							"delete from attendees" +
+							" where attendees.attendanceListID = ? and attendees.name = ?"
+					);
+					
+					stmt.setInt(1, a.getID());
+					stmt.setString(2, attendeeName);
+					
+
+					// Attempt to insert new account
+					stmt.executeUpdate();
+				
+					System.out.println("successfuly deleted " + attendeeName);
+					
+					return true;
+				} finally {
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
 	}
 
 	@Override
