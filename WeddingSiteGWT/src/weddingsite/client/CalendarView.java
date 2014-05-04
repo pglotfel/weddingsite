@@ -1,5 +1,7 @@
 package weddingsite.client;
 
+import weddingsite.client.Site.Pages;
+
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
@@ -13,6 +15,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.TextArea;
 
 public class CalendarView extends Composite {
 	
@@ -172,6 +175,35 @@ public class CalendarView extends Composite {
 		mainLayoutPanel.add(saturdayLabel);
 		mainLayoutPanel.setWidgetLeftWidth(saturdayLabel, 659.0, Unit.PX, 56.0, Unit.PX);
 		mainLayoutPanel.setWidgetTopHeight(saturdayLabel, 68.0, Unit.PX, 18.0, Unit.PX);
+		
+		Label lblEvent = new Label("Event");
+		lblEvent.setStyleName("calendarTitle");
+		mainLayoutPanel.add(lblEvent);
+		mainLayoutPanel.setWidgetLeftWidth(lblEvent, 917.0, Unit.PX, 116.0, Unit.PX);
+		mainLayoutPanel.setWidgetTopHeight(lblEvent, 68.0, Unit.PX, 26.0, Unit.PX);
+		
+		ScrollPanel scrollPanel = new ScrollPanel();
+		mainLayoutPanel.add(scrollPanel);
+		mainLayoutPanel.setWidgetLeftWidth(scrollPanel, 863.0, Unit.PX, 223.0, Unit.PX);
+		mainLayoutPanel.setWidgetTopHeight(scrollPanel, 92.0, Unit.PX, 600.0, Unit.PX);
+		
+		TextArea textArea = new TextArea();
+		textArea.setCharacterWidth(18);
+		textArea.setReadOnly(true);
+		scrollPanel.setWidget(textArea);
+		textArea.setSize("95%", "95%");
+		
+		Button btnNewButton = new Button("New button");
+		mainLayoutPanel.add(btnNewButton);
+		mainLayoutPanel.setWidgetLeftWidth(btnNewButton, 943.0, Unit.PX, 81.0, Unit.PX);
+		mainLayoutPanel.setWidgetTopHeight(btnNewButton, 698.0, Unit.PX, 30.0, Unit.PX);
+		
+		btnNewButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				Site.search(Pages.MANAGEACTIVITIESPAGE);			
+			}		
+		});
 		
 		for(int i = 0; i < 42; i++) {
 			calendarGrid.setWidget((i / 7), (i % 7), buttons[i]);

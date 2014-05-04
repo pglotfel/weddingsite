@@ -2,6 +2,7 @@ package weddingsite.server;
 
 import java.util.ArrayList;
 
+import weddingsite.persist.DatabaseProvider;
 import weddingsite.shared.SeatingChart;
 import weddingsite.shared.SeatingChartQueryModel;
 import weddingsite.shared.SeatingChartQueryResult;

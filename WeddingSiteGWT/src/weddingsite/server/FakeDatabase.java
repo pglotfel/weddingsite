@@ -2,6 +2,7 @@ package weddingsite.server;
 
 import java.util.ArrayList;
 
+import weddingsite.persist.IDatabase;
 import weddingsite.shared.Account;
 import weddingsite.shared.Activity;
 import weddingsite.shared.AttendanceList;

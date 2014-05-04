@@ -1,4 +1,5 @@
-package weddingsite.server;
+package weddingsite.persist;
+
 
 public class DatabaseProvider {
 	

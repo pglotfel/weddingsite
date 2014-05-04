@@ -167,7 +167,7 @@ h1 {
 }
 
 .Background {
-	background-image: url("/res/weddingSiteBkgrnd.jpg");
+	background-image: url(/weddingSiteBkgrnd.jpg);
 	margin-left: auto;
 	margin-right: auto;
 }

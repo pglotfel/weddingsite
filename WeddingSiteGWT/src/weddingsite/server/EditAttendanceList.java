@@ -1,5 +1,6 @@
 package weddingsite.server;
 
+import weddingsite.persist.DatabaseProvider;
 import weddingsite.shared.ActionType;
 import weddingsite.shared.EditAttendanceListModel;
 import weddingsite.shared.EditDataResult;

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 
 
-import weddingsite.server.IDatabase;
+
 import weddingsite.shared.Account;
 import weddingsite.shared.Activity;
 import weddingsite.shared.AttendanceList;
@@ -113,7 +113,7 @@ public class DerbyDatabase implements IDatabase {
 					PreparedStatement attendees = null;
 					PreparedStatement events = null;
 					PreparedStatement eventsUsersLink = null;
-					
+					//TODO:
 					try {
 						accounts = conn.prepareStatement(
 								"create table accounts (" +
@@ -983,7 +983,6 @@ public class DerbyDatabase implements IDatabase {
 	@Override
 	public int getNumAtTable(String accountName, String attendanceListName,
 			String tableName) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
@@ -1278,11 +1277,68 @@ public class DerbyDatabase implements IDatabase {
 		});
 	}
 
+	//TODO:
 	@Override
-	public ArrayList<Activity> getUserActivities(String accountName,
-			String username) {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<Activity> getUserActivities(final String accountName, final String username) {
+		
+		return executeTransaction(new Transaction<ArrayList<Activity>>() {
+			@Override
+			public ArrayList<Activity> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				
+				User u = getUser(accountName, username);			
+				ArrayList<Activity> result = new ArrayList<Activity>();
+				
+				if(u != null) {
+					
+					try {
+						stmt = conn.prepareStatement(
+								"select eventsUsersLink.*" +
+								" from eventsUsersLink " +
+								" where eventsUsersLink.userID = ?"
+						);
+						
+						stmt.setInt(1, u.getID());
+						
+						ResultSet resultSet = stmt.executeQuery();
+						while (resultSet.next()) {											
+												
+							try {
+								stmt = conn.prepareStatement(
+										"select events.*" +
+										" from events " +
+										" where events.id = ?"
+								);
+								
+								stmt.setInt(1, resultSet.getInt("eventID"));
+								
+								stmt.setString(1, accountName);
+								
+								ResultSet resultSetEvents = stmt.executeQuery();
+								while (resultSetEvents.next()) {
+									Activity a = new Activity();
+									a.setAccountID(resultSetEvents.getInt("accountID"));
+									a.setBody(resultSetEvents.getString("body"));
+									a.setDate(resultSetEvents.getString("date"));
+									a.setEndTime(resultSetEvents.getString("date"));
+									a.setID(resultSetEvents.getInt("id"));
+									a.setStartTime(resultSetEvents.getString("startTime"));
+									a.setTitle(resultSetEvents.getString("title"));
+									result.add(a);
+									System.out.println("Found event " + a.getTitle());
+								}
+								
+							} finally {
+								DBUtil.closeQuietly(stmt);
+							}		
+						}
+					} finally {
+						DBUtil.closeQuietly(stmt);
+					}
+				}
+				return result;
+			}
+		});
 	}
 
 	public static void main(String[] args) {

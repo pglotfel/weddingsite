@@ -1,5 +1,6 @@
 package weddingsite.server;
 
+import weddingsite.persist.DatabaseProvider;
 import weddingsite.shared.ActionType;
 import weddingsite.shared.Login;
 import weddingsite.shared.LoginResult;

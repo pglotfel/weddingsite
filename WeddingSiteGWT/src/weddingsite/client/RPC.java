@@ -15,4 +15,5 @@ public class RPC {
 	public static final EditSeatingChartServiceAsync editSeatingChartService = GWT.create(EditSeatingChartService.class);
 	public static final EditPersonAtTableServiceAsync editPersonAtTableService = GWT.create(EditPersonAtTableService.class);
 	public static final CreateAccountServiceAsync createAccountService = GWT.create(CreateAccountService.class);
+	public static final PerformUserQueryServiceAsync performUserQueryService = GWT.create(PerformUserQueryService.class);
 }

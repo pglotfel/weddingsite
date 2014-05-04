@@ -1,5 +1,6 @@
 package weddingsite.server;
 
+import weddingsite.persist.DatabaseProvider;
 import weddingsite.shared.EditSeatingChartModel;
 import weddingsite.shared.EditDataResult;
 

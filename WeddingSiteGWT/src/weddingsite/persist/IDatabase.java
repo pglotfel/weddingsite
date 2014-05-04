@@ -1,4 +1,4 @@
-package weddingsite.server;
+package weddingsite.persist;
 
 import java.util.ArrayList;
 

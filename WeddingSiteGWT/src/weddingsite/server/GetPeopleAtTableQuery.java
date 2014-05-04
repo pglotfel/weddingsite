@@ -2,6 +2,7 @@ package weddingsite.server;
 
 import java.util.ArrayList;
 
+import weddingsite.persist.DatabaseProvider;
 import weddingsite.shared.GetPeopleAtTableModel;
 import weddingsite.shared.GetPeopleAtTableResult;
 import weddingsite.shared.Person;

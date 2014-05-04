@@ -121,11 +121,21 @@
   	<servlet-name>CreateAccountImpl</servlet-name>
  	<url-pattern>/weddingsitegwt/CreateAccountService/*</url-pattern>
   </servlet-mapping>
+  
+   <servlet>
+	<servlet-name>PerformUserQueryImpl</servlet-name>
+	<servlet-class>weddingsite.server.PerformUserQueryImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>PerformUserQueryImpl</servlet-name>
+ 	<url-pattern>/weddingsitegwt/performUserQuery/*</url-pattern>
+  </servlet-mapping>
 
   
   <!-- Servlet context listeners -->
   <listener>
-    <listener-class>weddingsite.server.DatabaseInitListener</listener-class>
+    <listener-class>weddingsite.persist.DatabaseInitListener</listener-class>
   </listener>
   
   <!-- Default page to serve -->

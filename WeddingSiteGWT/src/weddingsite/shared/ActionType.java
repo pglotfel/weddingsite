@@ -2,6 +2,7 @@ package weddingsite.shared;
 
 public enum ActionType {
 	LOGIN,
+	GETUSERS,
 	GETATTENDANCELISTS,
 	GETATTENDEES,
 	ADDATTENDANCELIST,

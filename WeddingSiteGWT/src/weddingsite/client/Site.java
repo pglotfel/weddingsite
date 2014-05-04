@@ -29,6 +29,7 @@ public class Site implements EntryPoint {
 		SEATINGCHARTPAGE,
 		CREATEACCOUNTPAGE,
 		CALENDARPAGE,
+		MANAGEACTIVITIESPAGE,
 	}
 	
 	/**
@@ -86,18 +87,7 @@ public class Site implements EntryPoint {
 			RootLayoutPanel.get().setWidgetTopHeight(v4, 0, Unit.PCT, 100.0, Unit.PCT);	
 			currentPage = Pages.SEATINGCHARTPAGE;
 		break;
-		
-		case CALENDARPAGE:
-			viewHistory.push(currentPage);
-			RootLayoutPanel.get().remove(currentView);
-			CalendarView v6 = new CalendarView();
-			RootLayoutPanel.get().add(v6);
-			currentView = v6;
-			RootLayoutPanel.get().setWidgetLeftWidth(v6, 0, Unit.PCT, 100.0, Unit.PCT);
-			RootLayoutPanel.get().setWidgetTopHeight(v6, 0, Unit.PCT, 100.0, Unit.PCT);	
-			currentPage = Pages.SEATINGCHARTPAGE;
-		break;
-		
+				
 		case BACK:
 			Pages p = null;
 			try {
@@ -118,6 +108,28 @@ public class Site implements EntryPoint {
 			RootLayoutPanel.get().setWidgetLeftWidth(v5, 0, Unit.PCT, 100.0, Unit.PCT);
 			RootLayoutPanel.get().setWidgetTopHeight(v5, 0, Unit.PCT, 100.0, Unit.PCT);	
 			currentPage = Pages.CREATEACCOUNTPAGE;
+		break;
+		
+		case CALENDARPAGE:
+			viewHistory.push(currentPage);
+			RootLayoutPanel.get().remove(currentView);
+			CalendarView v6 = new CalendarView();
+			RootLayoutPanel.get().add(v6);
+			currentView = v6;
+			RootLayoutPanel.get().setWidgetLeftWidth(v6, 0, Unit.PCT, 100.0, Unit.PCT);
+			RootLayoutPanel.get().setWidgetTopHeight(v6, 0, Unit.PCT, 100.0, Unit.PCT);	
+			currentPage = Pages.SEATINGCHARTPAGE;
+		break;
+		
+		case MANAGEACTIVITIESPAGE:
+			viewHistory.push(currentPage);
+			RootLayoutPanel.get().remove(currentView);
+			ManageEventsView v7 = new ManageEventsView();
+			RootLayoutPanel.get().add(v7);
+			currentView = v7;
+			RootLayoutPanel.get().setWidgetLeftWidth(v7, 0, Unit.PCT, 100.0, Unit.PCT);
+			RootLayoutPanel.get().setWidgetTopHeight(v7, 0, Unit.PCT, 100.0, Unit.PCT);	
+			currentPage = Pages.MANAGEACTIVITIESPAGE;
 		break;
 		
 		default:

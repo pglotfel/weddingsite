@@ -1,9 +1,7 @@
-package weddingsite.server;
+package weddingsite.persist;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-
-import weddingsite.persist.DerbyDatabase;
 
 public class DatabaseInitListener implements ServletContextListener {
 

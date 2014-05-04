@@ -493,9 +493,6 @@ public class AttendanceListView extends Composite {
 		attendanceListQueryModel.setWeddingName(Site.currentUser.getAccountName());
 		attendanceListQueryModel.setType(ActionType.GETATTENDANCELISTS);
 		
-		SlideDownAnimation attendeeAnimation = new SlideDownAnimation(attendanceListFlowPanel);
-		attendeeAnimation.expandTo(200, 400, 750);
-		
 		attendanceListMenu.clearItems();
 		
 		RPC.performAttendanceListQueryService.performAttendanceListQuery(attendanceListQueryModel, new AsyncCallback<AttendanceListQueryResult>() {
@@ -552,9 +549,6 @@ public class AttendanceListView extends Composite {
 				} 
 			}		
 		});	
-		
-		SlideDownAnimation attendeeAnimation = new SlideDownAnimation(attendeeFlowPanel);
-		attendeeAnimation.expandTo(200, 400, 750);
 	}
 	
 	public void handleAttendeeSubmitAdd() {
