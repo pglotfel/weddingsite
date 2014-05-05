@@ -59,6 +59,10 @@ public interface IDatabase {
 	
 	//Activities
 	public ArrayList<Activity> getUserActivities(String accountName, String username);
+	public boolean addActivity(String accountName, Activity activity);
+	public boolean editActivity(String accountName, Activity activity, String activityName);
+	public ArrayList<Activity> getActivities(String accountName);
+	public boolean addUsersToActivity(String accountName, String activityName, ArrayList<String> usernames);
 	
 	
 }

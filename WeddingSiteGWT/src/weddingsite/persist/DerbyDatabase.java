@@ -12,6 +12,10 @@ import java.util.ArrayList;
 
 
 
+
+
+
+
 import weddingsite.shared.Account;
 import weddingsite.shared.Activity;
 import weddingsite.shared.AttendanceList;
@@ -1277,7 +1281,6 @@ public class DerbyDatabase implements IDatabase {
 		});
 	}
 
-	//TODO:
 	@Override
 	public ArrayList<Activity> getUserActivities(final String accountName, final String username) {
 		
@@ -1385,6 +1388,180 @@ public class DerbyDatabase implements IDatabase {
 					DBUtil.closeQuietly(resultSet);
 					DBUtil.closeQuietly(stmt);
 				}
+			}
+		});
+	}
+	
+	@Override
+	public boolean addActivity(final String accountName, final Activity activity) {
+		return executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				
+				PreparedStatement stmt = null;
+				ResultSet generatedKeys = null;
+				
+				int accountID = getAccountByAccountName(accountName).getID();
+				
+				
+				
+				try {
+					stmt = conn.prepareStatement(
+							"insert into events (accountID, date, title, body, startTime, endTime) values (?, ?, ?, ?, ?, ?)",
+							PreparedStatement.RETURN_GENERATED_KEYS
+					);
+					
+					stmt.setInt(1, accountID);
+					stmt.setString(2, activity.getDate());
+					stmt.setString(3, activity.getTitle());
+					stmt.setString(4, activity.getBody());
+					stmt.setString(5, activity.getStartTime());
+					stmt.setString(6, activity.getEndTime());
+
+				
+					stmt.executeUpdate();
+
+					// Determine the auto-generated id
+					generatedKeys = stmt.getGeneratedKeys();
+					if (!generatedKeys.next()) {
+						throw new SQLException("Could not get auto-generated key for inserted event");
+					}
+					System.out.println("New event has id " + generatedKeys.getInt(1));
+					
+					return true;
+				} finally {
+					DBUtil.closeQuietly(generatedKeys);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
+	}
+		
+		@Override
+		public boolean editActivity(final String accountName, final Activity activity, final String activityName) {
+			return executeTransaction(new Transaction<Boolean>() {
+				@Override
+				public Boolean execute(Connection conn) throws SQLException {
+					PreparedStatement stmt = null;
+					
+					int accountID = getAccountByAccountName(accountName).getID();
+					ArrayList<Activity> all = getActivities(accountName);
+					int activityID = -1;
+					for(int i = 0; i < all.size(); i++) {
+						if(all.get(i).getTitle().equals(activityName)) {
+							activityID = all.get(i).getID();
+						}
+					}
+					
+					try {
+						stmt = conn.prepareStatement(
+								"update events" +
+								" set events.title = ?, events.body = ?, events.date = ?, events.startTime = ?, events.endTime = ? " +
+								" where events.id = ?"
+						);
+						stmt.setString(1, activity.getTitle());
+						stmt.setString(2, activity.getBody());
+						stmt.setString(3, activity.getDate());
+						stmt.setString(4, activity.getStartTime());
+						stmt.setString(5, activity.getEndTime());
+						stmt.setInt(6, activityID);
+						
+						stmt.executeUpdate();
+						System.out.println("successfuly updated event to " + activity.getTitle());
+						return true;
+						
+					} finally {
+						DBUtil.closeQuietly(stmt);
+					}
+				}
+			});
+	}
+	
+	@Override
+	public ArrayList<Activity> getActivities(final String accountName) {
+		return executeTransaction(new Transaction<ArrayList<Activity>>() {
+			@Override
+			public ArrayList<Activity> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+							
+				ArrayList<Activity> result = new ArrayList<Activity>();
+				
+				Account b = getAccountByAccountName(accountName);
+				
+				
+				if(b != null) {
+					
+					try {
+						stmt = conn.prepareStatement(
+								"select events.*" +
+								" from events " +
+								" where events.accountID = ?"
+						);
+						
+						stmt.setInt(1, b.getID());
+						
+						ResultSet resultSet = stmt.executeQuery();
+						while (resultSet.next()) {
+							Activity a = new Activity();
+							a.setAccountID(resultSet.getInt("accountID"));
+							a.setBody(resultSet.getString("body"));
+							a.setDate(resultSet.getString("date"));
+							a.setStartTime(resultSet.getString("startTime"));
+							a.setEndTime(resultSet.getString("endTime"));
+							a.setTitle(resultSet.getString("title"));
+							result.add(a);
+							
+						}
+						
+					} finally {
+						DBUtil.closeQuietly(stmt);
+					}
+				}
+				return result;
+			}
+		});
+	}
+	
+	public boolean addUsersToActivity(final String accountName, final String activityName, final ArrayList<String> usernames) {
+		return executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				
+				PreparedStatement stmt = null;
+				ResultSet generatedKeys = null;
+				
+				
+				ArrayList<Activity> all = getActivities(accountName);
+				int activityID = -1;
+				for(int i = 0; i < all.size(); i++) {
+					if(all.get(i).getTitle().equals(activityName)) {
+						activityID = all.get(i).getID();
+					}
+				}
+				
+			for(int i = 0; i < usernames.size(); i++) {	
+				
+				User u = getUser(accountName, usernames.get(i));
+				
+				if(u != null) {
+						try {
+							stmt = conn.prepareStatement(
+									"insert into eventsUsersLink (eventID, userID) values (?, ?)"
+							);
+							
+							stmt.setInt(1, activityID);
+							stmt.setInt(2, u.getID());
+						
+							stmt.executeUpdate();
+
+							return true;
+						} finally {
+							DBUtil.closeQuietly(generatedKeys);
+							DBUtil.closeQuietly(stmt);
+						}
+					}
+				}
+				return false;
 			}
 		});
 	}
