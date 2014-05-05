@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import weddingsite.persist.DatabaseProvider;
 import weddingsite.shared.Activity;
 import weddingsite.shared.GetItemsResult;
-import weddingsite.shared.getEventsModel;
+import weddingsite.shared.EventsModel;
 
 public class GetEvents {
 	
-	private getEventsModel model;
+	private EventsModel model;
 	
-	public void setModel(getEventsModel model) {
+	public void setModel(EventsModel model) {
 		this.model = model;
 	}
 	
