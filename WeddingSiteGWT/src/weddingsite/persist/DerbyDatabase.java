@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 
 
+
 import weddingsite.shared.Account;
 import weddingsite.shared.Activity;
 import weddingsite.shared.AttendanceList;
@@ -1528,7 +1529,6 @@ public class DerbyDatabase implements IDatabase {
 			public Boolean execute(Connection conn) throws SQLException {
 				
 				PreparedStatement stmt = null;
-				ResultSet generatedKeys = null;
 				
 				
 				ArrayList<Activity> all = getActivities(accountName);
@@ -1554,14 +1554,57 @@ public class DerbyDatabase implements IDatabase {
 						
 							stmt.executeUpdate();
 
-							return true;
+							
 						} finally {
-							DBUtil.closeQuietly(generatedKeys);
+							
 							DBUtil.closeQuietly(stmt);
 						}
 					}
 				}
-				return false;
+				return true;
+			}
+		});
+	}
+	
+	public boolean removeUsersFromActivity(final String accountName, final String activityName, final ArrayList<String> usernames) {
+		return executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				
+				ArrayList<Activity> all = getActivities(accountName);
+				int activityID = -1;
+				for(int i = 0; i < all.size(); i++) {
+					if(all.get(i).getTitle().equals(activityName)) {
+						activityID = all.get(i).getID();
+					}
+				}
+				
+				for(int i = 0; i < usernames.size(); i++) {	
+					
+					User u = getUser(accountName, usernames.get(i));
+					
+					if(u != null) {
+							try {
+								stmt = conn.prepareStatement(
+										"delete from eventsUsersLink" +
+												" where eventsUsersLink.userID = ? and eventsUsersLink.eventID = ?"
+								);
+								
+								stmt.setInt(1, u.getID());
+								stmt.setInt(2, activityID);
+								
+							
+								stmt.executeUpdate();
+
+								
+							} finally {
+								
+								DBUtil.closeQuietly(stmt);
+							}
+						}
+					}
+				return true;
 			}
 		});
 	}

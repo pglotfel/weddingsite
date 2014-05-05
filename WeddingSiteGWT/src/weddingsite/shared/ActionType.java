@@ -24,4 +24,5 @@ public enum ActionType {
 	DELETEPERSON,
 	ADDPERSON,
 	CREATEACCOUNT,
+	GETEVENTS,
 }

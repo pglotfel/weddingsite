@@ -131,6 +131,16 @@
   	<servlet-name>PerformUserQueryImpl</servlet-name>
  	<url-pattern>/weddingsitegwt/performUserQuery/*</url-pattern>
   </servlet-mapping>
+  
+   <servlet>
+	<servlet-name>GetEventsImpl</servlet-name>
+	<servlet-class>weddingsite.server.GetEventsImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>GetEventsImpl</servlet-name>
+ 	<url-pattern>/weddingsitegwt/getEvents/*</url-pattern>
+  </servlet-mapping>
 
   
   <!-- Servlet context listeners -->
