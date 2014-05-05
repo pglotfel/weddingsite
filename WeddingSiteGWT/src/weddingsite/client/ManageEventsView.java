@@ -34,6 +34,10 @@ public class ManageEventsView extends Composite {
 	private UserQueryModel userQueryModel;
 	private Label activityLabel;
 	private FlowPanel activtyDateFlowPanel;
+	private ListBox startHourListBox;
+	private ListBox startMeridiemListBox;
+	private Label startTimeLabel;
+	private Label endTimeLabel;
 	
 	public ManageEventsView() {
 		
@@ -128,21 +132,36 @@ public class ManageEventsView extends Composite {
 		editButton.setSize("100%", "100%");
 		editButton.setText("Edit");
 		
-		Label lblStartTime = new Label("Start Time");
-		mainLayoutPanel.add(lblStartTime);
-		mainLayoutPanel.setWidgetLeftWidth(lblStartTime, 70.0, Unit.PX, 81.0, Unit.PX);
-		mainLayoutPanel.setWidgetTopHeight(lblStartTime, 692.0, Unit.PX, 18.0, Unit.PX);
+		startTimeLabel = new Label("Start Time");
+		startTimeLabel.setStyleName("CenterText");
+		mainLayoutPanel.add(startTimeLabel);
+		mainLayoutPanel.setWidgetLeftWidth(startTimeLabel, 8, Unit.PCT, 8, Unit.PCT);
+		mainLayoutPanel.setWidgetTopHeight(startTimeLabel, 70, Unit.PCT, 15, Unit.PX);
+			
+		startHourListBox = new ListBox();
+		startHourListBox.setVisibleItemCount(5);
+		mainLayoutPanel.add(startHourListBox);
+		mainLayoutPanel.setWidgetLeftWidth(startHourListBox, 6.5, Unit.PCT, 3, Unit.PCT);
+		mainLayoutPanel.setWidgetTopHeight(startHourListBox, 72, Unit.PCT, 30, Unit.PX);
 		
-		Label lblEndTime = new Label("End Time");
-		mainLayoutPanel.add(lblEndTime);
-		mainLayoutPanel.setWidgetLeftWidth(lblEndTime, 327.0, Unit.PX, 56.0, Unit.PX);
-		mainLayoutPanel.setWidgetTopHeight(lblEndTime, 697.0, Unit.PX, 18.0, Unit.PX);
+		ListBox startMinuteListBox = new ListBox();
+		startMinuteListBox.setVisibleItemCount(5);
+		mainLayoutPanel.add(startMinuteListBox);
+		mainLayoutPanel.setWidgetLeftWidth(startMinuteListBox, 10.5, Unit.PCT, 3, Unit.PCT);
+		mainLayoutPanel.setWidgetTopHeight(startMinuteListBox, 72, Unit.PCT, 30.0, Unit.PX);
 		
-		ListBox listBox_3 = new ListBox();
-		listBox_3.setVisibleItemCount(5);
-		mainLayoutPanel.add(listBox_3);
-		mainLayoutPanel.setWidgetLeftWidth(listBox_3, 47.0, Unit.PX, 35.0, Unit.PX);
-		mainLayoutPanel.setWidgetTopHeight(listBox_3, 716.0, Unit.PX, 32.0, Unit.PX);
+		startMeridiemListBox = new ListBox();
+		startMeridiemListBox.setVisibleItemCount(5);
+		mainLayoutPanel.add(startMeridiemListBox);
+		mainLayoutPanel.setWidgetLeftWidth(startMeridiemListBox, 14.5, Unit.PCT, 3, Unit.PCT);
+		mainLayoutPanel.setWidgetTopHeight(startMeridiemListBox, 72, Unit.PCT, 30.0, Unit.PX);
+		
+		endTimeLabel = new Label("End Time");
+		endTimeLabel.setStyleName("CenterText");
+		mainLayoutPanel.add(endTimeLabel);
+		mainLayoutPanel.setWidgetLeftWidth(endTimeLabel, 30, Unit.PCT, 8, Unit.PCT);
+		mainLayoutPanel.setWidgetTopHeight(endTimeLabel, 70, Unit.PCT, 15.0, Unit.PX);
+
 		
 		Label lblTitle = new Label("Title");
 		mainLayoutPanel.add(lblTitle);
@@ -163,18 +182,7 @@ public class ManageEventsView extends Composite {
 		mainLayoutPanel.add(lblBody);
 		mainLayoutPanel.setWidgetLeftWidth(lblBody, 158.0, Unit.PX, 56.0, Unit.PX);
 		mainLayoutPanel.setWidgetTopHeight(lblBody, 848.0, Unit.PX, 18.0, Unit.PX);
-		
-		ListBox listBox = new ListBox();
-		listBox.setVisibleItemCount(5);
-		mainLayoutPanel.add(listBox);
-		mainLayoutPanel.setWidgetLeftWidth(listBox, 88.0, Unit.PX, 35.0, Unit.PX);
-		mainLayoutPanel.setWidgetTopHeight(listBox, 716.0, Unit.PX, 32.0, Unit.PX);
-		
-		ListBox listBox_1 = new ListBox();
-		listBox_1.setVisibleItemCount(5);
-		mainLayoutPanel.add(listBox_1);
-		mainLayoutPanel.setWidgetLeftWidth(listBox_1, 129.0, Unit.PX, 35.0, Unit.PX);
-		mainLayoutPanel.setWidgetTopHeight(listBox_1, 716.0, Unit.PX, 32.0, Unit.PX);
+
 		
 		activtyDateFlowPanel = new FlowPanel();
 		mainLayoutPanel.add(activtyDateFlowPanel);
