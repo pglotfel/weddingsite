@@ -29,6 +29,7 @@ public void perform(GetItemsResult<Activity> result) {
 		case GETEVENTSFORUSER:
 			resultVal = DatabaseProvider.getInstance().getUserActivities(model.getAccountName(), model.getUsername());
 		break;
+		
 			
 		
 		default:

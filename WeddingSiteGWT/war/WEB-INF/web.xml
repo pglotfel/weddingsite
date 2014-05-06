@@ -133,12 +133,12 @@
   </servlet-mapping>
   
    <servlet>
-	<servlet-name>GetEventsImpl</servlet-name>
-	<servlet-class>weddingsite.server.GetEventsImpl</servlet-class>
+	<servlet-name>EventsImpl</servlet-name>
+	<servlet-class>weddingsite.server.EventsImpl</servlet-class>
   </servlet>
   
   <servlet-mapping>
-  	<servlet-name>GetEventsImpl</servlet-name>
+  	<servlet-name>EventsImpl</servlet-name>
  	<url-pattern>/weddingsitegwt/getEvents/*</url-pattern>
   </servlet-mapping>
 
