@@ -62,8 +62,9 @@ public interface IDatabase {
 	public boolean addActivity(String accountName, Activity activity);
 	public boolean editActivity(String accountName, Activity activity, String activityName);
 	public ArrayList<Activity> getActivities(String accountName);
+	public boolean deleteActivity(String accountName, String activityName);
 	public boolean addUsersToActivity(String accountName, String activityName, ArrayList<String> usernames);
 	public boolean removeUsersFromActivity(String accountName, String activityName, ArrayList<String> usernames);
-	
+	public ArrayList<String> getUsersInvitedToActivity(String accountName, String activityName);
 	
 }

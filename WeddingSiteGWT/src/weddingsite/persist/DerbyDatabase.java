@@ -17,6 +17,9 @@ import java.util.ArrayList;
 
 
 
+
+
+
 import weddingsite.shared.Account;
 import weddingsite.shared.Activity;
 import weddingsite.shared.AttendanceList;
@@ -1609,6 +1612,107 @@ public class DerbyDatabase implements IDatabase {
 		});
 	}
 	
+	@Override
+	public boolean deleteActivity(final String accountName, final String activityName) {
+		return executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				
+				ArrayList<Activity> all = getActivities(accountName);
+				int activityID = -1;
+				for(int i = 0; i < all.size(); i++) {
+					if(all.get(i).getTitle().equals(activityName)) {
+						activityID = all.get(i).getID();
+					}
+				}
+				
+				
+			if(activityID != -1){		
+					
+					try {
+						stmt = conn.prepareStatement(
+								"delete from eventsUsersLink" +
+										" where eventsUsersLink.eventID = ?"
+						);
+						
+						stmt.setInt(1, activityID);
+						
+					
+						stmt.executeUpdate();
+	
+						
+					} finally {
+						
+						DBUtil.closeQuietly(stmt);
+					}
+					
+					try {
+						stmt = conn.prepareStatement( 
+								"delete from events" +
+										" where events.id = ?"
+								
+								);
+						stmt.setInt(1, activityID);
+						stmt.executeUpdate();
+					} finally {
+						DBUtil.closeQuietly(stmt);
+					}
+							
+					return true;	
+				}
+				
+				return false;
+			}				
+		});
+	}
+	
+	@Override
+	public ArrayList<String> getUsersInvitedToActivity(final String accountName, final String activityName) {
+		return executeTransaction(new Transaction<ArrayList<String>>() {
+			@Override
+			public ArrayList<String> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+							
+				ArrayList<Activity> all = getActivities(accountName);
+				int activityID = -1;
+				for(int i = 0; i < all.size(); i++) {
+					if(all.get(i).getTitle().equals(activityName)) {
+						activityID = all.get(i).getID();
+					}
+				}
+				
+				
+				ArrayList<String> result = new ArrayList<String>();
+				
+					
+					try {
+						stmt = conn.prepareStatement(
+								"select eventsUsersLink.userID" +
+								" from eventsUsersLink " +
+								" where eventsUsersLink.eventID = ?"
+						);
+						
+						stmt.setInt(1, activityID);
+						
+						ResultSet resultSet = stmt.executeQuery();
+						while (resultSet.next()) {
+							String a = resultSet.getString("userID");
+							result.add(a);	
+						}
+						
+					} finally {
+						DBUtil.closeQuietly(stmt);
+					}
+					
+					
+					return result;
+				}
+				
+			
+		});
+		
+	}
 	
 	
 }

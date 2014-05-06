@@ -725,5 +725,18 @@ public class FakeDatabase implements IDatabase  {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	@Override
+	public boolean deleteActivity(String accountName, String activityName) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public ArrayList<String> getUsersInvitedToActivity(String accountName,
+			String activityName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }
