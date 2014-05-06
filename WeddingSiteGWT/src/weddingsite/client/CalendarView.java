@@ -1,12 +1,19 @@
 package weddingsite.client;
 
+import java.util.ArrayList;
+
 import weddingsite.client.Site.Pages;
+import weddingsite.shared.ActionType;
+import weddingsite.shared.Activity;
+import weddingsite.shared.EventsModel;
+import weddingsite.shared.GetItemsResult;
 
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -28,19 +35,66 @@ public class CalendarView extends Composite {
 	private int currentYear;
 	private int currentMonth;
 	private Label calendarMonthYearLabel;
+	private EventsModel eventsModel;
+	private ArrayList<Activity> events;
+	private TextArea eventTextArea;
 	
 	public CalendarView() {
-		
+			
+		if(Site.currentUser.getIsAdmin()) {		
+			eventsModel.setAccountName(Site.currentUser.getAccountName());
+			eventsModel.setType(ActionType.GETEVENTS);		
+			RPC.getEventsService.GetEvents(eventsModel, new AsyncCallback<GetItemsResult<Activity>>() {
+				@Override
+				public void onFailure(Throwable caught) {
+					System.err.println("CLIENT: Something went wrong getting activites for an admin");
+					
+				}
 
+				@Override
+				public void onSuccess(GetItemsResult<Activity> result) {
+					events = (ArrayList<Activity>) result.getResult();
+					
+				}			
+			});
+		} else {
+			
+			eventsModel.setAccountName(Site.currentUser.getAccountName());
+			eventsModel.setUsername(Site.currentUser.getUsername());
+			//eventsModel.setType(ActionType.GETEVENTSFORUSER);
+			
+			RPC.getEventsService.GetEvents(eventsModel, new AsyncCallback<GetItemsResult<Activity>>() {
+
+				@Override
+				public void onFailure(Throwable caught) {
+					
+					System.err.println("CLIENT: Something went wrong getting activites for a user");
+				}
+
+				@Override
+				public void onSuccess(GetItemsResult<Activity> result) {
+					events = (ArrayList<Activity>) result.getResult();
+					
+				}				
+			});		
+		}
+		
+		eventsModel = new EventsModel();
 		currentYear = 2014;
 		currentMonth = 5;
 		
 		buttons = new Button[42];
 		
 		for(int i = 0; i < 42; i++) {
-			Button b = new Button();
+			final Button b = new Button();
 			b.setStyleName("calendarButtons");
 			b.setSize("98%", "98%");
+			b.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					handleDateClick(currentMonth, Integer.parseInt(b.getText()), currentYear);
+				}				
+			});
 			buttons[i] = b;
 		}
 		
@@ -176,29 +230,31 @@ public class CalendarView extends Composite {
 		mainLayoutPanel.setWidgetLeftWidth(saturdayLabel, 659.0, Unit.PX, 56.0, Unit.PX);
 		mainLayoutPanel.setWidgetTopHeight(saturdayLabel, 68.0, Unit.PX, 18.0, Unit.PX);
 		
-		Label lblEvent = new Label("Event");
-		lblEvent.setStyleName("calendarTitle");
-		mainLayoutPanel.add(lblEvent);
-		mainLayoutPanel.setWidgetLeftWidth(lblEvent, 917.0, Unit.PX, 116.0, Unit.PX);
-		mainLayoutPanel.setWidgetTopHeight(lblEvent, 68.0, Unit.PX, 26.0, Unit.PX);
+		Label eventTitle = new Label("Event");
+		eventTitle.setStyleName("calendarTitle");
+		mainLayoutPanel.add(eventTitle);
+		mainLayoutPanel.setWidgetLeftWidth(eventTitle, 917.0, Unit.PX, 116.0, Unit.PX);
+		mainLayoutPanel.setWidgetTopHeight(eventTitle, 68.0, Unit.PX, 26.0, Unit.PX);
 		
 		ScrollPanel scrollPanel = new ScrollPanel();
 		mainLayoutPanel.add(scrollPanel);
 		mainLayoutPanel.setWidgetLeftWidth(scrollPanel, 863.0, Unit.PX, 223.0, Unit.PX);
 		mainLayoutPanel.setWidgetTopHeight(scrollPanel, 92.0, Unit.PX, 600.0, Unit.PX);
 		
-		TextArea textArea = new TextArea();
-		textArea.setCharacterWidth(18);
-		textArea.setReadOnly(true);
-		scrollPanel.setWidget(textArea);
-		textArea.setSize("95%", "95%");
+		eventTextArea = new TextArea();
+		eventTextArea.setCharacterWidth(18);
+		eventTextArea.setReadOnly(true);
+		scrollPanel.setWidget(eventTextArea);
+		eventTextArea.setSize("95%", "95%");
 		
-		Button btnNewButton = new Button("New button");
-		mainLayoutPanel.add(btnNewButton);
-		mainLayoutPanel.setWidgetLeftWidth(btnNewButton, 943.0, Unit.PX, 81.0, Unit.PX);
-		mainLayoutPanel.setWidgetTopHeight(btnNewButton, 698.0, Unit.PX, 30.0, Unit.PX);
+		Button manageActivitiesButton = new Button("New button");
+		manageActivitiesButton.setStyleName("ButtonColorScheme");
+		manageActivitiesButton.setText("Manage Activities");
+		mainLayoutPanel.add(manageActivitiesButton);
+		mainLayoutPanel.setWidgetLeftWidth(manageActivitiesButton, 918.0, Unit.PX, 125.0, Unit.PX);
+		mainLayoutPanel.setWidgetTopHeight(manageActivitiesButton, 713.0, Unit.PX, 32.0, Unit.PX);
 		
-		btnNewButton.addClickHandler(new ClickHandler() {
+		manageActivitiesButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				Site.search(Pages.MANAGEACTIVITIESPAGE);			
@@ -277,5 +333,17 @@ public class CalendarView extends Composite {
 				buttons[i].setText("");
 			}
 		}
+	}
+	
+	public void handleDateClick(int month, int day, int year) {
+		
+		
+		String m = Integer.toString(month);
+		String d = Integer.toString(day);
+		String y = Integer.toString(year);	
+		
+	
+		
+	
 	}
 }

@@ -38,6 +38,9 @@ public class ManageEventsView extends Composite {
 	private ListBox startMeridiemListBox;
 	private Label startTimeLabel;
 	private Label endTimeLabel;
+	private ListBox endHourListBox;
+	private ListBox endMinuteListBox;
+	private ListBox endMeridiemListBox;
 	
 	public ManageEventsView() {
 		
@@ -139,22 +142,25 @@ public class ManageEventsView extends Composite {
 		mainLayoutPanel.setWidgetTopHeight(startTimeLabel, 70, Unit.PCT, 15, Unit.PX);
 			
 		startHourListBox = new ListBox();
-		startHourListBox.setVisibleItemCount(5);
+		startHourListBox.setVisibleItemCount(1);
 		mainLayoutPanel.add(startHourListBox);
-		mainLayoutPanel.setWidgetLeftWidth(startHourListBox, 6.5, Unit.PCT, 3, Unit.PCT);
-		mainLayoutPanel.setWidgetTopHeight(startHourListBox, 72, Unit.PCT, 30, Unit.PX);
+		mainLayoutPanel.setWidgetLeftWidth(startHourListBox, 4.0, Unit.PCT, 5.0, Unit.PCT);
+		mainLayoutPanel.setWidgetTopHeight(startHourListBox, 72.1, Unit.PCT, 32.0, Unit.PX);
+		
+		
 		
 		ListBox startMinuteListBox = new ListBox();
-		startMinuteListBox.setVisibleItemCount(5);
+		startMinuteListBox.setVisibleItemCount(1);
 		mainLayoutPanel.add(startMinuteListBox);
-		mainLayoutPanel.setWidgetLeftWidth(startMinuteListBox, 10.5, Unit.PCT, 3, Unit.PCT);
-		mainLayoutPanel.setWidgetTopHeight(startMinuteListBox, 72, Unit.PCT, 30.0, Unit.PX);
+		mainLayoutPanel.setWidgetLeftWidth(startMinuteListBox, 9.5, Unit.PCT, 5.0, Unit.PCT);
+		mainLayoutPanel.setWidgetTopHeight(startMinuteListBox, 72, Unit.PCT, 32.0, Unit.PX);
+
 		
 		startMeridiemListBox = new ListBox();
-		startMeridiemListBox.setVisibleItemCount(5);
+		startMeridiemListBox.setVisibleItemCount(1);
 		mainLayoutPanel.add(startMeridiemListBox);
-		mainLayoutPanel.setWidgetLeftWidth(startMeridiemListBox, 14.5, Unit.PCT, 3, Unit.PCT);
-		mainLayoutPanel.setWidgetTopHeight(startMeridiemListBox, 72, Unit.PCT, 30.0, Unit.PX);
+		mainLayoutPanel.setWidgetLeftWidth(startMeridiemListBox, 15.0, Unit.PCT, 5.0, Unit.PCT);
+		mainLayoutPanel.setWidgetTopHeight(startMeridiemListBox, 72.0, Unit.PCT, 32.0, Unit.PX);
 		
 		endTimeLabel = new Label("End Time");
 		endTimeLabel.setStyleName("CenterText");
@@ -164,24 +170,26 @@ public class ManageEventsView extends Composite {
 
 		
 		Label lblTitle = new Label("Title");
+		lblTitle.setStyleName("CenterText");
 		mainLayoutPanel.add(lblTitle);
-		mainLayoutPanel.setWidgetLeftWidth(lblTitle, 166.0, Unit.PX, 56.0, Unit.PX);
-		mainLayoutPanel.setWidgetTopHeight(lblTitle, 795.0, Unit.PX, 18.0, Unit.PX);
+		mainLayoutPanel.setWidgetLeftWidth(lblTitle, 4, Unit.PCT, 8, Unit.PCT);
+		mainLayoutPanel.setWidgetTopHeight(lblTitle, 77, Unit.PCT, 15.0, Unit.PX);
 		
 		TextBox textBox = new TextBox();
 		mainLayoutPanel.add(textBox);
-		mainLayoutPanel.setWidgetLeftWidth(textBox, 113.0, Unit.PX, 151.0, Unit.PX);
-		mainLayoutPanel.setWidgetTopHeight(textBox, 820.0, Unit.PX, 34.0, Unit.PX);
+		mainLayoutPanel.setWidgetLeftWidth(textBox, 4, Unit.PCT, 20, Unit.PCT);
+		mainLayoutPanel.setWidgetTopHeight(textBox, 79, Unit.PCT, 30, Unit.PX);
 		
 		TextArea textArea = new TextArea();
 		mainLayoutPanel.add(textArea);
-		mainLayoutPanel.setWidgetLeftWidth(textArea, 113.0, Unit.PX, 151.0, Unit.PX);
-		mainLayoutPanel.setWidgetTopHeight(textArea, 872.0, Unit.PX, 50.0, Unit.PX);
+		mainLayoutPanel.setWidgetLeftWidth(textArea, 4.0, Unit.PCT, 34.0, Unit.PCT);
+		mainLayoutPanel.setWidgetTopHeight(textArea, 84.0, Unit.PCT, 80, Unit.PX);
 		
-		Label lblBody = new Label("Body");
+		Label lblBody = new Label("Description");
+		lblBody.setStyleName("CenterText");
 		mainLayoutPanel.add(lblBody);
-		mainLayoutPanel.setWidgetLeftWidth(lblBody, 158.0, Unit.PX, 56.0, Unit.PX);
-		mainLayoutPanel.setWidgetTopHeight(lblBody, 848.0, Unit.PX, 18.0, Unit.PX);
+		mainLayoutPanel.setWidgetLeftWidth(lblBody, 4, Unit.PCT, 8, Unit.PCT);
+		mainLayoutPanel.setWidgetTopHeight(lblBody, 82.0, Unit.PCT, 18.0, Unit.PX);
 
 		
 		activtyDateFlowPanel = new FlowPanel();
@@ -192,6 +200,40 @@ public class ManageEventsView extends Composite {
 		DatePicker activityDatePicker = new DatePicker();
 		activityDatePicker.setStyleName("Background");
 		activtyDateFlowPanel.add(activityDatePicker);
+		
+		endHourListBox = new ListBox();
+		mainLayoutPanel.add(endHourListBox);
+		mainLayoutPanel.setWidgetLeftWidth(endHourListBox, 26.0, Unit.PCT, 5.0, Unit.PCT);
+		mainLayoutPanel.setWidgetTopHeight(endHourListBox, 72.0, Unit.PCT, 32.0, Unit.PX);
+		endHourListBox.setVisibleItemCount(1);
+		
+		endMinuteListBox = new ListBox();
+		mainLayoutPanel.add(endMinuteListBox);
+		mainLayoutPanel.setWidgetLeftWidth(endMinuteListBox, 31.5, Unit.PCT, 5.0, Unit.PCT);
+		mainLayoutPanel.setWidgetTopHeight(endMinuteListBox, 72.0, Unit.PCT, 32.0, Unit.PX);
+		endMinuteListBox.setVisibleItemCount(1);
+		
+		endMeridiemListBox = new ListBox();
+		mainLayoutPanel.add(endMeridiemListBox);
+		mainLayoutPanel.setWidgetLeftWidth(endMeridiemListBox, 37, Unit.PCT, 5.0, Unit.PCT);
+		mainLayoutPanel.setWidgetTopHeight(endMeridiemListBox, 72.0, Unit.PCT, 32.0, Unit.PX);
+		endMeridiemListBox.setVisibleItemCount(1);
+		
+		for (int i = 1; i <= 12; i++) {
+			startHourListBox.addItem("" + i);
+			endHourListBox.addItem("" + i);
+		}
+		
+		
+		for(int i = 0; i < 60; i++) {
+			startMinuteListBox.addItem("" + i);
+			endMinuteListBox.addItem("" + i);
+		}
+		
+		startMeridiemListBox.addItem("AM");
+		startMeridiemListBox.addItem("PM");
+		endMeridiemListBox.addItem("AM");
+		endMeridiemListBox.addItem("PM");
 		
 		RPC.performUserQueryService.performGetUsersQuery(userQueryModel, new AsyncCallback<GetItemsResult<User>>() {
 

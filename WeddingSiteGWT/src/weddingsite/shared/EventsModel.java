@@ -9,6 +9,7 @@ public class EventsModel extends Publisher implements Serializable{
 	}
 	
 	private String accountName;
+	private String username;
 	private String activityName;
 	private Activity activity;
 	
@@ -48,5 +49,13 @@ public class EventsModel extends Publisher implements Serializable{
 
 	public void setActivity(Activity activity) {
 		this.activity = activity;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 }

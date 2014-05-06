@@ -28,4 +28,5 @@ public enum ActionType {
 	ADDEVENT,
 	EDITEVENT,
 	DELETEEVENT,
+	GETEVENTSFORUSER,
 }
