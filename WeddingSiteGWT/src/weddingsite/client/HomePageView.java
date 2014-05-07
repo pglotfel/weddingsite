@@ -1,5 +1,6 @@
 package weddingsite.client;
 
+import weddingsite.client.Site.Pages;
 import weddingsite.shared.ActionType;
 import weddingsite.shared.Activity;
 import weddingsite.shared.EventsModel;
@@ -8,6 +9,8 @@ import weddingsite.shared.IPublisher;
 import weddingsite.shared.ISubscriber;
 
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
@@ -17,6 +20,7 @@ import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.Button;
 
 public class HomePageView  extends Composite implements ISubscriber {
 	private MenuItem eventsItem;
@@ -33,6 +37,7 @@ public class HomePageView  extends Composite implements ISubscriber {
 	private Label FirstEventDate;
 	private Label SecondEventName;
 	private Label SecondEventDate;
+	private Button LogOutButton;
 	
 	public HomePageView() {
 		
@@ -49,12 +54,12 @@ public class HomePageView  extends Composite implements ISubscriber {
 		layoutPanel = new LayoutPanel();
 		layoutPanel.setStyleName("InnerBackgroundCenter");
 		mainScrollPanel.add(layoutPanel);
-		layoutPanel.setSize("900px", "1000px");
+		layoutPanel.setSize("900px", "700px");
 		
 		menuBar = new MenuBar(true);
 		layoutPanel.add(menuBar);
-		layoutPanel.setWidgetLeftWidth(menuBar, 5, Unit.PCT, 23.1, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(menuBar, 5, Unit.PCT, 30.0, Unit.PCT);
+		layoutPanel.setWidgetLeftWidth(menuBar, 7.8, Unit.PCT, 23.1, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(menuBar, 9.6, Unit.PCT, 30.0, Unit.PCT);
 		menuBar.setStyleName("menuBar .gwt-MenuBar");
 		
 		EventsModel model = new EventsModel();
@@ -160,6 +165,20 @@ public class HomePageView  extends Composite implements ISubscriber {
 			
 		});
 		
+		mntmAccount = new MenuItem("Account", false, new Command() {
+			public void execute() {
+				HandleAccountClick();
+			}
+		});
+		menuBar.addItem(mntmAccount);
+		calendarItem = new MenuItem("Calendar", false, new Command() {
+			public void execute() {
+				
+				handleCalendarClick();
+			}
+		});
+		menuBar.addItem(calendarItem);
+		
 		AttendanceLists = new MenuItem("Attendance Lists", false, new Command() {
 			public void execute() {
 				
@@ -169,31 +188,7 @@ public class HomePageView  extends Composite implements ISubscriber {
 		});
 		menuBar.addItem(AttendanceLists);
 		
-		eventsItem = new MenuItem("Events", false, new Command() {
-			public void execute() {
-				
-				handleEventsClick();
-				
-			}
-
-			
-		});
-		menuBar.addItem(eventsItem);
 		
-		calendarItem = new MenuItem("Calendar", false, new Command() {
-			public void execute() {
-				
-				handleCalendarClick();
-			}
-		});
-		menuBar.addItem(calendarItem);
-		
-		mntmAccount = new MenuItem("Account", false, new Command() {
-			public void execute() {
-				HandleAccountClick();
-			}
-		});
-		menuBar.addItem(mntmAccount);
 		
 		mntmSeatingCharts = new MenuItem("Seating Charts", false, new Command() {
 			public void execute() {
@@ -206,6 +201,7 @@ public class HomePageView  extends Composite implements ISubscriber {
 		
 		FlowPanel flowPanel = new FlowPanel();
 		layoutPanel.add(flowPanel);
+		flowPanel.setSize("400px", "400px");
 		layoutPanel.setWidgetLeftWidth(flowPanel, 391.0, Unit.PX, 404.0, Unit.PX);
 		layoutPanel.setWidgetTopHeight(flowPanel, 68.0, Unit.PX, 697.0, Unit.PX);
 		
@@ -233,6 +229,27 @@ public class HomePageView  extends Composite implements ISubscriber {
 		SecondEventDate.setStyleName("CenterText");
 		flowPanel.add(SecondEventDate);
 		SecondEventDate.setSize("100%", "40px");
+		
+		FlowPanel flowPanel_1 = new FlowPanel();
+		layoutPanel.add(flowPanel_1);
+		layoutPanel.setWidgetLeftWidth(flowPanel_1, 70.0, Unit.PX, 100.0, Unit.PX);
+		layoutPanel.setWidgetTopHeight(flowPanel_1, 620.0, Unit.PX, 40.0, Unit.PX);
+		
+		LogOutButton = new Button("New button");
+		LogOutButton.setStyleName("ButtonColorScheme");
+		LogOutButton.setText("Log Out");
+		flowPanel_1.add(LogOutButton);
+		LogOutButton.setSize("100%", "100%");
+		
+		LogOutButton.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				Site.search(Pages.LOGINPAGE);
+				
+			}
+			
+		});
 	}
 	
 	

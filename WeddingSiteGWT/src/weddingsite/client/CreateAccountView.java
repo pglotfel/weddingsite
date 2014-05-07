@@ -24,6 +24,7 @@ public class CreateAccountView extends Composite{
 	private PasswordTextBox ConfirmPasswordTxt;
 	private Label ErrorLbl;
 	private FlowPanel mainFlowPanel;
+	private Button LogOutButton;
 
 		public CreateAccountView() {
 			
@@ -123,6 +124,31 @@ public class CreateAccountView extends Composite{
 				}
 			});
 			CreateAccountBtn.setText("Create Account");
+			
+			FlowPanel flowPanel_1 = new FlowPanel();
+			flowPanel_1.setStyleName("CenterButton");
+			layoutPanel.add(flowPanel_1);
+			flowPanel_1.setSize("150px", "40px");
+			layoutPanel.setWidgetLeftWidth(flowPanel_1, 225.0, Unit.PX, 152.0, Unit.PX);
+			layoutPanel.setWidgetTopHeight(flowPanel_1, 537.0, Unit.PX, 40.0, Unit.PX);
+			
+			LogOutButton = new Button("New button");
+			LogOutButton.setStyleName("CenterButton");
+			LogOutButton.setText("Log Out");
+			flowPanel_1.add(LogOutButton);
+			LogOutButton.setSize("100%", "100%");
+			
+			LogOutButton.addClickHandler( new ClickHandler() {
+
+				@Override
+				public void onClick(ClickEvent event) {
+					Site.search(Pages.LOGINPAGE);
+					
+				}
+				
+			});
+			
+			
 			
 			
 			
