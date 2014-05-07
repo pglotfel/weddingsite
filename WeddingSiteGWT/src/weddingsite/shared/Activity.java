@@ -1,8 +1,9 @@
 package weddingsite.shared;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Activity {
+public class Activity implements Serializable {
 	
 	private int accountID;
 	private int id;

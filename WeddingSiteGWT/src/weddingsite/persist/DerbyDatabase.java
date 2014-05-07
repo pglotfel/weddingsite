@@ -190,6 +190,7 @@ public class DerbyDatabase implements IDatabase {
 								"accountID integer," +
 								"date varchar(15)," +
 								"body varchar(500)," +
+								"title varchar(50)," +
 								"startTime varchar(15)," +
 								"endTime varchar(15)" +
 								")");
@@ -1308,20 +1309,24 @@ public class DerbyDatabase implements IDatabase {
 						stmt.setInt(1, u.getID());
 						
 						ResultSet resultSet = stmt.executeQuery();
+						
+						PreparedStatement stmt2 = null;
+						
 						while (resultSet.next()) {											
 												
 							try {
-								stmt = conn.prepareStatement(
+								
+								stmt2 = conn.prepareStatement(
 										"select events.*" +
 										" from events " +
 										" where events.id = ?"
 								);
 								
-								stmt.setInt(1, resultSet.getInt("eventID"));
+								stmt2.setInt(1, resultSet.getInt("eventID"));
 								
-								stmt.setString(1, accountName);
+								stmt2.setString(1, accountName);
 								
-								ResultSet resultSetEvents = stmt.executeQuery();
+								ResultSet resultSetEvents = stmt2.executeQuery();
 								while (resultSetEvents.next()) {
 									Activity a = new Activity();
 									a.setAccountID(resultSetEvents.getInt("accountID"));
@@ -1336,7 +1341,7 @@ public class DerbyDatabase implements IDatabase {
 								}
 								
 							} finally {
-								DBUtil.closeQuietly(stmt);
+								DBUtil.closeQuietly(stmt2);
 							}		
 						}
 					} finally {
@@ -1356,10 +1361,10 @@ public class DerbyDatabase implements IDatabase {
 	}
 
 	@Override
-	public ArrayList<User> getUsers(final String accountName) {
-		return executeTransaction(new Transaction<ArrayList<User>>() {
+	public ArrayList<String> getUsers(final String accountName) {
+		return executeTransaction(new Transaction<ArrayList<String>>() {
 			@Override
-			public ArrayList<User> execute(Connection conn) throws SQLException {
+			public ArrayList<String> execute(Connection conn) throws SQLException {
 				PreparedStatement stmt = null;
 				ResultSet resultSet = null;
 				
@@ -1373,18 +1378,14 @@ public class DerbyDatabase implements IDatabase {
 					
 					stmt.setString(1, accountName);
 					
-					ArrayList<User> result = new ArrayList<User>();
+					ArrayList<String> result = new ArrayList<String>();
 					
 					resultSet = stmt.executeQuery();
+					String s = "";
 					while (resultSet.next()) {
-						User a = new User();
-						a.setAccountID(resultSet.getInt("accountID"));
-						a.setID(resultSet.getInt("id"));
-						a.setIsAdmin(resultSet.getBoolean("isAdmin"));
-						a.setPassword(resultSet.getString("password"));
-						a.setUsername(resultSet.getString("username"));
-						result.add(a);
 						
+						s = resultSet.getString("username"); 
+						result.add(s);					
 					}
 					
 					return result;
@@ -1590,8 +1591,8 @@ public class DerbyDatabase implements IDatabase {
 					if(u != null) {
 							try {
 								stmt = conn.prepareStatement(
-										"delete from eventsUsersLink" +
-												" where eventsUsersLink.userID = ? and eventsUsersLink.eventID = ?"
+									"delete from eventsUsersLink" +
+									" where eventsUsersLink.userID = ? and eventsUsersLink.eventID = ?"
 								);
 								
 								stmt.setInt(1, u.getID());
@@ -1618,22 +1619,25 @@ public class DerbyDatabase implements IDatabase {
 			@Override
 			public Boolean execute(Connection conn) throws SQLException {
 				PreparedStatement stmt = null;
+				PreparedStatement stmt2 = null;
 				
 				ArrayList<Activity> all = getActivities(accountName);
 				int activityID = -1;
 				for(int i = 0; i < all.size(); i++) {
 					if(all.get(i).getTitle().equals(activityName)) {
 						activityID = all.get(i).getID();
+						System.out.println("FOUND ACTIVITY " + all.get(i).getTitle());
 					}
 				}
+				
 				
 				
 			if(activityID != -1){		
 					
 					try {
 						stmt = conn.prepareStatement(
-								"delete from eventsUsersLink" +
-										" where eventsUsersLink.eventID = ?"
+							"delete from eventsUsersLink" +
+							" where eventsUsersLink.eventID = ?"
 						);
 						
 						stmt.setInt(1, activityID);
@@ -1642,21 +1646,20 @@ public class DerbyDatabase implements IDatabase {
 						stmt.executeUpdate();
 	
 						
-					} finally {
-						
+					} finally {					
 						DBUtil.closeQuietly(stmt);
 					}
 					
 					try {
-						stmt = conn.prepareStatement( 
-								"delete from events" +
-										" where events.id = ?"
+						stmt2 = conn.prepareStatement( 
+							"delete from events" +
+							" where events.id = ?"
 								
-								);
-						stmt.setInt(1, activityID);
-						stmt.executeUpdate();
+						);
+						stmt2.setInt(1, activityID);
+						stmt2.executeUpdate();
 					} finally {
-						DBUtil.closeQuietly(stmt);
+						DBUtil.closeQuietly(stmt2);
 					}
 							
 					return true;	
@@ -1696,9 +1699,31 @@ public class DerbyDatabase implements IDatabase {
 						stmt.setInt(1, activityID);
 						
 						ResultSet resultSet = stmt.executeQuery();
-						while (resultSet.next()) {
-							String a = resultSet.getString("userID");
-							result.add(a);	
+						
+						PreparedStatement stmt2 = null;
+						
+						while (resultSet.next()) {						
+							
+							try {
+								
+								stmt2 = conn.prepareStatement(
+									"select users.*" +
+									" from users " +
+									" where users.id = ?"
+								);
+								
+								stmt2.setInt(1, resultSet.getInt("userID"));
+								
+								ResultSet userResultSet = stmt2.executeQuery();
+								
+								while(userResultSet.next()) {
+									
+									result.add(userResultSet.getString("username"));
+								}
+								
+							} finally {
+								DBUtil.closeQuietly(stmt2);
+							}
 						}
 						
 					} finally {

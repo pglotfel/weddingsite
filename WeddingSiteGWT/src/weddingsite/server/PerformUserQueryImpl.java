@@ -12,13 +12,13 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 public class PerformUserQueryImpl extends RemoteServiceServlet implements PerformUserQueryService {
 
 	@Override
-	public GetItemsResult<User> performGetUsersQuery(UserQueryModel model) {
+	public GetItemsResult<String> performGetUsersQuery(UserQueryModel model) {
 
 		PerformUserQuery controller = new PerformUserQuery();
 		
 		controller.setModel(model);		
 		
-		GetItemsResult<User> result = new GetItemsResult<User>();
+		GetItemsResult<String> result = new GetItemsResult<String>();
 		
 		controller.perform(result);
 		

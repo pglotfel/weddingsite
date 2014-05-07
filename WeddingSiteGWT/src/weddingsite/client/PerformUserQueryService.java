@@ -10,6 +10,6 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 @RemoteServiceRelativePath("performUserQuery")
 public interface PerformUserQueryService extends RemoteService {
-	public GetItemsResult<User> performGetUsersQuery (UserQueryModel model);
+	public GetItemsResult<String> performGetUsersQuery (UserQueryModel model);
 	public EditDataResult performEditUser (UserQueryModel model);
 }

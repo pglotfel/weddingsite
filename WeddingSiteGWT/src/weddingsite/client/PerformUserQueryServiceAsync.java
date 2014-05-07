@@ -13,6 +13,6 @@ public interface PerformUserQueryServiceAsync {
 			AsyncCallback<EditDataResult> callback);
 
 	void performGetUsersQuery(UserQueryModel model,
-			AsyncCallback<GetItemsResult<User>> callback);
+			AsyncCallback<GetItemsResult<String>> callback);
 
 }

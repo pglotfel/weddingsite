@@ -24,9 +24,9 @@ public class PerformUserQuery {
 		return model;
 	}
 	
-	public void perform(GetItemsResult<User> result) {
+	public void perform(GetItemsResult<String> result) {
 		
-		ArrayList<User> resultValue = null;
+		ArrayList<String> resultValue = null;
 		
 		switch (model.getType()) {
 		

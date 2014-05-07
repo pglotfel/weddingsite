@@ -41,6 +41,8 @@ public class CalendarView extends Composite {
 	
 	public CalendarView() {
 			
+		eventsModel = new EventsModel();
+		
 		if(Site.currentUser.getIsAdmin()) {		
 			eventsModel.setAccountName(Site.currentUser.getAccountName());
 			eventsModel.setType(ActionType.GETEVENTS);		
@@ -61,7 +63,7 @@ public class CalendarView extends Composite {
 			
 			eventsModel.setAccountName(Site.currentUser.getAccountName());
 			eventsModel.setUsername(Site.currentUser.getUsername());
-			//eventsModel.setType(ActionType.GETEVENTSFORUSER);
+			eventsModel.setType(ActionType.GETEVENTSFORUSER);
 			
 			RPC.getEventsService.GetEvents(eventsModel, new AsyncCallback<GetItemsResult<Activity>>() {
 
@@ -251,7 +253,7 @@ public class CalendarView extends Composite {
 		manageActivitiesButton.setStyleName("ButtonColorScheme");
 		manageActivitiesButton.setText("Manage Activities");
 		mainLayoutPanel.add(manageActivitiesButton);
-		mainLayoutPanel.setWidgetLeftWidth(manageActivitiesButton, 918.0, Unit.PX, 125.0, Unit.PX);
+		mainLayoutPanel.setWidgetLeftWidth(manageActivitiesButton, 917.0, Unit.PX, 125.0, Unit.PX);
 		mainLayoutPanel.setWidgetTopHeight(manageActivitiesButton, 713.0, Unit.PX, 32.0, Unit.PX);
 		
 		manageActivitiesButton.addClickHandler(new ClickHandler() {
@@ -337,13 +339,34 @@ public class CalendarView extends Composite {
 	
 	public void handleDateClick(int month, int day, int year) {
 		
+		String textToSet = "No activities scheduled!";
 		
 		String m = Integer.toString(month);
 		String d = Integer.toString(day);
 		String y = Integer.toString(year);	
-		
 	
+		for(Activity a : events) {
+			
+			String delims = "[/]+";
+			String[] tokens = a.getDate().split(delims);
+			
+			if(tokens[0].equals(m) && tokens[1].equals(d) && tokens[2].equals(y)) {
+				
+				if(textToSet.equals("No activities scheduled!")) {
+					textToSet = "";
+				}
+				
+				textToSet += "Title: \n";
+				textToSet += a.getTitle() + "\n";
+				textToSet += "Start Time: \n";
+				textToSet += a.getStartTime() + "\n";
+				textToSet += "End Time: \n";
+				textToSet += a.getEndTime() + "\n";
+				textToSet += "Description: \n";
+				textToSet += a.getBody() + "\n";			
+			}
+		}
 		
-	
+		eventTextArea.setText(textToSet);
 	}
 }

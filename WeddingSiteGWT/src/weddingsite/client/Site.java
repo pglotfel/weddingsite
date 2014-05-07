@@ -118,7 +118,7 @@ public class Site implements EntryPoint {
 			currentView = v6;
 			RootLayoutPanel.get().setWidgetLeftWidth(v6, 0, Unit.PCT, 100.0, Unit.PCT);
 			RootLayoutPanel.get().setWidgetTopHeight(v6, 0, Unit.PCT, 100.0, Unit.PCT);	
-			currentPage = Pages.SEATINGCHARTPAGE;
+			currentPage = Pages.CALENDARPAGE;
 		break;
 		
 		case MANAGEACTIVITIESPAGE:

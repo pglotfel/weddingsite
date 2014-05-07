@@ -1,6 +1,7 @@
 package weddingsite.shared;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class EventsModel extends Publisher implements Serializable{
 	
@@ -12,7 +13,7 @@ public class EventsModel extends Publisher implements Serializable{
 	private String username;
 	private String activityName;
 	private Activity activity;
-	
+	private ArrayList<String> users;
 	private ActionType type;
 	
 	public EventsModel() {
@@ -57,5 +58,13 @@ public class EventsModel extends Publisher implements Serializable{
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public ArrayList<String> getUsers() {
+		return users;
+	}
+
+	public void setUsers(ArrayList<String> users) {
+		this.users = users;
 	}
 }

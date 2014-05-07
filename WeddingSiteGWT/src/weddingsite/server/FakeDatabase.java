@@ -688,7 +688,7 @@ public class FakeDatabase implements IDatabase  {
 	}
 
 	@Override
-	public ArrayList<User> getUsers(String accountName) {
+	public ArrayList<String> getUsers(String accountName) {
 		// TODO Auto-generated method stub
 		return null;
 	}

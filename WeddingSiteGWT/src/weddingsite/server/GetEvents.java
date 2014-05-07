@@ -6,6 +6,7 @@ import weddingsite.persist.DatabaseProvider;
 import weddingsite.shared.Activity;
 import weddingsite.shared.GetItemsResult;
 import weddingsite.shared.EventsModel;
+import weddingsite.shared.User;
 
 public class GetEvents {
 	
@@ -15,7 +16,7 @@ public class GetEvents {
 		this.model = model;
 	}
 	
-public void perform(GetItemsResult<Activity> result) {
+	public void perform(GetItemsResult<Activity> result) {
 		
 		ArrayList<Activity> resultVal = new ArrayList<Activity>();
 		
@@ -28,15 +29,30 @@ public void perform(GetItemsResult<Activity> result) {
 		
 		case GETEVENTSFORUSER:
 			resultVal = DatabaseProvider.getInstance().getUserActivities(model.getAccountName(), model.getUsername());
-		break;
-		
-			
-		
+		break;	
+				
 		default:
 			throw new UnsupportedOperationException("Unknown operation type: " + model.getType());
 		}
 		
 		result.setResult(resultVal);
 		
+	}
+
+	public void performGetUsersOnEvent(GetItemsResult<String> result) {
+		
+		ArrayList<String> resultVal = new ArrayList<String>();
+		
+		switch (model.getType()) {
+		
+		case GETUSERSONEVENT:
+			resultVal = DatabaseProvider.getInstance().getUsersInvitedToActivity(model.getAccountName(), model.getActivityName());
+		break;	
+				
+		default:
+			throw new UnsupportedOperationException("Unknown operation type: " + model.getType());
+		}
+		
+		result.setResult(resultVal);
 	}
 }

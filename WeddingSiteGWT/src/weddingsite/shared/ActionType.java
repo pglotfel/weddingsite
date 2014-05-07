@@ -1,6 +1,7 @@
 package weddingsite.shared;
 
 public enum ActionType {
+	
 	LOGIN,
 	GETUSERS,
 	GETATTENDANCELISTS,
@@ -29,4 +30,7 @@ public enum ActionType {
 	EDITEVENT,
 	DELETEEVENT,
 	GETEVENTSFORUSER,
+	GETUSERSONEVENT,
+	REMOVEUSERSFROMEVENT,
+	ADDUSERSTOEVENT,
 }

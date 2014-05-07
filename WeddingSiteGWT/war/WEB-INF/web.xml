@@ -139,7 +139,7 @@
   
   <servlet-mapping>
   	<servlet-name>EventsImpl</servlet-name>
- 	<url-pattern>/weddingsitegwt/getEvents/*</url-pattern>
+ 	<url-pattern>/weddingsitegwt/GetEventsService/*</url-pattern>
   </servlet-mapping>
 
   

@@ -21,7 +21,7 @@ public interface IDatabase {
 	//User
 	public User getUser(String accountName, String userName);
 	public boolean addUser(String accountName, String userName, String userPassword, boolean isAdmin);
-	public ArrayList<User> getUsers(String accountName);
+	public ArrayList<String> getUsers(String accountName);
 	
 
 	//AttendanceLists

@@ -1,5 +1,6 @@
 package weddingsite.client;
 
+import weddingsite.shared.ActionType;
 import weddingsite.shared.Activity;
 import weddingsite.shared.EventsModel;
 import weddingsite.shared.GetItemsResult;
@@ -58,6 +59,12 @@ public class HomePageView  extends Composite implements ISubscriber {
 		
 		EventsModel model = new EventsModel();
 		model.setAccountName(Site.currentUser.getAccountName());
+		if(Site.currentUser.getIsAdmin()) {
+			model.setType(ActionType.GETEVENTS);
+		} else {
+			model.setUsername(Site.currentUser.getUsername());
+			model.setType(ActionType.GETEVENTSFORUSER);
+		}
 		
 		RPC.getEventsService.GetEvents(model, new AsyncCallback<GetItemsResult<Activity>>() {
 
@@ -71,6 +78,7 @@ public class HomePageView  extends Composite implements ISubscriber {
 			public void onSuccess(GetItemsResult<Activity> result) {
 				Activity first = new Activity();
 				Activity second = new Activity();
+				Activity temp = null;
 				
 				int firstYear = 3000;
 				int firstMonth = 12;
@@ -84,16 +92,22 @@ public class HomePageView  extends Composite implements ISubscriber {
 					for(Activity a : result.getResult()) {
 						String[] tokens = a.getDate().split("[/]");
 						int month = Integer.parseInt(tokens[0]);
-						int day = Integer.parseInt(tokens[0]);
-						int year = Integer.parseInt(tokens[0]);
+						int day = Integer.parseInt(tokens[1]);
+						int year = Integer.parseInt(tokens[2]);
 						
 						if(year < firstYear) {
+							temp = first;
 							first = a;
+							second = temp;
 						} else if(year <= firstYear && month < firstMonth) {
+							temp = first;
 							first = a;
+							second = temp;
 						} else if(year <= firstYear && month <= firstMonth && day < firstDay) {
+							temp = first;
 							first = a;
-						} else if(year <= firstYear && month <= firstMonth && day < firstDay) {
+							second = temp;
+						} else if(year <= firstYear && month <= firstMonth && day <= firstDay) {
 							second = a;
 						} else if(year < secondYear) {
 							second = a;
