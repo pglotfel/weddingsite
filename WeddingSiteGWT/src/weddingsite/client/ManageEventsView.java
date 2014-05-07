@@ -594,12 +594,11 @@ public class ManageEventsView extends Composite {
 
 			@Override
 			public void onSuccess(EditDataResult result) {		
-				System.out.println("DELETED AN EVENT");
+				System.out.println("DELETED AN EVENT");			
+				loadEvents();
+				removeWidgetsFromView();
 			}	
 		});
-		
-		loadEvents();
-		removeWidgetsFromView();
 	}
 	
 	public void handleEventClick(String title) {
@@ -693,10 +692,9 @@ public class ManageEventsView extends Composite {
 			@Override
 			public void onSuccess(EditDataResult result) {
 				System.out.println("ADDED USER TO EVENT");
+				handleEventClick(eventLabel.getText());	
 			}		
 		});
-		
-		handleEventClick(eventLabel.getText());	
 	}
 	
 	private void handleRemoveFromEventClick() {
@@ -721,10 +719,9 @@ public class ManageEventsView extends Composite {
 			@Override
 			public void onSuccess(EditDataResult result) {
 				System.out.println("REMOVED USER FROM EVENT");
+				handleEventClick(eventLabel.getText());	
 			}		
 		});
-		
-		handleEventClick(eventLabel.getText());	
 	}
 }
 
