@@ -98,23 +98,53 @@ public class HomePageView  extends Composite implements ISubscriber {
 						if(year < firstYear) {
 							temp = first;
 							first = a;
+							secondYear = firstYear;
+							secondMonth = firstMonth;
+							secondDay = firstDay;
+							firstYear = year;
+							firstMonth = month;
+							firstDay = day;
 							second = temp;
 						} else if(year <= firstYear && month < firstMonth) {
 							temp = first;
 							first = a;
+							secondYear = firstYear;
+							secondMonth = firstMonth;
+							secondDay = firstDay;
+							firstYear = year;
+							firstMonth = month;
+							firstDay = day;
 							second = temp;
 						} else if(year <= firstYear && month <= firstMonth && day < firstDay) {
 							temp = first;
 							first = a;
+							secondYear = firstYear;
+							secondMonth = firstMonth;
+							secondDay = firstDay;
+							firstYear = year;
+							firstMonth = month;
+							firstDay = day;
 							second = temp;
 						} else if(year <= firstYear && month <= firstMonth && day <= firstDay) {
 							second = a;
+							secondYear = year;
+							secondMonth = month;
+							secondDay = day;
 						} else if(year < secondYear) {
 							second = a;
+							secondYear = year;
+							secondMonth = month;
+							secondDay = day;
 						} else if(year <= secondYear && month < secondMonth) {
 							second = a;
+							secondYear = year;
+							secondMonth = month;
+							secondDay = day;
 						} else if(year <= secondYear && month <= secondMonth && day < secondDay) {
 							second = a;
+							secondYear = year;
+							secondMonth = month;
+							secondDay = day;
 						}
 						
 					}
