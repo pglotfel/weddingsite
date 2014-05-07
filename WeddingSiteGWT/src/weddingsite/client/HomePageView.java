@@ -38,6 +38,8 @@ public class HomePageView  extends Composite implements ISubscriber {
 	private Label SecondEventName;
 	private Label SecondEventDate;
 	private Button LogOutButton;
+	private Label FirstEventBody;
+	private Label SecondEventBody;
 	
 	public HomePageView() {
 		
@@ -58,8 +60,9 @@ public class HomePageView  extends Composite implements ISubscriber {
 		
 		menuBar = new MenuBar(true);
 		layoutPanel.add(menuBar);
-		layoutPanel.setWidgetLeftWidth(menuBar, 7.8, Unit.PCT, 23.1, Unit.PCT);
-		layoutPanel.setWidgetTopHeight(menuBar, 9.6, Unit.PCT, 30.0, Unit.PCT);
+		menuBar.setSize("200px", "300px");
+		layoutPanel.setWidgetLeftWidth(menuBar, 7.8, Unit.PCT, 22.2, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(menuBar, 9.6, Unit.PCT, 39.3, Unit.PCT);
 		menuBar.setStyleName("menuBar .gwt-MenuBar");
 		
 		EventsModel model = new EventsModel();
@@ -156,8 +159,10 @@ public class HomePageView  extends Composite implements ISubscriber {
 					
 					FirstEventName.setText(first.getTitle());
 					FirstEventDate.setText(first.getDate());
+					FirstEventBody.setText(first.getBody());
 					SecondEventName.setText(second.getTitle());
 					SecondEventDate.setText(second.getDate());;
+					SecondEventBody.setText(second.getBody());
 				} else {
 					FirstEventName.setText("There are no upcoming events");
 				}
@@ -199,46 +204,54 @@ public class HomePageView  extends Composite implements ISubscriber {
 		
 		menuBar.addItem(mntmSeatingCharts);
 		
-		FlowPanel flowPanel = new FlowPanel();
-		layoutPanel.add(flowPanel);
-		flowPanel.setSize("400px", "400px");
-		layoutPanel.setWidgetLeftWidth(flowPanel, 391.0, Unit.PX, 404.0, Unit.PX);
-		layoutPanel.setWidgetTopHeight(flowPanel, 68.0, Unit.PX, 697.0, Unit.PX);
+		FlowPanel EventsPanel = new FlowPanel();
+		layoutPanel.add(EventsPanel);
+		EventsPanel.setSize("400px", "600px");
+		layoutPanel.setWidgetLeftWidth(EventsPanel, 391.0, Unit.PX, 404.0, Unit.PX);
+		layoutPanel.setWidgetTopHeight(EventsPanel, 68.0, Unit.PX, 697.0, Unit.PX);
 		
 		TitleLbl = new Label("Upcoming Events");
-		flowPanel.add(TitleLbl);
+		EventsPanel.add(TitleLbl);
 		TitleLbl.setHeight("32px");
 		TitleLbl.setStyleName("CenterTitles");
 		
 		FirstEventName = new Label("");
-		FirstEventName.setStyleName("CenterText");
-		flowPanel.add(FirstEventName);
+		FirstEventName.setStyleName("homePageTextUnderline");
+		EventsPanel.add(FirstEventName);
 		FirstEventName.setSize("100%", "40px");
 		
 		FirstEventDate = new Label("");
-		FirstEventDate.setStyleName("CenterText");
-		flowPanel.add(FirstEventDate);
+		FirstEventDate.setStyleName("homePageText");
+		EventsPanel.add(FirstEventDate);
 		FirstEventDate.setSize("100%", "40px");
 		
+		FirstEventBody = new Label("");
+		FirstEventBody.setStyleName("homePageText");
+		EventsPanel.add(FirstEventBody);
+		
 		SecondEventName = new Label("");
-		SecondEventName.setStyleName("CenterText");
-		flowPanel.add(SecondEventName);
+		SecondEventName.setStyleName("homePageTextUnderline");
+		EventsPanel.add(SecondEventName);
 		SecondEventName.setSize("100%", "40px");
 		
 		SecondEventDate = new Label("");
-		SecondEventDate.setStyleName("CenterText");
-		flowPanel.add(SecondEventDate);
+		SecondEventDate.setStyleName("homePageText");
+		EventsPanel.add(SecondEventDate);
 		SecondEventDate.setSize("100%", "40px");
 		
-		FlowPanel flowPanel_1 = new FlowPanel();
-		layoutPanel.add(flowPanel_1);
-		layoutPanel.setWidgetLeftWidth(flowPanel_1, 70.0, Unit.PX, 100.0, Unit.PX);
-		layoutPanel.setWidgetTopHeight(flowPanel_1, 620.0, Unit.PX, 40.0, Unit.PX);
+		SecondEventBody = new Label("");
+		SecondEventBody.setStyleName("homePageText");
+		EventsPanel.add(SecondEventBody);
+		
+		FlowPanel logOutButtonHolder = new FlowPanel();
+		layoutPanel.add(logOutButtonHolder);
+		layoutPanel.setWidgetLeftWidth(logOutButtonHolder, 70.0, Unit.PX, 100.0, Unit.PX);
+		layoutPanel.setWidgetTopHeight(logOutButtonHolder, 620.0, Unit.PX, 40.0, Unit.PX);
 		
 		LogOutButton = new Button("New button");
-		LogOutButton.setStyleName("ButtonColorScheme");
+		LogOutButton.setStyleName("ButtonBold");
 		LogOutButton.setText("Log Out");
-		flowPanel_1.add(LogOutButton);
+		logOutButtonHolder.add(LogOutButton);
 		LogOutButton.setSize("100%", "100%");
 		
 		LogOutButton.addClickHandler(new ClickHandler() {
