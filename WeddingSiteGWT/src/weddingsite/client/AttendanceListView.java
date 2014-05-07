@@ -82,7 +82,7 @@ public class AttendanceListView extends Composite {
 		PageView pageView = new PageView();
 		mainLayoutPanel.add(pageView);
 		mainLayoutPanel.setWidgetTopBottom(pageView, 93.7,  Unit.PCT, 0.0, Unit.PCT);
-		mainLayoutPanel.setWidgetLeftRight(pageView, 0.0, Unit.PCT, 30, Unit.PCT);
+		mainLayoutPanel.setWidgetLeftRight(pageView, 2.3, Unit.PCT, 30, Unit.PCT);
 		
 		attendanceListFlowPanel = new FlowPanel();
 		attendanceListFlowPanel.setStyleName("Background");

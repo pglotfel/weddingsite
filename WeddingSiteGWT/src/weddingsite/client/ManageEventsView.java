@@ -37,7 +37,7 @@ public class ManageEventsView extends Composite {
 	
 	//Widgets/Panels
 	private LayoutPanel mainLayoutPanel;
-	private MenuBar activityMenu;
+	private MenuBar eventMenu;
 	private MenuBar usersOffEventMenu;
 	private MenuBar usersOnEventMenu;
 	private FlowPanel removeFlowPanel;
@@ -56,13 +56,13 @@ public class ManageEventsView extends Composite {
 	private Label eventTitleLabel;
 	private Label eventDescriptionLabel;
 	private Button deleteEventButton;
-	private Button cancelActivityButton;
+	private Button cancelEventButton;
 	private Label userOffEventNameLabel;
 	private Label userOnEventNameLabel;
 	
 	//models
 	private EventsModel eventsModel;
-	private Button submitActivityButton;
+	private Button submitEventButton;
 	private TextArea eventDescriptionTextArea;
 	private TextBox eventTitleTextBox;
 	private DatePicker eventDatePicker;
@@ -70,6 +70,7 @@ public class ManageEventsView extends Composite {
 	//other
 	private String currentDay;
 	private final String [] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+	private Activity currentEvent;
 	
 	public ManageEventsView() {
 		
@@ -99,10 +100,10 @@ public class ManageEventsView extends Composite {
 		mainLayoutPanel.setWidgetTopBottom(pageView, 95.0,  Unit.PCT, 0.0, Unit.PCT);
 		mainLayoutPanel.setWidgetLeftRight(pageView, 2.3, Unit.PCT, 30, Unit.PCT);
 		
-		activityMenu = new MenuBar(true);
-		mainLayoutPanel.add(activityMenu);
-		mainLayoutPanel.setWidgetLeftWidth(activityMenu, 8, Unit.PCT, 30, Unit.PCT);
-		mainLayoutPanel.setWidgetTopHeight(activityMenu, 10, Unit.PCT, 30, Unit.PCT);	
+		eventMenu = new MenuBar(true);
+		mainLayoutPanel.add(eventMenu);
+		mainLayoutPanel.setWidgetLeftWidth(eventMenu, 8, Unit.PCT, 30, Unit.PCT);
+		mainLayoutPanel.setWidgetTopHeight(eventMenu, 10, Unit.PCT, 30, Unit.PCT);	
 		
 		Label titleLabel = new Label("Activity Manager");
 		titleLabel.setStyleName("CenterTitles");
@@ -196,7 +197,10 @@ public class ManageEventsView extends Composite {
 			@Override
 			public void onClick(ClickEvent event) {
 				removeWidgetsFromView();
-				addWidgetsToViewEdit();			
+				addWidgetsToViewEdit();	
+				if(currentEvent != null) {
+					handleEventClick(currentEvent);
+				}
 			}		
 		});
 		
@@ -238,7 +242,6 @@ public class ManageEventsView extends Composite {
 	        public void onValueChange(ValueChangeEvent<Date> event) {
 	          Date date = event.getValue();
 	          currentDay = DateTimeFormat.getMediumDateFormat().format(date);
-	          System.out.println(currentDay);
 	        }
 	      });
 		
@@ -257,8 +260,13 @@ public class ManageEventsView extends Composite {
 		}		
 		
 		for(int i = 0; i < 60; i++) {
-			startMinuteListBox.addItem("" + i);
-			endMinuteListBox.addItem("" + i);
+			if(i < 10) {
+				startMinuteListBox.addItem("0" + i);
+				endMinuteListBox.addItem("0" + i);
+			} else {
+				startMinuteListBox.addItem("" + i);
+				endMinuteListBox.addItem("" + i);
+			}
 		}
 		
 		startMeridiemListBox.addItem("AM");
@@ -266,13 +274,20 @@ public class ManageEventsView extends Composite {
 		endMeridiemListBox.addItem("AM");
 		endMeridiemListBox.addItem("PM");
 		
-		submitActivityButton = new Button("New button");
-		submitActivityButton.setStyleName("ButtonColorScheme");
-		submitActivityButton.setText("Submit");
+		submitEventButton = new Button("New button");
+		submitEventButton.setStyleName("ButtonColorScheme");
+		submitEventButton.setText("Submit");
 		
-		cancelActivityButton = new Button("New button");
-		cancelActivityButton.setStyleName("ButtonColorScheme");
-		cancelActivityButton.setText("Cancel");
+		cancelEventButton = new Button("New button");
+		cancelEventButton.setStyleName("ButtonColorScheme");
+		cancelEventButton.setText("Cancel");
+		
+		cancelEventButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				removeWidgetsFromView();	
+			}		
+		});
 		
 		deleteEventButton = new Button("New button");
 		deleteEventButton.setText("Delete");
@@ -303,7 +318,7 @@ public class ManageEventsView extends Composite {
 		mainLayoutPanel.setWidgetLeftWidth(lblActivities, 226.0, Unit.PX, 72.0, Unit.PX);
 		mainLayoutPanel.setWidgetTopHeight(lblActivities, 76.0, Unit.PX, 18.0, Unit.PX);
 		
-		submitActivityButton.addClickHandler(new ClickHandler() {
+		submitEventButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				if(mainLayoutPanel.getWidgetIndex(deleteEventButton) == -1) {
@@ -359,12 +374,12 @@ public class ManageEventsView extends Composite {
 		mainLayoutPanel.add(eventDescriptionTextArea);
 		mainLayoutPanel.setWidgetLeftWidth(eventDescriptionTextArea, 4.0, Unit.PCT, 34.0, Unit.PCT);
 		mainLayoutPanel.setWidgetTopHeight(eventDescriptionTextArea, 84.0, Unit.PCT, 80, Unit.PX);
-		mainLayoutPanel.add(submitActivityButton);
-		mainLayoutPanel.setWidgetLeftWidth(submitActivityButton, 302.0, Unit.PX, 68.0, Unit.PX);
-		mainLayoutPanel.setWidgetTopHeight(submitActivityButton, 790.0, Unit.PX, 32.0, Unit.PX);
-		mainLayoutPanel.add(cancelActivityButton);
-		mainLayoutPanel.setWidgetLeftWidth(cancelActivityButton, 376.0, Unit.PX, 68.0, Unit.PX);
-		mainLayoutPanel.setWidgetTopHeight(cancelActivityButton, 790.0, Unit.PX, 32.0, Unit.PX);
+		mainLayoutPanel.add(submitEventButton);
+		mainLayoutPanel.setWidgetLeftWidth(submitEventButton, 302.0, Unit.PX, 68.0, Unit.PX);
+		mainLayoutPanel.setWidgetTopHeight(submitEventButton, 790.0, Unit.PX, 32.0, Unit.PX);
+		mainLayoutPanel.add(cancelEventButton);
+		mainLayoutPanel.setWidgetLeftWidth(cancelEventButton, 376.0, Unit.PX, 68.0, Unit.PX);
+		mainLayoutPanel.setWidgetTopHeight(cancelEventButton, 790.0, Unit.PX, 32.0, Unit.PX);
 	}
 	
 	private void addWidgetsToViewEdit() {
@@ -408,12 +423,12 @@ public class ManageEventsView extends Composite {
 		mainLayoutPanel.add(eventDescriptionTextArea);
 		mainLayoutPanel.setWidgetLeftWidth(eventDescriptionTextArea, 4.0, Unit.PCT, 34.0, Unit.PCT);
 		mainLayoutPanel.setWidgetTopHeight(eventDescriptionTextArea, 84.0, Unit.PCT, 80, Unit.PX);
-		mainLayoutPanel.add(submitActivityButton);
-		mainLayoutPanel.setWidgetLeftWidth(submitActivityButton, 302.0, Unit.PX, 68.0, Unit.PX);
-		mainLayoutPanel.setWidgetTopHeight(submitActivityButton, 790.0, Unit.PX, 32.0, Unit.PX);
-		mainLayoutPanel.add(cancelActivityButton);
-		mainLayoutPanel.setWidgetLeftWidth(cancelActivityButton, 376.0, Unit.PX, 68.0, Unit.PX);
-		mainLayoutPanel.setWidgetTopHeight(cancelActivityButton, 790.0, Unit.PX, 32.0, Unit.PX);
+		mainLayoutPanel.add(submitEventButton);
+		mainLayoutPanel.setWidgetLeftWidth(submitEventButton, 302.0, Unit.PX, 68.0, Unit.PX);
+		mainLayoutPanel.setWidgetTopHeight(submitEventButton, 790.0, Unit.PX, 32.0, Unit.PX);
+		mainLayoutPanel.add(cancelEventButton);
+		mainLayoutPanel.setWidgetLeftWidth(cancelEventButton, 376.0, Unit.PX, 68.0, Unit.PX);
+		mainLayoutPanel.setWidgetTopHeight(cancelEventButton, 790.0, Unit.PX, 32.0, Unit.PX);
 		mainLayoutPanel.add(deleteEventButton);
 		mainLayoutPanel.setWidgetLeftWidth(deleteEventButton, 450.0, Unit.PX, 68.0, Unit.PX);
 		mainLayoutPanel.setWidgetTopHeight(deleteEventButton, 790.0, Unit.PX, 32.0, Unit.PX);
@@ -434,8 +449,8 @@ public class ManageEventsView extends Composite {
 		mainLayoutPanel.remove(eventTitleTextBox);
 		mainLayoutPanel.remove(eventDescriptionLabel);
 		mainLayoutPanel.remove(eventDescriptionTextArea);
-		mainLayoutPanel.remove(submitActivityButton);
-		mainLayoutPanel.remove(cancelActivityButton);
+		mainLayoutPanel.remove(submitEventButton);
+		mainLayoutPanel.remove(cancelEventButton);
 		mainLayoutPanel.remove(deleteEventButton);
 		eventTitleTextBox.setText("");
 		eventDescriptionTextArea.setText("");
@@ -444,7 +459,6 @@ public class ManageEventsView extends Composite {
 	public void loadEvents() {
 		
 		eventsModel.setType(ActionType.GETEVENTS);
-		System.out.println("CLIENT: LOADING EVENTS");
 		RPC.getEventsService.GetEvents(eventsModel, new AsyncCallback<GetItemsResult<Activity>>() {
 
 			@Override
@@ -455,21 +469,21 @@ public class ManageEventsView extends Composite {
 
 			@Override
 			public void onSuccess(GetItemsResult<Activity> result) {
-				activityMenu.clearItems();
+				eventMenu.clearItems();
 				
 				List<Activity> events = result.getResult();
 				
 				if(events.isEmpty()) {
-					activityMenu.addItem("No activities!", (Command) null);
+					eventMenu.addItem("No activities!", (Command) null);
 				} else {
 				
 					for(final Activity a : result.getResult()) {
-						activityMenu.addItem(a.getTitle(), new Command() {
+						eventMenu.addItem(a.getTitle(), new Command() {
 							@Override
 							public void execute() {
-								System.out.println("CLIENT: LOADING ACTIVITY " + a.getTitle());
 								eventLabel.setText(a.getTitle());
-								handleEventClick(a.getTitle());						
+								currentEvent = a;
+								handleEventClick(a);						
 							}						
 						});
 					}
@@ -480,104 +494,111 @@ public class ManageEventsView extends Composite {
 	
 	private void handleSubmitEditActivityClick() {
 		
-		eventsModel.setAccountName(Site.currentUser.getAccountName());
-		eventsModel.setType(ActionType.EDITEVENT);
-		Activity a = new Activity();
-		a.setBody(eventDescriptionTextArea.getText());
-		a.setTitle(eventTitleTextBox.getText());
-		eventsModel.setActivityName(eventLabel.getText());
+		String eventTitle = eventTitleTextBox.getText();
+		String eventBody = eventDescriptionTextArea.getText();
 		
-		String [] tokens = currentDay.split("[ ]+");
-		String dateToSet = "";
+		if(!eventTitle.equals("") && !eventBody.equals("") && currentDay != null) {
 		
-		for(int i = 0; i < 12; i++) {
-			if(months[i].equals(tokens[1])) {
-				dateToSet += (i + 1);
-				dateToSet += "/";
-			}
-		}
-		
-		dateToSet += tokens[2] + "/";
-		dateToSet += tokens[0];
-		
-		a.setDate(dateToSet);
-		
-		System.out.println(dateToSet);
-		
-		a.setStartTime(startHourListBox.getItemText(startHourListBox.getSelectedIndex()) + ":" + startMinuteListBox.getItemText(startMinuteListBox.getSelectedIndex())
-				+ " " + startMeridiemListBox.getItemText(startMeridiemListBox.getSelectedIndex()));
-		
-		a.setEndTime(endHourListBox.getItemText(endHourListBox.getSelectedIndex()) + ":" + endMinuteListBox.getItemText(endMinuteListBox.getSelectedIndex())
-				+ " " + endMeridiemListBox.getItemText(endMeridiemListBox.getSelectedIndex()));
-		
-		eventsModel.setActivity(a);
-		
-		RPC.getEventsService.EditEvents(eventsModel, new AsyncCallback<EditDataResult>() {
-
-			@Override
-			public void onFailure(Throwable caught) {
-				System.err.println("CLIENT: Encountered an error adding an event");				
-			}
-
-			@Override
-			public void onSuccess(EditDataResult result) {
-				System.out.println("ADDING ACTIVITY SUCCESSS!");	
-				System.out.println("Am I calling?");
-				loadEvents();
-				removeWidgetsFromView();
+			eventsModel.setAccountName(Site.currentUser.getAccountName());
+			eventsModel.setType(ActionType.EDITEVENT);
+			Activity a = new Activity();
+			a.setBody(eventDescriptionTextArea.getText());
+			a.setTitle(eventTitleTextBox.getText());
+			eventsModel.setActivityName(eventLabel.getText());
+			
+			String [] tokens = currentDay.split("[ ]+");
+			String dateToSet = "";
+			
+			for(int i = 0; i < 12; i++) {
+				if(months[i].equals(tokens[1])) {
+					dateToSet += (i + 1);
+					dateToSet += "/";
+				}
 			}
 			
-		});
+			dateToSet += tokens[2] + "/";
+			dateToSet += tokens[0];
+			
+			a.setDate(dateToSet);
+			
+			a.setStartTime(startHourListBox.getItemText(startHourListBox.getSelectedIndex()) + ":" + startMinuteListBox.getItemText(startMinuteListBox.getSelectedIndex())
+					+ " " + startMeridiemListBox.getItemText(startMeridiemListBox.getSelectedIndex()));
+			
+			a.setEndTime(endHourListBox.getItemText(endHourListBox.getSelectedIndex()) + ":" + endMinuteListBox.getItemText(endMinuteListBox.getSelectedIndex())
+					+ " " + endMeridiemListBox.getItemText(endMeridiemListBox.getSelectedIndex()));
+			
+			eventsModel.setActivity(a);
+			
+			RPC.getEventsService.EditEvents(eventsModel, new AsyncCallback<EditDataResult>() {
+	
+				@Override
+				public void onFailure(Throwable caught) {
+					System.err.println("CLIENT: Encountered an error adding an event");				
+				}
+	
+				@Override
+				public void onSuccess(EditDataResult result) {
+					currentDay = null;
+					loadEvents();
+					removeWidgetsFromView();
+				}
+				
+			});
+		}
 	}
 	
 	private void handleSubmitAddActivityClick() {
+
+		String eventTitle = eventTitleTextBox.getText();
+		String eventBody = eventDescriptionTextArea.getText();
 		
-		eventsModel.setAccountName(Site.currentUser.getAccountName());
-		eventsModel.setType(ActionType.ADDEVENT);
-		Activity a = new Activity();
-		a.setBody(eventDescriptionTextArea.getText());
-		a.setTitle(eventTitleTextBox.getText());
 		
-		String [] tokens = currentDay.split("[ ]+");
-		String dateToSet = "";
-		
-		for(int i = 0; i < 12; i++) {
-			if(months[i].equals(tokens[1])) {
-				dateToSet += (i + 1);
-				dateToSet += "/";
+		if(!eventBody.equals("") && !eventTitle.equals("") && currentDay != null) {
+			
+			eventsModel.setAccountName(Site.currentUser.getAccountName());
+			eventsModel.setType(ActionType.ADDEVENT);
+			Activity a = new Activity();
+			a.setBody(eventBody);
+			a.setTitle(eventTitle);
+			
+			String [] tokens = currentDay.split("[ ]+");
+			String dateToSet = "";
+			
+			for(int i = 0; i < 12; i++) {
+				if(months[i].equals(tokens[1])) {
+					dateToSet += (i + 1);
+					dateToSet += "/";
+				}
 			}
+			
+			dateToSet += tokens[2] + "/";
+			dateToSet += tokens[0];
+			
+			a.setDate(dateToSet);
+			
+			a.setStartTime(startHourListBox.getItemText(startHourListBox.getSelectedIndex()) + ":" + startMinuteListBox.getItemText(startMinuteListBox.getSelectedIndex())
+					+ " " + startMeridiemListBox.getItemText(startMeridiemListBox.getSelectedIndex()));
+			
+			a.setEndTime(endHourListBox.getItemText(endHourListBox.getSelectedIndex()) + ":" + endMinuteListBox.getItemText(endMinuteListBox.getSelectedIndex())
+					+ " " + endMeridiemListBox.getItemText(endMeridiemListBox.getSelectedIndex()));
+			
+			eventsModel.setActivity(a);
+			
+			RPC.getEventsService.EditEvents(eventsModel, new AsyncCallback<EditDataResult>() {
+	
+				@Override
+				public void onFailure(Throwable caught) {
+					System.err.println("CLIENT: Encountered an error adding an event");				
+				}
+	
+				@Override
+				public void onSuccess(EditDataResult result) {
+					currentDay = null;
+					loadEvents();
+					removeWidgetsFromView();
+				}		
+			});
 		}
-		
-		dateToSet += tokens[2] + "/";
-		dateToSet += tokens[0];
-		
-		a.setDate(dateToSet);
-		
-		System.out.println(dateToSet);
-		
-		a.setStartTime(startHourListBox.getItemText(startHourListBox.getSelectedIndex()) + ":" + startMinuteListBox.getItemText(startMinuteListBox.getSelectedIndex())
-				+ " " + startMeridiemListBox.getItemText(startMeridiemListBox.getSelectedIndex()));
-		
-		a.setEndTime(endHourListBox.getItemText(endHourListBox.getSelectedIndex()) + ":" + endMinuteListBox.getItemText(endMinuteListBox.getSelectedIndex())
-				+ " " + endMeridiemListBox.getItemText(endMeridiemListBox.getSelectedIndex()));
-		
-		eventsModel.setActivity(a);
-		
-		RPC.getEventsService.EditEvents(eventsModel, new AsyncCallback<EditDataResult>() {
-
-			@Override
-			public void onFailure(Throwable caught) {
-				System.err.println("CLIENT: Encountered an error adding an event");				
-			}
-
-			@Override
-			public void onSuccess(EditDataResult result) {
-				System.out.println("ADDING ACTIVITY SUCCESSS!");				
-				System.out.println("Am I calling?");
-				loadEvents();
-				removeWidgetsFromView();
-			}		
-		});
 	}
 	
 	public void handleDeleteEventClick() {
@@ -601,7 +622,7 @@ public class ManageEventsView extends Composite {
 		});
 	}
 	
-	public void handleEventClick(String title) {
+	public void handleEventClick(final Activity a) {
 		
 		final ArrayList<String> usersOffEvent = new ArrayList<String>();
 		
@@ -619,47 +640,48 @@ public class ManageEventsView extends Composite {
 					usersOffEvent.add(s);
 				}
 				
+				eventsModel.setActivityName(a.getTitle());
+				eventsModel.setType(ActionType.GETUSERSONEVENT);
+					
+				RPC.getEventsService.getUsersOnEvent(eventsModel, new AsyncCallback<GetItemsResult<String>>() {	
+					
+					@Override
+					public void onFailure(Throwable caught) {
+						System.err.println("CLIENT: There was an error getting users on an event");
+						
+					}
+
+					@Override
+					public void onSuccess(GetItemsResult<String> result) {
+						
+						usersOnEventMenu.clearItems();
+						
+						for(final String s : result.getResult()) {
+							usersOnEventMenu.addItem(new MenuItem(s, new Command() {
+								@Override
+								public void execute() {
+									handleUsersOnEventClick(s);
+								}				
+							}));	
+							usersOffEvent.remove(s);
+						}
+						
+						usersOffEventMenu.clearItems();
+						for(final String s : usersOffEvent) {
+							usersOffEventMenu.addItem(s, new Command() {
+								@Override
+								public void execute() {
+									handleUsersOffEventClick(s);						
+								}					
+							});
+						}
+									
+						eventTitleTextBox.setText(a.getTitle());
+						eventDescriptionTextArea.setText(a.getBody());
+					}		
+				});		
 			}				
 		});	
-		
-
-		eventsModel.setActivityName(title);
-		eventsModel.setType(ActionType.GETUSERSONEVENT);
-			
-		RPC.getEventsService.getUsersOnEvent(eventsModel, new AsyncCallback<GetItemsResult<String>>() {	
-			
-			@Override
-			public void onFailure(Throwable caught) {
-				System.err.println("CLIENT: There was an error getting users on an event");
-				
-			}
-
-			@Override
-			public void onSuccess(GetItemsResult<String> result) {
-				
-				usersOnEventMenu.clearItems();
-				
-				for(final String s : result.getResult()) {
-					usersOnEventMenu.addItem(new MenuItem(s, new Command() {
-						@Override
-						public void execute() {
-							handleUsersOnEventClick(s);
-						}				
-					}));	
-					usersOffEvent.remove(s);
-				}
-				
-				usersOffEventMenu.clearItems();
-				for(final String s : usersOffEvent) {
-					usersOffEventMenu.addItem(s, new Command() {
-						@Override
-						public void execute() {
-							handleUsersOffEventClick(s);						
-						}					
-					});
-				}	
-			}		
-		});
 	}
 	
 	private void handleUsersOnEventClick(String name) {
@@ -679,8 +701,6 @@ public class ManageEventsView extends Composite {
 		eventsModel.setUsers(u);
 		eventsModel.setType(ActionType.ADDUSERSTOEVENT);
 		
-		System.out.println("REMOVING USER OFF: " + userOffEventNameLabel.getText());
-		
 		RPC.getEventsService.addUsersToEvent(eventsModel, new AsyncCallback<EditDataResult>() {
 			
 			@Override
@@ -691,8 +711,7 @@ public class ManageEventsView extends Composite {
 
 			@Override
 			public void onSuccess(EditDataResult result) {
-				System.out.println("ADDED USER TO EVENT");
-				handleEventClick(eventLabel.getText());	
+				handleEventClick(currentEvent);	
 			}		
 		});
 	}
@@ -701,8 +720,6 @@ public class ManageEventsView extends Composite {
 		
 		ArrayList<String> u = new ArrayList<String>();
 		u.add(userOnEventNameLabel.getText());
-		
-		System.out.println("REMOVING USER ON: " + userOnEventNameLabel.getText());
 		
 		eventsModel.setActivityName(eventLabel.getText());
 		eventsModel.setUsers(u);
@@ -718,8 +735,7 @@ public class ManageEventsView extends Composite {
 
 			@Override
 			public void onSuccess(EditDataResult result) {
-				System.out.println("REMOVED USER FROM EVENT");
-				handleEventClick(eventLabel.getText());	
+				handleEventClick(currentEvent);	
 			}		
 		});
 	}

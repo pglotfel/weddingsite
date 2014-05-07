@@ -21,6 +21,7 @@ import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.RichTextArea;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextArea;
 
@@ -37,7 +38,7 @@ public class CalendarView extends Composite {
 	private Label calendarMonthYearLabel;
 	private EventsModel eventsModel;
 	private ArrayList<Activity> events;
-	private TextArea eventTextArea;
+	private RichTextArea eventTextArea;
 	
 	public CalendarView() {
 			
@@ -243,25 +244,27 @@ public class CalendarView extends Composite {
 		mainLayoutPanel.setWidgetLeftWidth(scrollPanel, 863.0, Unit.PX, 223.0, Unit.PX);
 		mainLayoutPanel.setWidgetTopHeight(scrollPanel, 92.0, Unit.PX, 600.0, Unit.PX);
 		
-		eventTextArea = new TextArea();
-		eventTextArea.setCharacterWidth(18);
-		eventTextArea.setReadOnly(true);
+		eventTextArea = new RichTextArea();
+		eventTextArea.setEnabled(false);
 		scrollPanel.setWidget(eventTextArea);
 		eventTextArea.setSize("95%", "95%");
 		
-		Button manageActivitiesButton = new Button("New button");
-		manageActivitiesButton.setStyleName("ButtonColorScheme");
-		manageActivitiesButton.setText("Manage Activities");
-		mainLayoutPanel.add(manageActivitiesButton);
-		mainLayoutPanel.setWidgetLeftWidth(manageActivitiesButton, 917.0, Unit.PX, 125.0, Unit.PX);
-		mainLayoutPanel.setWidgetTopHeight(manageActivitiesButton, 713.0, Unit.PX, 32.0, Unit.PX);
-		
-		manageActivitiesButton.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				Site.search(Pages.MANAGEACTIVITIESPAGE);			
-			}		
-		});
+		if(Site.currentUser.getIsAdmin()) {
+			
+			Button manageActivitiesButton = new Button("New button");
+			manageActivitiesButton.setStyleName("ButtonColorScheme");
+			manageActivitiesButton.setText("Manage Activities");
+			mainLayoutPanel.add(manageActivitiesButton);
+			mainLayoutPanel.setWidgetLeftWidth(manageActivitiesButton, 917.0, Unit.PX, 125.0, Unit.PX);
+			mainLayoutPanel.setWidgetTopHeight(manageActivitiesButton, 713.0, Unit.PX, 32.0, Unit.PX);
+			
+			manageActivitiesButton.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					Site.search(Pages.MANAGEACTIVITIESPAGE);			
+				}		
+			});
+		}
 		
 		for(int i = 0; i < 42; i++) {
 			calendarGrid.setWidget((i / 7), (i % 7), buttons[i]);
@@ -363,7 +366,7 @@ public class CalendarView extends Composite {
 				textToSet += "End Time: \n";
 				textToSet += a.getEndTime() + "\n";
 				textToSet += "Description: \n";
-				textToSet += a.getBody() + "\n";			
+				textToSet += a.getBody() + "\n\n";			
 			}
 		}
 		

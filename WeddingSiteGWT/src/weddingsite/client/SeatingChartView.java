@@ -103,7 +103,7 @@ public class SeatingChartView extends Composite {
 		PageView pageView = new PageView();
 		layoutPanel.add(pageView);
 		layoutPanel.setWidgetTopBottom(pageView, 93.7,  Unit.PCT, 0.0, Unit.PCT);
-		layoutPanel.setWidgetLeftRight(pageView, 0.0, Unit.PCT, 30, Unit.PCT);
+		layoutPanel.setWidgetLeftRight(pageView, 2.3, Unit.PCT, 30, Unit.PCT);
 		
 		Label titleLable = new Label("Seating Charts");
 		titleLable.setStyleName("CenterTitles");
