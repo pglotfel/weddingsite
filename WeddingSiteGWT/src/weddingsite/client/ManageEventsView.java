@@ -57,6 +57,8 @@ public class ManageEventsView extends Composite {
 	private Label eventDescriptionLabel;
 	private Button deleteEventButton;
 	private Button cancelActivityButton;
+	private Label userOffEventNameLabel;
+	private Label userOnEventNameLabel;
 	
 	//models
 	private EventsModel eventsModel;
@@ -68,9 +70,6 @@ public class ManageEventsView extends Composite {
 	//other
 	private String currentDay;
 	private final String [] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
-	
-	private Label userOffEventNameLabel;
-	private Label userOnEventNameLabel;
 	
 	public ManageEventsView() {
 		
@@ -445,7 +444,7 @@ public class ManageEventsView extends Composite {
 	public void loadEvents() {
 		
 		eventsModel.setType(ActionType.GETEVENTS);
-		
+		System.out.println("CLIENT: LOADING EVENTS");
 		RPC.getEventsService.GetEvents(eventsModel, new AsyncCallback<GetItemsResult<Activity>>() {
 
 			@Override
@@ -468,6 +467,7 @@ public class ManageEventsView extends Composite {
 						activityMenu.addItem(a.getTitle(), new Command() {
 							@Override
 							public void execute() {
+								System.out.println("CLIENT: LOADING ACTIVITY " + a.getTitle());
 								eventLabel.setText(a.getTitle());
 								handleEventClick(a.getTitle());						
 							}						
@@ -475,7 +475,6 @@ public class ManageEventsView extends Composite {
 					}
 				}
 			}
-		
 		});
 	}
 	
@@ -522,13 +521,13 @@ public class ManageEventsView extends Composite {
 
 			@Override
 			public void onSuccess(EditDataResult result) {
-				System.out.println("ADDING ACTIVITY SUCCESSS!");			
+				System.out.println("ADDING ACTIVITY SUCCESSS!");	
+				System.out.println("Am I calling?");
+				loadEvents();
+				removeWidgetsFromView();
 			}
 			
 		});
-		
-		loadEvents();
-		removeWidgetsFromView();
 	}
 	
 	private void handleSubmitAddActivityClick() {
@@ -573,13 +572,12 @@ public class ManageEventsView extends Composite {
 
 			@Override
 			public void onSuccess(EditDataResult result) {
-				System.out.println("ADDING ACTIVITY SUCCESSS!");			
-			}
-			
+				System.out.println("ADDING ACTIVITY SUCCESSS!");				
+				System.out.println("Am I calling?");
+				loadEvents();
+				removeWidgetsFromView();
+			}		
 		});
-		
-		loadEvents();
-		removeWidgetsFromView();
 	}
 	
 	public void handleDeleteEventClick() {
@@ -682,7 +680,7 @@ public class ManageEventsView extends Composite {
 		eventsModel.setUsers(u);
 		eventsModel.setType(ActionType.ADDUSERSTOEVENT);
 		
-		System.out.println("REMOVING: " + userOffEventNameLabel.getText());
+		System.out.println("REMOVING USER OFF: " + userOffEventNameLabel.getText());
 		
 		RPC.getEventsService.addUsersToEvent(eventsModel, new AsyncCallback<EditDataResult>() {
 			
@@ -706,7 +704,7 @@ public class ManageEventsView extends Composite {
 		ArrayList<String> u = new ArrayList<String>();
 		u.add(userOnEventNameLabel.getText());
 		
-		System.out.println("REMOVING: " + userOnEventNameLabel.getText());
+		System.out.println("REMOVING USER ON: " + userOnEventNameLabel.getText());
 		
 		eventsModel.setActivityName(eventLabel.getText());
 		eventsModel.setUsers(u);

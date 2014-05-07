@@ -46,6 +46,9 @@ public class Site implements EntryPoint {
 		
 		switch(page) {		
 		case LOGINPAGE:
+			if(currentView != null) {
+				RootLayoutPanel.get().remove(currentView);
+			}
 			Login model = new Login();
 			LoginAndLoginResultView v1 = new LoginAndLoginResultView();
 			currentView = v1;

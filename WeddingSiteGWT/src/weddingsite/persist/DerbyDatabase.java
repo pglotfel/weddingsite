@@ -333,7 +333,7 @@ public class DerbyDatabase implements IDatabase {
 
 	@Override
 	public User getUser(final String accountName, final String userName) {
-		// TODO Auto-generated method stub
+
 		return executeTransaction(new Transaction<User>() {
 			@Override
 			public User execute(Connection conn) throws SQLException {
@@ -349,10 +349,7 @@ public class DerbyDatabase implements IDatabase {
 					);
 					
 					stmt.setString(1, userName);
-					stmt.setString(2, accountName);
-					
-					
-					stmt.setString(1, accountName);
+					stmt.setString(2, accountName);				
 					
 					resultSet = stmt.executeQuery();
 					
@@ -1514,6 +1511,7 @@ public class DerbyDatabase implements IDatabase {
 							a.setStartTime(resultSet.getString("startTime"));
 							a.setEndTime(resultSet.getString("endTime"));
 							a.setTitle(resultSet.getString("title"));
+							a.setID(resultSet.getInt("id"));
 							result.add(a);
 							
 						}
@@ -1546,6 +1544,7 @@ public class DerbyDatabase implements IDatabase {
 			for(int i = 0; i < usernames.size(); i++) {	
 				
 				User u = getUser(accountName, usernames.get(i));
+				System.out.println("DATABASE: ADDING USER: " + usernames.get(i));
 				
 				if(u != null) {
 						try {
@@ -1577,7 +1576,9 @@ public class DerbyDatabase implements IDatabase {
 				PreparedStatement stmt = null;
 				
 				ArrayList<Activity> all = getActivities(accountName);
+				
 				int activityID = -1;
+				
 				for(int i = 0; i < all.size(); i++) {
 					if(all.get(i).getTitle().equals(activityName)) {
 						activityID = all.get(i).getID();
@@ -1626,7 +1627,7 @@ public class DerbyDatabase implements IDatabase {
 				for(int i = 0; i < all.size(); i++) {
 					if(all.get(i).getTitle().equals(activityName)) {
 						activityID = all.get(i).getID();
-						System.out.println("FOUND ACTIVITY " + all.get(i).getTitle());
+						System.out.println("FOUND ACTIVITY " + all.get(i).getTitle() +  " " + activityID);
 					}
 				}
 				
