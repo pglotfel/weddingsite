@@ -115,7 +115,9 @@ public class Site implements EntryPoint {
 		break;
 		
 		case CALENDARPAGE:
-			viewHistory.push(currentPage);
+			if(currentPage != Pages.MANAGEACTIVITIESPAGE) {
+				viewHistory.push(currentPage);
+			}
 			RootLayoutPanel.get().remove(currentView);
 			CalendarView v6 = new CalendarView();
 			RootLayoutPanel.get().add(v6);

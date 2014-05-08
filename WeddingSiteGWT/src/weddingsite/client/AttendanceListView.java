@@ -1,5 +1,7 @@
 package weddingsite.client;
 
+import java.util.ArrayList;
+
 import weddingsite.shared.ActionType;
 import weddingsite.shared.AttendanceList;
 import weddingsite.shared.AttendanceListQueryModel;
@@ -19,13 +21,13 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.IntegerBox;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.IntegerBox;
 
 public class AttendanceListView extends Composite {
 	
@@ -491,9 +493,7 @@ public class AttendanceListView extends Composite {
 	public void loadAttendanceList() {
 		
 		attendanceListQueryModel.setWeddingName(Site.currentUser.getAccountName());
-		attendanceListQueryModel.setType(ActionType.GETATTENDANCELISTS);
-		
-		attendanceListMenu.clearItems();
+		attendanceListQueryModel.setType(ActionType.GETATTENDANCELISTS);	
 		
 		RPC.performAttendanceListQueryService.performAttendanceListQuery(attendanceListQueryModel, new AsyncCallback<AttendanceListQueryResult>() {
 
@@ -504,16 +504,24 @@ public class AttendanceListView extends Composite {
 
 			@Override
 			public void onSuccess(AttendanceListQueryResult result) {
-				for (final AttendanceList a : result.getAttendanceLists()) {
+				
+				attendanceListMenu.clearItems();
+				
+				ArrayList<AttendanceList> attendanceLists = result.getAttendanceLists();
+				
+				if(attendanceLists.isEmpty()) {
 					
-					MenuItem m = new MenuItem(a.getName(), false, new Command() {
-						public void execute() {		
-							attendanceListNameLabel.setText(a.getName());
-							handleAttendanceListClick(a.getName());
-						}				
-					});				
-					
-					attendanceListMenu.addItem(m);
+					attendanceListMenu.addItem("No attendance lists!", (Command) null);
+				} else {
+					for (final AttendanceList a : attendanceLists) {
+						
+						attendanceListMenu.addItem(new MenuItem(a.getName(), false, new Command() {
+							public void execute() {		
+								attendanceListNameLabel.setText(a.getName());
+								handleAttendanceListClick(a.getName());
+							}				
+						}));							
+					}
 				}
 			}
 		
@@ -536,17 +544,22 @@ public class AttendanceListView extends Composite {
 			@Override
 			public void onSuccess(AttendeeQueryResult result) {
 				attendeeMenu.clearItems();
-				for (final Attendee a : result.getAttendees()) {
-					attendeeMenu.addItem(new MenuItem("Party: " + a.getName() + " Attending: " + a.getNumAttending(), false, new Command() {
-						public void execute() {			
-							handleAttendeeListClick(a.getName());
-						}				
-					}));				
-				}
 				
-				if(result.getAttendees().size() == 0) {
+				ArrayList<Attendee> attendees = result.getAttendees();
+					
+				if(attendees.isEmpty()) {
+					
 					attendeeMenu.addItem(new MenuItem("There is currently no one registered to this attendance list", false, (Command) null));
-				} 
+				}  else {
+					
+					for (final Attendee a : attendees) {
+						attendeeMenu.addItem(new MenuItem("Party: " + a.getName() + " Attending: " + a.getNumAttending(), false, new Command() {
+							public void execute() {			
+								handleAttendeeListClick(a.getName());
+							}				
+						}));				
+					}
+				}
 			}		
 		});	
 	}

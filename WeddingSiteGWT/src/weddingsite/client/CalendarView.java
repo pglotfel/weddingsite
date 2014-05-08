@@ -56,8 +56,7 @@ public class CalendarView extends Composite {
 
 				@Override
 				public void onSuccess(GetItemsResult<Activity> result) {
-					events = (ArrayList<Activity>) result.getResult();
-					
+					events = (ArrayList<Activity>) result.getResult();			
 				}			
 			});
 		} else {
@@ -76,8 +75,7 @@ public class CalendarView extends Composite {
 
 				@Override
 				public void onSuccess(GetItemsResult<Activity> result) {
-					events = (ArrayList<Activity>) result.getResult();
-					
+					events = (ArrayList<Activity>) result.getResult();					
 				}				
 			});		
 		}
@@ -111,7 +109,7 @@ public class CalendarView extends Composite {
 		mainScrollPanel.setSize("100%", "100%");
 		
 		mainLayoutPanel = new LayoutPanel();
-		mainLayoutPanel.setStyleName("calendarBackground");
+		mainLayoutPanel.setStyleName("InnerBackground");
 		mainScrollPanel.setWidget(mainLayoutPanel);
 		mainLayoutPanel.setSize("1200px", "900px");
 		
@@ -145,7 +143,7 @@ public class CalendarView extends Composite {
 		
 		yearSelector = new ListBox();
 		mainLayoutPanel.add(yearSelector);
-		mainLayoutPanel.setWidgetLeftWidth(yearSelector, 395.0, Unit.PX, 88.0, Unit.PX);
+		mainLayoutPanel.setWidgetLeftWidth(yearSelector, 398.0, Unit.PX, 88.0, Unit.PX);
 		mainLayoutPanel.setWidgetTopHeight(yearSelector, 737.0, Unit.PX, 26.0, Unit.PX);
 		
 		yearSelector.addChangeHandler(new ChangeHandler() {
@@ -163,8 +161,8 @@ public class CalendarView extends Composite {
 		goToDateButton.setStyleName("calendarButtons");
 		goToDateButton.setText("Go!");
 		mainLayoutPanel.add(goToDateButton);
-		mainLayoutPanel.setWidgetLeftWidth(goToDateButton, 360.0, Unit.PX, 65.0, Unit.PX);
-		mainLayoutPanel.setWidgetTopHeight(goToDateButton, 783.0, Unit.PX, 26.0, Unit.PX);
+		mainLayoutPanel.setWidgetLeftWidth(goToDateButton, 357.0, Unit.PX, 65.0, Unit.PX);
+		mainLayoutPanel.setWidgetTopHeight(goToDateButton, 780.0, Unit.PX, 26.0, Unit.PX);
 		goToDateButton.addClickHandler(new ClickHandler() {
 
 			@Override
@@ -176,13 +174,13 @@ public class CalendarView extends Composite {
 		Label monthSelectorLabel = new Label("Month");
 		monthSelectorLabel.setStyleName("calendarLabel");
 		mainLayoutPanel.add(monthSelectorLabel);
-		mainLayoutPanel.setWidgetLeftWidth(monthSelectorLabel, 304.0, Unit.PX, 85.0, Unit.PX);
+		mainLayoutPanel.setWidgetLeftWidth(monthSelectorLabel, 301.0, Unit.PX, 85.0, Unit.PX);
 		mainLayoutPanel.setWidgetTopHeight(monthSelectorLabel, 713.0, Unit.PX, 18.0, Unit.PX);
 		
 		Label yearSelectorLabel = new Label("Year");
 		yearSelectorLabel.setStyleName("calendarLabel");
 		mainLayoutPanel.add(yearSelectorLabel);
-		mainLayoutPanel.setWidgetLeftWidth(yearSelectorLabel, 396.0, Unit.PX, 87.0, Unit.PX);
+		mainLayoutPanel.setWidgetLeftWidth(yearSelectorLabel, 398.0, Unit.PX, 87.0, Unit.PX);
 		mainLayoutPanel.setWidgetTopHeight(yearSelectorLabel, 713.0, Unit.PX, 18.0, Unit.PX);
 		
 		calendarMonthYearLabel = new Label("");
@@ -245,6 +243,7 @@ public class CalendarView extends Composite {
 		mainLayoutPanel.setWidgetTopHeight(scrollPanel, 92.0, Unit.PX, 600.0, Unit.PX);
 		
 		eventTextArea = new RichTextArea();
+		eventTextArea.setStyleName("gwt-RichTextArea .body");
 		eventTextArea.setEnabled(false);
 		scrollPanel.setWidget(eventTextArea);
 		eventTextArea.setSize("95%", "95%");

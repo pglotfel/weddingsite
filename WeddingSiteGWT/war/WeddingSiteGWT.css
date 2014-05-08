@@ -127,11 +127,10 @@ body {
 }
 
 .gwt-MenuBar-vertical {
-    background-color: #cecece;
+    background-color: #5e2537 !important;
     width: 100%;
     height: 100%;
     overflow: auto;
-    color:   #5e2537;
 }
 
 .gwt-MenuBar-vertical .gwt-MenuItem
@@ -234,6 +233,12 @@ body {
 }
 
 .TextColorScheme {
+	font-family : "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	font-size:	15px;
+	color: #cecece;
+}
+
+.gwt-RichTextArea .body {
 	font-family : "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 	font-size:	15px;
 	color: #cecece;
