@@ -41,7 +41,7 @@ public class AccountView extends Composite{
 		mainLayout = new LayoutPanel();
 		mainLayout.setStyleName("InnerBackground");
 		MainFlowPanel.add(mainLayout);
-		mainLayout.setSize("700px", "900px");
+		mainLayout.setSize("700px", "750px");
 		
 		PageView pageView = new PageView();
 		mainLayout.add(pageView);
