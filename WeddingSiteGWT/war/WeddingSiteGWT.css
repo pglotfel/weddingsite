@@ -150,11 +150,11 @@ body {
 }
 
 .gwt-MenuBar-vertical .gwt-MenuItem:hover {
- height: 50px;
- transition: height 1s width 1s;
--moz-transition: height 1s;/*  Firefox 4 */
--webkit-transition: height 1s; /* Safari and Chrome */
--o-transition: height 1s; /* Opera  */
+	 height: 50px;
+	 transition: height 1s width 1s;
+	-moz-transition: height 1s;/*  Firefox 4 */
+	-webkit-transition: height 1s; /* Safari and Chrome */
+	-o-transition: height 1s; /* Opera  */
 }
 
 .layout {
@@ -183,6 +183,7 @@ body {
 	margin-right: auto;
 	margin-top: 20px;
 	border:   1px solid #cecece;
+	border-radius: 25px;
 }
 
 .InnerBackgroundCenter {

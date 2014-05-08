@@ -1333,7 +1333,6 @@ public class DerbyDatabase implements IDatabase {
 									a.setStartTime(resultSetEvents.getString("startTime"));
 									a.setTitle(resultSetEvents.getString("title"));
 									result.add(a);
-									System.out.println("Found event " + a.getTitle());
 								}
 								
 							} finally {
@@ -1543,7 +1542,6 @@ public class DerbyDatabase implements IDatabase {
 			for(int i = 0; i < usernames.size(); i++) {	
 				
 				User u = getUser(accountName, usernames.get(i));
-				System.out.println("DATABASE: ADDING USER: " + usernames.get(i));
 				
 				if(u != null) {
 						try {

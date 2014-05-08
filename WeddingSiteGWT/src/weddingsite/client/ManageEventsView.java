@@ -618,6 +618,7 @@ public class ManageEventsView extends Composite {
 				System.out.println("DELETED AN EVENT");			
 				loadEvents();
 				removeWidgetsFromView();
+				eventLabel.setText("");
 			}	
 		});
 	}

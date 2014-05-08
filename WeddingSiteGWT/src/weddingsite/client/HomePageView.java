@@ -54,7 +54,7 @@ public class HomePageView  extends Composite implements ISubscriber {
 		
 		
 		layoutPanel = new LayoutPanel();
-		layoutPanel.setStyleName("InnerBackgroundCenter");
+		layoutPanel.setStyleName("InnerBackground");
 		mainScrollPanel.add(layoutPanel);
 		layoutPanel.setSize("900px", "700px");
 		
