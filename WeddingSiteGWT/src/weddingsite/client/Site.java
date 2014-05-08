@@ -30,6 +30,7 @@ public class Site implements EntryPoint {
 		CREATEACCOUNTPAGE,
 		CALENDARPAGE,
 		MANAGEACTIVITIESPAGE,
+		ACCOUNTPAGE,
 	}
 	
 	/**
@@ -133,6 +134,17 @@ public class Site implements EntryPoint {
 			RootLayoutPanel.get().setWidgetLeftWidth(v7, 0, Unit.PCT, 100.0, Unit.PCT);
 			RootLayoutPanel.get().setWidgetTopHeight(v7, 0, Unit.PCT, 100.0, Unit.PCT);	
 			currentPage = Pages.MANAGEACTIVITIESPAGE;
+		break;
+		
+		case ACCOUNTPAGE:
+			viewHistory.push(currentPage);
+			RootLayoutPanel.get().remove(currentView);
+			AccountView v8 = new AccountView();
+			RootLayoutPanel.get().add(v8);
+			currentView = v8;
+			RootLayoutPanel.get().setWidgetLeftWidth(v8, 0, Unit.PCT, 100.0, Unit.PCT);
+			RootLayoutPanel.get().setWidgetTopHeight(v8, 0, Unit.PCT, 100.0, Unit.PCT);
+			currentPage = Pages.ACCOUNTPAGE;
 		break;
 		
 		default:

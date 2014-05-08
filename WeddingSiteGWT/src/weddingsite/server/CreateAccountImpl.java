@@ -19,6 +19,19 @@ public class CreateAccountImpl  extends RemoteServiceServlet implements CreateAc
 		
 		return result;
 	}
+
+	@Override
+	public EditDataResult addUser(CreateAccountModel model) {
+		AddUserController controller = new AddUserController();
+		
+		controller.setModel(model);
+		
+		EditDataResult result = new EditDataResult();
+		
+		controller.perform(result);
+	
+		return result;
+	}
 	
 
 }

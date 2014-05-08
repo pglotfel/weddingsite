@@ -10,4 +10,7 @@ public interface CreateAccountServiceAsync {
 	void createAccount(CreateAccountModel model,
 			AsyncCallback<EditDataResult> callback);
 
+	void addUser(CreateAccountModel model,
+			AsyncCallback<EditDataResult> callback);
+
 }

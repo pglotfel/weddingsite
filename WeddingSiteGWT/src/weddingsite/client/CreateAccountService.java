@@ -9,4 +9,5 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("CreateAccountService")
 public interface CreateAccountService extends RemoteService{
 	public EditDataResult createAccount(CreateAccountModel model);
+	public EditDataResult addUser(CreateAccountModel model);
 }

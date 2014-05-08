@@ -1321,7 +1321,6 @@ public class DerbyDatabase implements IDatabase {
 								
 								stmt2.setInt(1, resultSet.getInt("eventID"));
 								
-								stmt2.setString(1, accountName);
 								
 								ResultSet resultSetEvents = stmt2.executeQuery();
 								while (resultSetEvents.next()) {

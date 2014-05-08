@@ -229,6 +229,10 @@ public class HomePageView  extends Composite implements ISubscriber {
 		FirstEventBody.setStyleName("homePageText");
 		EventsPanel.add(FirstEventBody);
 		
+		Label Spacer = new Label("");
+		EventsPanel.add(Spacer);
+		Spacer.setSize("100%", "40px");
+		
 		SecondEventName = new Label("");
 		SecondEventName.setStyleName("homePageTextUnderline");
 		EventsPanel.add(SecondEventName);
@@ -269,7 +273,7 @@ public class HomePageView  extends Composite implements ISubscriber {
 
 	
 	protected void HandleAccountClick() {
-		// TODO Auto-generated method stub
+		Site.search(Site.Pages.ACCOUNTPAGE);
 		
 	}
 
@@ -292,10 +296,6 @@ public class HomePageView  extends Composite implements ISubscriber {
 		Site.search(Site.Pages.ATTENDANCELISTPAGE);	
 	}
 	
-	private void handleEventsClick() {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	
 	@Override
