@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
+import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
 
@@ -20,7 +21,7 @@ public class AccountView extends Composite{
 	private LayoutPanel mainLayout;
 	private Label AccountNameTxt;
 	private Label UsernameTextLbl;
-	private TextBox passwordTextBox;
+	private PasswordTextBox passwordTextBox;
 	private TextBox usernameTextbox;
 	private FlowPanel AddUserPanel;
 	private Label AddUsernameLbl;
@@ -115,14 +116,16 @@ public class AccountView extends Composite{
 					usernameTextbox = new TextBox();
 					AddUserPanel.add(usernameTextbox);
 					usernameTextbox.setSize("100%", "30px");
+					usernameTextbox.setStyleName("textboxMargin");
 					
 					PasswordTempLbl = new Label("Temporary Password:");
 					PasswordTempLbl.setStyleName("homePageText");
 					AddUserPanel.add(PasswordTempLbl);
 					
-					passwordTextBox = new TextBox();
+					passwordTextBox = new PasswordTextBox();
 					AddUserPanel.add(passwordTextBox);
 					passwordTextBox.setSize("100%", "30px");
+					passwordTextBox.setStyleName("textboxMargin");
 					
 					SubmitButtonFlowPanel = new FlowPanel();
 					SubmitButtonFlowPanel.setStyleName("CenterButton");
