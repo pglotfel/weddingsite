@@ -135,7 +135,7 @@ public class CreateAccountView extends Composite{
 			
 			LogOutButton = new Button("New button");
 			LogOutButton.setStyleName("CenterButton");
-			LogOutButton.setText("Log Out");
+			LogOutButton.setText("Back");
 			flowPanel_1.add(LogOutButton);
 			LogOutButton.setSize("100%", "100%");
 			
