@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.PasswordTextBox;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
 
 public class CreateAccountView extends Composite{
@@ -23,12 +24,12 @@ public class CreateAccountView extends Composite{
 	private PasswordTextBox PasswordTxt;
 	private PasswordTextBox ConfirmPasswordTxt;
 	private Label ErrorLbl;
-	private FlowPanel mainFlowPanel;
+	private ScrollPanel mainFlowPanel;
 	private Button LogOutButton;
 
 		public CreateAccountView() {
 			
-			mainFlowPanel = new FlowPanel();
+			mainFlowPanel = new ScrollPanel();
 			mainFlowPanel.setStyleName("Background");
 			initWidget(mainFlowPanel);
 			mainFlowPanel.setSize("100%", "100%");

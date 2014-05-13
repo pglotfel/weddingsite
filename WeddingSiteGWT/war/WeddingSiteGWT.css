@@ -92,6 +92,16 @@ body {
 	
 }
 
+.textBigWithBackground
+{
+	font-size: 20px;
+	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	text-align: center;
+	color: #cecece;
+	font-weight: bold;
+	background-color: #5e2537;
+}
+
 .calendarBackground {
 	background-color: #5e2537;
 	margin-left: auto;

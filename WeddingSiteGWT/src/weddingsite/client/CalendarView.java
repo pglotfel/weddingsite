@@ -38,7 +38,7 @@ public class CalendarView extends Composite {
 	private Label calendarMonthYearLabel;
 	private EventsModel eventsModel;
 	private ArrayList<Activity> events;
-	private RichTextArea eventTextArea;
+	private TextArea eventTextArea;
 	
 	public CalendarView() {
 			
@@ -102,7 +102,7 @@ public class CalendarView extends Composite {
 		FlowPanel mainFlowPanel = new FlowPanel();
 		mainFlowPanel.setStyleName("Background");
 		initWidget(mainFlowPanel);
-		mainFlowPanel.setSize("2000px", "2000px");
+		mainFlowPanel.setSize("100%", "100%");
 		
 		ScrollPanel mainScrollPanel = new ScrollPanel();
 		mainFlowPanel.add(mainScrollPanel);
@@ -239,11 +239,11 @@ public class CalendarView extends Composite {
 		
 		ScrollPanel scrollPanel = new ScrollPanel();
 		mainLayoutPanel.add(scrollPanel);
-		mainLayoutPanel.setWidgetLeftWidth(scrollPanel, 863.0, Unit.PX, 223.0, Unit.PX);
-		mainLayoutPanel.setWidgetTopHeight(scrollPanel, 92.0, Unit.PX, 600.0, Unit.PX);
+		mainLayoutPanel.setWidgetLeftWidth(scrollPanel, 864.0, Unit.PX, 223.0, Unit.PX);
+		mainLayoutPanel.setWidgetTopHeight(scrollPanel, 110.0, Unit.PX, 582.0, Unit.PX);
 		
-		eventTextArea = new RichTextArea();
-		eventTextArea.setStyleName("gwt-RichTextArea .body");
+		eventTextArea = new TextArea();
+		eventTextArea.setStyleName("textBigWithBackground");
 		eventTextArea.setEnabled(false);
 		scrollPanel.setWidget(eventTextArea);
 		eventTextArea.setSize("95%", "95%");
@@ -358,14 +358,12 @@ public class CalendarView extends Composite {
 					textToSet = "";
 				}
 				
-				textToSet += "Title: \n";
-				textToSet += a.getTitle() + "\n";
+				textToSet += a.getTitle() + "\n\n";
 				textToSet += "Start Time: \n";
-				textToSet += a.getStartTime() + "\n";
-				textToSet += "End Time: \n";
-				textToSet += a.getEndTime() + "\n";
-				textToSet += "Description: \n";
-				textToSet += a.getBody() + "\n\n";			
+				textToSet += a.getStartTime() + "\n\n";
+				textToSet += "End Time: \n\n";
+				textToSet += a.getEndTime() + "\n\n";
+				textToSet += a.getBody() + "\n\n\n";			
 			}
 		}
 		

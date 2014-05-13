@@ -45,7 +45,7 @@ public class HomePageView  extends Composite implements ISubscriber {
 		
 		mainFlowPanel = new FlowPanel();
 		initWidget(mainFlowPanel);
-		mainFlowPanel.setSize("2000px", "2000px");
+		mainFlowPanel.setSize("100%", "100%");
 		
 		mainScrollPanel = new ScrollPanel();
 		mainFlowPanel.add(mainScrollPanel);

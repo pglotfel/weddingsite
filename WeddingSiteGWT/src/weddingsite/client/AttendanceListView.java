@@ -74,7 +74,7 @@ public class AttendanceListView extends Composite {
 		ScrollPanel mainScrollPanel = new ScrollPanel();
 		mainScrollPanel.setStyleName("Background");
 		mainFlowPanel.add(mainScrollPanel);
-		mainScrollPanel.setSize("800px", "900px");
+		mainScrollPanel.setSize("100%", "100%");
 		
 		mainLayoutPanel = new LayoutPanel();
 		mainLayoutPanel.setStyleName("InnerBackground");
@@ -506,6 +506,7 @@ public class AttendanceListView extends Composite {
 			public void onSuccess(AttendanceListQueryResult result) {
 				
 				attendanceListMenu.clearItems();
+				attendeeMenu.clearItems();
 				
 				ArrayList<AttendanceList> attendanceLists = result.getAttendanceLists();
 				

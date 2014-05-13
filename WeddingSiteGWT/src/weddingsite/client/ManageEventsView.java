@@ -84,7 +84,7 @@ public class ManageEventsView extends Composite {
 		
 		FlowPanel mainFlowPanel = new FlowPanel();
 		initWidget(mainFlowPanel);
-		mainFlowPanel.setSize("2000px", "2000px");
+		mainFlowPanel.setSize("100%", "100%");
 		
 		ScrollPanel mainScrollPanel = new ScrollPanel();
 		mainFlowPanel.add(mainScrollPanel);
@@ -312,11 +312,23 @@ public class ManageEventsView extends Composite {
 		mainLayoutPanel.setWidgetLeftWidth(userOnEventNameLabel, 885.0, Unit.PX, 120.0, Unit.PX);
 		mainLayoutPanel.setWidgetTopHeight(userOnEventNameLabel, 781.0, Unit.PX, 18.0, Unit.PX);
 		
-		Label lblActivities = new Label("Activities");
-		lblActivities.setStyleName("TextColorScheme");
-		mainLayoutPanel.add(lblActivities);
-		mainLayoutPanel.setWidgetLeftWidth(lblActivities, 226.0, Unit.PX, 72.0, Unit.PX);
-		mainLayoutPanel.setWidgetTopHeight(lblActivities, 76.0, Unit.PX, 18.0, Unit.PX);
+		Label activitiesLabel = new Label("Events");
+		activitiesLabel.setStyleName("CenterText");
+		mainLayoutPanel.add(activitiesLabel);
+		mainLayoutPanel.setWidgetLeftWidth(activitiesLabel, 226.0, Unit.PX, 72.0, Unit.PX);
+		mainLayoutPanel.setWidgetTopHeight(activitiesLabel, 76.0, Unit.PX, 18.0, Unit.PX);
+		
+		Label peopleGoingLabel = new Label("Going!");
+		peopleGoingLabel.setStyleName("CenterText");
+		mainLayoutPanel.add(peopleGoingLabel);
+		mainLayoutPanel.setWidgetLeftWidth(peopleGoingLabel, 649.0, Unit.PX, 72.0, Unit.PX);
+		mainLayoutPanel.setWidgetTopHeight(peopleGoingLabel, 76.0, Unit.PX, 18.0, Unit.PX);
+		
+		Label notGoingLabel = new Label("Not Going!");
+		notGoingLabel.setStyleName("CenterText");
+		mainLayoutPanel.add(notGoingLabel);
+		mainLayoutPanel.setWidgetLeftWidth(notGoingLabel, 915.0, Unit.PX, 72.0, Unit.PX);
+		mainLayoutPanel.setWidgetTopHeight(notGoingLabel, 76.0, Unit.PX, 18.0, Unit.PX);
 		
 		submitEventButton.addClickHandler(new ClickHandler() {
 			@Override
@@ -337,7 +349,7 @@ public class ManageEventsView extends Composite {
 		
 		mainLayoutPanel.add(activtyDateFlowPanel);
 		mainLayoutPanel.setWidgetLeftWidth(activtyDateFlowPanel, 8, Unit.PCT, 30, Unit.PCT);
-		mainLayoutPanel.setWidgetTopHeight(activtyDateFlowPanel, 50, Unit.PCT, 191.0, Unit.PX);
+		mainLayoutPanel.setWidgetTopHeight(activtyDateFlowPanel, 50, Unit.PCT, 161.0, Unit.PX);
 		mainLayoutPanel.add(startTimeLabel);
 		mainLayoutPanel.setWidgetLeftWidth(startTimeLabel, 8, Unit.PCT, 8, Unit.PCT);
 		mainLayoutPanel.setWidgetTopHeight(startTimeLabel, 70, Unit.PCT, 15, Unit.PX);

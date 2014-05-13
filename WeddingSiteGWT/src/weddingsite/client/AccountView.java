@@ -4,15 +4,16 @@ import weddingsite.shared.ActionType;
 import weddingsite.shared.CreateAccountModel;
 import weddingsite.shared.EditDataResult;
 
+import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.ui.LayoutPanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
 
 public class AccountView extends Composite{
@@ -31,10 +32,10 @@ public class AccountView extends Composite{
 		
 		
 		
-		FlowPanel MainFlowPanel = new FlowPanel();
+		ScrollPanel MainFlowPanel = new ScrollPanel();
 		MainFlowPanel.setStyleName("Background");
 		initWidget(MainFlowPanel);
-		MainFlowPanel.setSize("100%", "900px");
+		MainFlowPanel.setSize("100%", "100%");
 		
 		
 		

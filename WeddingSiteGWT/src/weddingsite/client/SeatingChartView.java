@@ -93,7 +93,7 @@ public class SeatingChartView extends Composite {
 		scrollPanel = new ScrollPanel();
 		scrollPanel.setStyleName("Background");
 		mainFlowPanel.add(scrollPanel);
-		scrollPanel.setSize("800px", "900px");
+		scrollPanel.setSize("100%", "100%");
 		
 		layoutPanel = new LayoutPanel();
 		layoutPanel.setStyleName("InnerBackground");
@@ -249,6 +249,7 @@ public class SeatingChartView extends Composite {
 		});
 		
 		seatingChartNewNameLabel = new Label("New name:");
+		seatingChartNewNameLabel.setStyleName("CenterText");
 		
 		newNameTextBox = new TextBox();
 		
@@ -356,6 +357,7 @@ public class SeatingChartView extends Composite {
 		});
 		
 		tableNewNameLabel = new Label("New name:");
+		tableNewNameLabel.setStyleName("CenterText");
 		
 		tableNewNameTextBox = new TextBox();
 		
@@ -460,6 +462,7 @@ public class SeatingChartView extends Composite {
 		});
 		
 		personNewNameLabel = new Label("New name:");
+		personNewNameLabel.setStyleName("CenterText");
 		
 		personNewNameTextBox = new TextBox();
 		
