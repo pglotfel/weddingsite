@@ -147,13 +147,13 @@ public class AttendanceListView extends Composite {
 					handleAttendanceListEdit();				
 				}			
 			});
-		
-			attendanceListNameLabel = new Label("Click on an attendance list!");
-			attendanceListNameLabel.setStyleName("CenterText");
-			mainLayoutPanel.add(attendanceListNameLabel);
-			mainLayoutPanel.setWidgetLeftWidth(attendanceListNameLabel, 17, Unit.PCT, 26, Unit.PCT);
-			mainLayoutPanel.setWidgetTopHeight(attendanceListNameLabel, 61.5, Unit.PCT, 2, Unit.PCT);
 		}
+		
+		attendanceListNameLabel = new Label("Click on an attendance list!");
+		attendanceListNameLabel.setStyleName("CenterText");
+		mainLayoutPanel.add(attendanceListNameLabel);
+		mainLayoutPanel.setWidgetLeftWidth(attendanceListNameLabel, 17, Unit.PCT, 26, Unit.PCT);
+		mainLayoutPanel.setWidgetTopHeight(attendanceListNameLabel, 61.5, Unit.PCT, 2, Unit.PCT);
 		
 		attendanceListNewNameLabel = new Label("New name:");
 		attendanceListNewNameLabel.setStyleName("TextColorScheme");
@@ -240,13 +240,13 @@ public class AttendanceListView extends Composite {
 					handleAttendeeEdit();				
 				}			
 			});
-		
-			attendeeNameLabel = new Label("Click on an attendee list!");
-			attendeeNameLabel.setStyleName("CenterText");
-			mainLayoutPanel.add(attendeeNameLabel);
-			mainLayoutPanel.setWidgetLeftWidth(attendeeNameLabel, 57, Unit.PCT, 26, Unit.PCT);
-			mainLayoutPanel.setWidgetTopHeight(attendeeNameLabel, 61.5, Unit.PCT, 2, Unit.PCT);
 		}
+				
+		attendeeNameLabel = new Label("Click on an attendee list!");
+		attendeeNameLabel.setStyleName("CenterText");
+		mainLayoutPanel.add(attendeeNameLabel);
+		mainLayoutPanel.setWidgetLeftWidth(attendeeNameLabel, 57, Unit.PCT, 26, Unit.PCT);
+		mainLayoutPanel.setWidgetTopHeight(attendeeNameLabel, 61.5, Unit.PCT, 2, Unit.PCT);
 		
 		attendeeNewNameLabel = new Label("Name:");
 		attendeeNumberAttendingLabel = new Label("Number attending: ");

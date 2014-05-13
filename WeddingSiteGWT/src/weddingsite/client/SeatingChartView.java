@@ -185,13 +185,14 @@ public class SeatingChartView extends Composite {
 					handleEditSeatingChartClick();
 				}		
 			});		
-			
-			seatingChartNameLabel = new Label("Click on a seating chart!");
-			seatingChartNameLabel.setStyleName("TextColorScheme");
-			layoutPanel.add(seatingChartNameLabel);
-			layoutPanel.setWidgetLeftWidth(seatingChartNameLabel, 10.0, Unit.PCT, 20.0, Unit.PCT);
-			layoutPanel.setWidgetTopHeight(seatingChartNameLabel, 61.2, Unit.PCT, 4.9, Unit.PCT);
 		}
+		
+		
+		seatingChartNameLabel = new Label("Click on a seating chart!");
+		seatingChartNameLabel.setStyleName("TextColorScheme");
+		layoutPanel.add(seatingChartNameLabel);
+		layoutPanel.setWidgetLeftWidth(seatingChartNameLabel, 10.0, Unit.PCT, 20.0, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(seatingChartNameLabel, 61.2, Unit.PCT, 4.9, Unit.PCT);
 		
 		submitSeatingChartFlowPanel = new FlowPanel();
 		
@@ -292,14 +293,13 @@ public class SeatingChartView extends Composite {
 					handleEditTableClick();
 				}		
 			});
-			
-			
-			tableNameLabel = new Label("Click on a table!");
-			tableNameLabel.setStyleName("TextColorScheme");
-			layoutPanel.add(tableNameLabel);
-			layoutPanel.setWidgetLeftWidth(tableNameLabel, 40.0, Unit.PCT, 20.0, Unit.PCT);
-			layoutPanel.setWidgetTopHeight(tableNameLabel, 61.2, Unit.PCT, 4.9, Unit.PCT);
 		}
+		
+		tableNameLabel = new Label("Click on a table!");
+		tableNameLabel.setStyleName("TextColorScheme");
+		layoutPanel.add(tableNameLabel);
+		layoutPanel.setWidgetLeftWidth(tableNameLabel, 40.0, Unit.PCT, 20.0, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(tableNameLabel, 61.2, Unit.PCT, 4.9, Unit.PCT);
 		
 		submitTableFlowPanel = new FlowPanel();
 		
@@ -399,13 +399,13 @@ public class SeatingChartView extends Composite {
 					handleEditPersonClick();
 				}		
 			});
-			
-			personNameLabel = new Label("Click on a person!");
-			personNameLabel.setStyleName("TextColorScheme");
-			layoutPanel.add(personNameLabel);
-			layoutPanel.setWidgetLeftWidth(personNameLabel, 70.0, Unit.PCT, 20.0, Unit.PCT);
-			layoutPanel.setWidgetTopHeight(personNameLabel, 61.2, Unit.PCT, 4.9, Unit.PCT);
 		}
+		
+		personNameLabel = new Label("Click on a person!");
+		personNameLabel.setStyleName("TextColorScheme");
+		layoutPanel.add(personNameLabel);
+		layoutPanel.setWidgetLeftWidth(personNameLabel, 70.0, Unit.PCT, 20.0, Unit.PCT);
+		layoutPanel.setWidgetTopHeight(personNameLabel, 61.2, Unit.PCT, 4.9, Unit.PCT);
 		
 		submitPersonFlowPanel = new FlowPanel();
 		
